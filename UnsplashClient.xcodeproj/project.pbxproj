@@ -7,15 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		845A864C2AA21C4700E97933 /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 845A864B2AA21C4700E97933 /* RswiftLibrary */; };
+		845A86512AA21EDB00E97933 /* BackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A86502AA21EDB00E97933 /* BackgroundImageView.swift */; };
+		845A86532AA2305F00E97933 /* HeaderLable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A86522AA2305F00E97933 /* HeaderLable.swift */; };
+		845A86582AA23C3E00E97933 /* Inter-VariableFont_slnt,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 845A86572AA23C3E00E97933 /* Inter-VariableFont_slnt,wght.ttf */; };
+		845A865A2AA23EBE00E97933 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 845A86592AA23EBE00E97933 /* .gitignore */; };
 		84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */; };
 		84D90CBA2AA10A5D001E9AE3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */; };
-		84D90CBC2AA10A5D001E9AE3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CBB2AA10A5D001E9AE3 /* ViewController.swift */; };
-		84D90CBF2AA10A5D001E9AE3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84D90CBD2AA10A5D001E9AE3 /* Main.storyboard */; };
 		84D90CC12AA10A5D001E9AE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84D90CC02AA10A5D001E9AE3 /* Assets.xcassets */; };
-		84D90CC42AA10A5D001E9AE3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84D90CC22AA10A5D001E9AE3 /* LaunchScreen.storyboard */; };
 		84D90CCF2AA10A5D001E9AE3 /* UnsplashClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CCE2AA10A5D001E9AE3 /* UnsplashClientTests.swift */; };
 		84D90CD92AA10A5D001E9AE3 /* UnsplashClientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CD82AA10A5D001E9AE3 /* UnsplashClientUITests.swift */; };
 		84D90CDB2AA10A5D001E9AE3 /* UnsplashClientUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CDA2AA10A5D001E9AE3 /* UnsplashClientUITestsLaunchTests.swift */; };
+		84D90CEA2AA1FA20001E9AE3 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CE92AA1FA20001E9AE3 /* IntroViewController.swift */; };
+		84D90CEC2AA1FA60001E9AE3 /* IntroProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CEB2AA1FA60001E9AE3 /* IntroProtocols.swift */; };
+		84D90CEE2AA1FA70001E9AE3 /* IntroRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CED2AA1FA70001E9AE3 /* IntroRouter.swift */; };
+		84D90CF02AA1FA86001E9AE3 /* IntroPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CEF2AA1FA86001E9AE3 /* IntroPresenter.swift */; };
+		84D90CF22AA1FA9A001E9AE3 /* IntroInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CF12AA1FA9A001E9AE3 /* IntroInteractor.swift */; };
+		84D90CF42AA1FAAC001E9AE3 /* IntroConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CF32AA1FAAC001E9AE3 /* IntroConfigurator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,19 +44,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		845A86502AA21EDB00E97933 /* BackgroundImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageView.swift; sourceTree = "<group>"; };
+		845A86522AA2305F00E97933 /* HeaderLable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderLable.swift; sourceTree = "<group>"; };
+		845A86572AA23C3E00E97933 /* Inter-VariableFont_slnt,wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-VariableFont_slnt,wght.ttf"; path = "../../../../../Downloads/Inter/Inter-VariableFont_slnt,wght.ttf"; sourceTree = "<group>"; };
+		845A86592AA23EBE00E97933 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		84D90CB42AA10A5D001E9AE3 /* UnsplashClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		84D90CBB2AA10A5D001E9AE3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		84D90CBE2AA10A5D001E9AE3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		84D90CC02AA10A5D001E9AE3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		84D90CC32AA10A5D001E9AE3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84D90CC52AA10A5D001E9AE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84D90CCA2AA10A5D001E9AE3 /* UnsplashClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnsplashClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84D90CCE2AA10A5D001E9AE3 /* UnsplashClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashClientTests.swift; sourceTree = "<group>"; };
 		84D90CD42AA10A5D001E9AE3 /* UnsplashClientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnsplashClientUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84D90CD82AA10A5D001E9AE3 /* UnsplashClientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashClientUITests.swift; sourceTree = "<group>"; };
 		84D90CDA2AA10A5D001E9AE3 /* UnsplashClientUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashClientUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		84D90CE92AA1FA20001E9AE3 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		84D90CEB2AA1FA60001E9AE3 /* IntroProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroProtocols.swift; sourceTree = "<group>"; };
+		84D90CED2AA1FA70001E9AE3 /* IntroRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroRouter.swift; sourceTree = "<group>"; };
+		84D90CEF2AA1FA86001E9AE3 /* IntroPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroPresenter.swift; sourceTree = "<group>"; };
+		84D90CF12AA1FA9A001E9AE3 /* IntroInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroInteractor.swift; sourceTree = "<group>"; };
+		84D90CF32AA1FAAC001E9AE3 /* IntroConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroConfigurator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				845A864C2AA21C4700E97933 /* RswiftLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,13 +92,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		845A864F2AA21EAC00E97933 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				845A86502AA21EDB00E97933 /* BackgroundImageView.swift */,
+				845A86522AA2305F00E97933 /* HeaderLable.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		845A86542AA23BD600E97933 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				845A86572AA23C3E00E97933 /* Inter-VariableFont_slnt,wght.ttf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
+		84868D702AA209BB001F5C9D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		84D90CAB2AA10A5D001E9AE3 = {
 			isa = PBXGroup;
 			children = (
+				845A86592AA23EBE00E97933 /* .gitignore */,
 				84D90CB62AA10A5D001E9AE3 /* UnsplashClient */,
 				84D90CCD2AA10A5D001E9AE3 /* UnsplashClientTests */,
 				84D90CD72AA10A5D001E9AE3 /* UnsplashClientUITests */,
 				84D90CB52AA10A5D001E9AE3 /* Products */,
+				84868D702AA209BB001F5C9D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,12 +141,11 @@
 		84D90CB62AA10A5D001E9AE3 /* UnsplashClient */ = {
 			isa = PBXGroup;
 			children = (
+				845A86542AA23BD600E97933 /* fonts */,
+				84D90CE72AA1F888001E9AE3 /* Modules */,
 				84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */,
 				84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */,
-				84D90CBB2AA10A5D001E9AE3 /* ViewController.swift */,
-				84D90CBD2AA10A5D001E9AE3 /* Main.storyboard */,
 				84D90CC02AA10A5D001E9AE3 /* Assets.xcassets */,
-				84D90CC22AA10A5D001E9AE3 /* LaunchScreen.storyboard */,
 				84D90CC52AA10A5D001E9AE3 /* Info.plist */,
 			);
 			path = UnsplashClient;
@@ -127,6 +168,28 @@
 			path = UnsplashClientUITests;
 			sourceTree = "<group>";
 		};
+		84D90CE72AA1F888001E9AE3 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				84D90CE82AA1F8A9001E9AE3 /* Intro */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		84D90CE82AA1F8A9001E9AE3 /* Intro */ = {
+			isa = PBXGroup;
+			children = (
+				845A864F2AA21EAC00E97933 /* Views */,
+				84D90CE92AA1FA20001E9AE3 /* IntroViewController.swift */,
+				84D90CEB2AA1FA60001E9AE3 /* IntroProtocols.swift */,
+				84D90CED2AA1FA70001E9AE3 /* IntroRouter.swift */,
+				84D90CEF2AA1FA86001E9AE3 /* IntroPresenter.swift */,
+				84D90CF12AA1FA9A001E9AE3 /* IntroInteractor.swift */,
+				84D90CF32AA1FAAC001E9AE3 /* IntroConfigurator.swift */,
+			);
+			path = Intro;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -141,8 +204,12 @@
 			buildRules = (
 			);
 			dependencies = (
+				845A864E2AA21C4F00E97933 /* PBXTargetDependency */,
 			);
 			name = UnsplashClient;
+			packageProductDependencies = (
+				845A864B2AA21C4700E97933 /* RswiftLibrary */,
+			);
 			productName = UnsplashClient;
 			productReference = 84D90CB42AA10A5D001E9AE3 /* UnsplashClient.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +282,9 @@
 				Base,
 			);
 			mainGroup = 84D90CAB2AA10A5D001E9AE3;
+			packageReferences = (
+				845A864A2AA21C4700E97933 /* XCRemoteSwiftPackageReference "R" */,
+			);
 			productRefGroup = 84D90CB52AA10A5D001E9AE3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -231,9 +301,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84D90CC42AA10A5D001E9AE3 /* LaunchScreen.storyboard in Resources */,
+				845A86582AA23C3E00E97933 /* Inter-VariableFont_slnt,wght.ttf in Resources */,
+				845A865A2AA23EBE00E97933 /* .gitignore in Resources */,
 				84D90CC12AA10A5D001E9AE3 /* Assets.xcassets in Resources */,
-				84D90CBF2AA10A5D001E9AE3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,9 +328,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84D90CBC2AA10A5D001E9AE3 /* ViewController.swift in Sources */,
+				84D90CEC2AA1FA60001E9AE3 /* IntroProtocols.swift in Sources */,
+				845A86532AA2305F00E97933 /* HeaderLable.swift in Sources */,
+				84D90CF42AA1FAAC001E9AE3 /* IntroConfigurator.swift in Sources */,
+				84D90CEA2AA1FA20001E9AE3 /* IntroViewController.swift in Sources */,
+				845A86512AA21EDB00E97933 /* BackgroundImageView.swift in Sources */,
 				84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */,
+				84D90CF02AA1FA86001E9AE3 /* IntroPresenter.swift in Sources */,
+				84D90CEE2AA1FA70001E9AE3 /* IntroRouter.swift in Sources */,
 				84D90CBA2AA10A5D001E9AE3 /* SceneDelegate.swift in Sources */,
+				84D90CF22AA1FA9A001E9AE3 /* IntroInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +361,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		845A864E2AA21C4F00E97933 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 845A864D2AA21C4F00E97933 /* RswiftGenerateInternalResources */;
+		};
 		84D90CCC2AA10A5D001E9AE3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 84D90CB32AA10A5D001E9AE3 /* UnsplashClient */;
@@ -295,25 +376,6 @@
 			targetProxy = 84D90CD52AA10A5D001E9AE3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		84D90CBD2AA10A5D001E9AE3 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				84D90CBE2AA10A5D001E9AE3 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		84D90CC22AA10A5D001E9AE3 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				84D90CC32AA10A5D001E9AE3 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		84D90CDC2AA10A5D001E9AE3 /* Debug */ = {
@@ -442,7 +504,6 @@
 				INFOPLIST_FILE = UnsplashClient/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -470,7 +531,6 @@
 				INFOPLIST_FILE = UnsplashClient/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -602,6 +662,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		845A864A2AA21C4700E97933 /* XCRemoteSwiftPackageReference "R" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mac-cain13/R.swift";
+			requirement = {
+				kind = exactVersion;
+				version = 7.2.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		845A864B2AA21C4700E97933 /* RswiftLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 845A864A2AA21C4700E97933 /* XCRemoteSwiftPackageReference "R" */;
+			productName = RswiftLibrary;
+		};
+		845A864D2AA21C4F00E97933 /* RswiftGenerateInternalResources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 845A864A2AA21C4700E97933 /* XCRemoteSwiftPackageReference "R" */;
+			productName = "plugin:RswiftGenerateInternalResources";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 84D90CAC2AA10A5D001E9AE3 /* Project object */;
 }
