@@ -11,3 +11,11 @@ protocol IntroConfiguratorProtocol: AnyObject {
 protocol IntroPresenterProtocol: AnyObject {
     func configureView()
 }
+
+protocol IntroRouterProtocol: AnyObject {
+    func showExploreScreen()
+}
+
+protocol IntroInteractorProtocol: AnyObject {
+    func isTokenAlive() -> Bool
+}

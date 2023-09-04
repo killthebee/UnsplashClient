@@ -15,6 +15,8 @@
 		845A865D2AA2415500E97933 /* UILable + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A865C2AA2415500E97933 /* UILable + ext.swift */; };
 		845A865F2AA4F3BB00E97933 /* SubHeaderLable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A865E2AA4F3BB00E97933 /* SubHeaderLable.swift */; };
 		845A86622AA4FBA300E97933 /* GenericActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A86612AA4FBA300E97933 /* GenericActionButton.swift */; };
+		845A86652AA5EE3300E97933 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A86642AA5EE3300E97933 /* ExploreViewController.swift */; };
+		845A86682AA5F9FF00E97933 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A86672AA5F9FF00E97933 /* KeyChainManager.swift */; };
 		84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */; };
 		84D90CBA2AA10A5D001E9AE3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */; };
 		84D90CC12AA10A5D001E9AE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84D90CC02AA10A5D001E9AE3 /* Assets.xcassets */; };
@@ -54,6 +56,8 @@
 		845A865C2AA2415500E97933 /* UILable + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILable + ext.swift"; sourceTree = "<group>"; };
 		845A865E2AA4F3BB00E97933 /* SubHeaderLable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubHeaderLable.swift; sourceTree = "<group>"; };
 		845A86612AA4FBA300E97933 /* GenericActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericActionButton.swift; sourceTree = "<group>"; };
+		845A86642AA5EE3300E97933 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
+		845A86672AA5F9FF00E97933 /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		84D90CB42AA10A5D001E9AE3 /* UnsplashClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +136,22 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		845A86632AA5EE1500E97933 /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				845A86642AA5EE3300E97933 /* ExploreViewController.swift */,
+			);
+			path = Explore;
+			sourceTree = "<group>";
+		};
+		845A86662AA5F9E600E97933 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				845A86672AA5F9FF00E97933 /* KeyChainManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		84868D702AA209BB001F5C9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +184,7 @@
 		84D90CB62AA10A5D001E9AE3 /* UnsplashClient */ = {
 			isa = PBXGroup;
 			children = (
+				845A86662AA5F9E600E97933 /* Services */,
 				845A86602AA4FB7F00E97933 /* Views */,
 				845A865B2AA2413F00E97933 /* Extetions */,
 				845A86542AA23BD600E97933 /* fonts */,
@@ -196,6 +217,7 @@
 		84D90CE72AA1F888001E9AE3 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				845A86632AA5EE1500E97933 /* Explore */,
 				84D90CE82AA1F8A9001E9AE3 /* Intro */,
 			);
 			path = Modules;
@@ -360,11 +382,13 @@
 				84D90CEA2AA1FA20001E9AE3 /* IntroViewController.swift in Sources */,
 				845A86512AA21EDB00E97933 /* BackgroundImageView.swift in Sources */,
 				84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */,
+				845A86682AA5F9FF00E97933 /* KeyChainManager.swift in Sources */,
 				845A865F2AA4F3BB00E97933 /* SubHeaderLable.swift in Sources */,
 				845A865D2AA2415500E97933 /* UILable + ext.swift in Sources */,
 				84D90CF02AA1FA86001E9AE3 /* IntroPresenter.swift in Sources */,
 				84D90CEE2AA1FA70001E9AE3 /* IntroRouter.swift in Sources */,
 				84D90CBA2AA10A5D001E9AE3 /* SceneDelegate.swift in Sources */,
+				845A86652AA5EE3300E97933 /* ExploreViewController.swift in Sources */,
 				84D90CF22AA1FA9A001E9AE3 /* IntroInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
