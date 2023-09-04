@@ -13,6 +13,8 @@
 		845A86582AA23C3E00E97933 /* Inter-VariableFont_slnt,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 845A86572AA23C3E00E97933 /* Inter-VariableFont_slnt,wght.ttf */; };
 		845A865A2AA23EBE00E97933 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 845A86592AA23EBE00E97933 /* .gitignore */; };
 		845A865D2AA2415500E97933 /* UILable + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A865C2AA2415500E97933 /* UILable + ext.swift */; };
+		845A865F2AA4F3BB00E97933 /* SubHeaderLable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A865E2AA4F3BB00E97933 /* SubHeaderLable.swift */; };
+		845A86622AA4FBA300E97933 /* GenericActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A86612AA4FBA300E97933 /* GenericActionButton.swift */; };
 		84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */; };
 		84D90CBA2AA10A5D001E9AE3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */; };
 		84D90CC12AA10A5D001E9AE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84D90CC02AA10A5D001E9AE3 /* Assets.xcassets */; };
@@ -50,6 +52,8 @@
 		845A86572AA23C3E00E97933 /* Inter-VariableFont_slnt,wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-VariableFont_slnt,wght.ttf"; path = "../../../../../Downloads/Inter/Inter-VariableFont_slnt,wght.ttf"; sourceTree = "<group>"; };
 		845A86592AA23EBE00E97933 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		845A865C2AA2415500E97933 /* UILable + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILable + ext.swift"; sourceTree = "<group>"; };
+		845A865E2AA4F3BB00E97933 /* SubHeaderLable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubHeaderLable.swift; sourceTree = "<group>"; };
+		845A86612AA4FBA300E97933 /* GenericActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericActionButton.swift; sourceTree = "<group>"; };
 		84D90CB42AA10A5D001E9AE3 /* UnsplashClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -99,6 +103,7 @@
 			children = (
 				845A86502AA21EDB00E97933 /* BackgroundImageView.swift */,
 				845A86522AA2305F00E97933 /* HeaderLable.swift */,
+				845A865E2AA4F3BB00E97933 /* SubHeaderLable.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -117,6 +122,14 @@
 				845A865C2AA2415500E97933 /* UILable + ext.swift */,
 			);
 			path = Extetions;
+			sourceTree = "<group>";
+		};
+		845A86602AA4FB7F00E97933 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				845A86612AA4FBA300E97933 /* GenericActionButton.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		84868D702AA209BB001F5C9D /* Frameworks */ = {
@@ -151,6 +164,7 @@
 		84D90CB62AA10A5D001E9AE3 /* UnsplashClient */ = {
 			isa = PBXGroup;
 			children = (
+				845A86602AA4FB7F00E97933 /* Views */,
 				845A865B2AA2413F00E97933 /* Extetions */,
 				845A86542AA23BD600E97933 /* fonts */,
 				84D90CE72AA1F888001E9AE3 /* Modules */,
@@ -339,12 +353,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				845A86622AA4FBA300E97933 /* GenericActionButton.swift in Sources */,
 				84D90CEC2AA1FA60001E9AE3 /* IntroProtocols.swift in Sources */,
 				845A86532AA2305F00E97933 /* HeaderLable.swift in Sources */,
 				84D90CF42AA1FAAC001E9AE3 /* IntroConfigurator.swift in Sources */,
 				84D90CEA2AA1FA20001E9AE3 /* IntroViewController.swift in Sources */,
 				845A86512AA21EDB00E97933 /* BackgroundImageView.swift in Sources */,
 				84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */,
+				845A865F2AA4F3BB00E97933 /* SubHeaderLable.swift in Sources */,
 				845A865D2AA2415500E97933 /* UILable + ext.swift in Sources */,
 				84D90CF02AA1FA86001E9AE3 /* IntroPresenter.swift in Sources */,
 				84D90CEE2AA1FA70001E9AE3 /* IntroRouter.swift in Sources */,
