@@ -8,14 +8,21 @@ class IntroInteractor: IntroInteractorProtocol {
             self.presenter = presenter
         }
     
-    func isTokenAlive() -> Bool {
+    func isTokenAlive() ->  String? {
+        // TODO: Check if it's working at all
         guard let accessToken = KeyChainService.readToken(
-            service: "access-token", account: "unsplash") else {
-            return false
+            service: "access-token",
+            account: "unsplash"
+        ) else {
+            return nil
         }
-        // TODO: 
+        // TODO:
         // pass the accessToken into the next screen and present it! Not shure how to
         // show the next screen yet tho
-        return true
+        return "placeholder"
+    }
+    
+    func handleUserLogin() {
+        LoginSession.standard.performLogin()
     }
 }

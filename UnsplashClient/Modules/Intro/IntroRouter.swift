@@ -6,7 +6,7 @@ class IntroRouter:  IntroRouterProtocol {
             self.viewController = viewController
         }
     
-    func showExploreScreen() {
+    func showExploreScreen(_ accessToken: String?) {
         // kinda not shure how to show next module yet
     }
 }

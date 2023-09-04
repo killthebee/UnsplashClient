@@ -20,6 +20,29 @@ class IntroViewController: UIViewController, IntroViewProtocol {
         presenter.configureView()
     }
     
+    // MARK: Action methods
+    func addTargetsToButtons() {
+        loginButton.addTarget(
+            self,
+            action: #selector(handleLoginClicked),
+            for: .touchDown
+        )
+        exploreButton.addTarget(
+            self,
+            action: #selector(handleExploreClicked),
+            for: .touchDown
+        )
+    }
+    
+    @objc func handleLoginClicked(_ sender: UIButton) {
+        print("login")
+        presenter.loginIsTapped()
+    }
+    
+    @objc func handleExploreClicked(_ sender: UIButton) {
+        print("explore")
+    }
+    
     // MARK: Layout
     let firstContainer = UIView()
     let secondContainer = UIView()

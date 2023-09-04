@@ -10,13 +10,18 @@ class IntroPresenter: IntroPresenterProtocol {
     }
     
     func configureView() {
-        if interactor.isTokenAlive() {
-            router.showExploreScreen()
+        if let accessToken = interactor.isTokenAlive() {
+            router.showExploreScreen(accessToken)
             return
         }
         
         view?.setBackground()
         view?.addSubviews()
         view?.disableAutoresizing()
+        view?.addTargetsToButtons()
+    }
+    
+    func loginIsTapped() {
+        interactor.handleUserLogin()
     }
 }
