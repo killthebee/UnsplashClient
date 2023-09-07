@@ -6,20 +6,20 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>TutututuClient://unsplash</string>
+			<string>tutututuclient://unsplash</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>TutututuClient://unsplash</string>
+				<string>tutututuclient://unsplash</string>
 			</array>
 		</dict>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>TutututuClient</string>
+			<string>tutututuclient</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>TutututuClient</string>
+				<string>tutututuclient</string>
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
