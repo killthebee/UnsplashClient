@@ -10,14 +10,16 @@ class AppAssembly {
 // MARK: - IntroScreen
 extension AppAssembly {
     
-//    func makeFirstScreen() -> Presentable {
-//        if let accessToken = keychainService.readToken(
-//            service: "access-token",
-//            account: "unsplash"
-//        ) {
-//            
-//        }
-//    }
+    func makeFirstScreen() -> Presentable {
+        if let accessToken = keychainService.readToken(
+            service: "access-token",
+            account: "unsplash"
+        ) {
+            return makeExploreScreen()
+        }
+        
+        return makeIntroScreen()
+    }
     
     func makeIntroScreen() -> Presentable {
         let introVC = IntroViewController()
@@ -28,7 +30,6 @@ extension AppAssembly {
 }
 
 // MARK: - ExploreScreen
-
 extension AppAssembly {
     func makeExploreScreen() -> Presentable {
         let exploreVC = ExploreViewController()

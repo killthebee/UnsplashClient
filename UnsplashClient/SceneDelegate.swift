@@ -10,7 +10,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = assembly.makeIntroScreen().toVC()
+        window.rootViewController = assembly.makeFirstScreen().toVC()
         self.window = window
         window.makeKeyAndVisible()
     }

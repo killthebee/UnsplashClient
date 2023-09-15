@@ -1,4 +1,5 @@
 import UIKit
+// TODO: animate button https://www.roryba.in/programming/swift/2018/03/24/animating-uibutton.html
 
 class IntroViewController: UIViewController, IntroViewProtocol {
     
