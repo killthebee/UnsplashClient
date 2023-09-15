@@ -1,12 +1,18 @@
 class IntroRouter:  IntroRouterProtocol {
     
-    weak var viewController: IntroViewController!
+    weak var view: Presentable!
+    private let assembly: AppAssembly
     
-    init(viewController: IntroViewController) {
-            self.viewController = viewController
-        }
+    init(assembly: AppAssembly, view: Presentable) {
+        self.assembly = assembly
+        self.view = view
+    }
     
-    func showExploreScreen(_ accessToken: String?) {
-        // kinda not shure how to show next module yet
+    func showExploreScreen() {
+        guard let exploreVC = assembly.makeExploreScreen() as? ExploreViewController
+        else { return }
+        exploreVC.modalPresentationStyle = .fullScreen
+//        ExplorePresenter.modalTransitionStyle = .
+        view.present(exploreVC)
     }
 }

@@ -6,16 +6,6 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>tutututuclient://unsplash</string>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>tutututuclient://unsplash</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
 			<string>tutututuclient</string>
 			<key>CFBundleURLSchemes</key>
 			<array>

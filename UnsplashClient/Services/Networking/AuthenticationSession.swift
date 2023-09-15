@@ -1,5 +1,5 @@
 // not so sure about file name...
-// I need to find the way to safly store keys
+// I need to find a way to safly store keys
 
 import AuthenticationServices
 
@@ -7,16 +7,39 @@ class LoginSession: NSObject {
     
     static let standard = LoginSession()
     
-    func performLogin() {
+    func performLogin(interactor: IntroInteractorProtocol) {
+        let signInSuccessHandler = { (data: Data) throws in
+            let responseObject = try JSONDecoder().decode(
+                TokenExchangeSuccessData.self,
+                from: data
+            )
+            print(responseObject)
+            interactor.keychainService.save(
+                Data(responseObject.access_token.utf8),
+                service: "access-token",
+                account: "unsplash"
+            )
+            DispatchQueue.main.async {
+                interactor.showExploreScreen()
+            }
+        }
         let authenticationSession = ASWebAuthenticationSession(
             url: makeLoginUrlWithParams(),
             callbackURLScheme: collbackScheme
         ) { [weak self] callbackURL, error in
-            guard error == nil else {
-                print(error)
-                return
+            guard
+              error == nil,
+              let callbackURL = callbackURL,
+              let queryItems = URLComponents(
+                string: callbackURL.absoluteString
+              )?.queryItems,
+              let code = queryItems.first(where: { $0.name == "code" })?.value
+            else {
+              print("An error occurred when attempting to sign in.")
+              return
             }
-            print(callbackURL)
+            Networking().exchangeCode(code: code, signInSuccessHandler)
+            
         }
         
         authenticationSession.presentationContextProvider = self
@@ -28,16 +51,16 @@ class LoginSession: NSObject {
     }
     
     func makeLoginUrlWithParams() -> URL {
-        var urlComps = URLComponents(string: Urls.login.rawValue)!
+        var urlComponents = URLComponents(string: Urls.login.rawValue)!
         let queryItems = [
           URLQueryItem(name: "client_id", value: clientId),
-          URLQueryItem(name: "redirect_uri", value: collbackScheme + "://unsplash"),
+          URLQueryItem(name: "redirect_uri", value: Urls.redirectUri.rawValue),
           URLQueryItem(name: "response_type", value: "code"),
           URLQueryItem(name: "scope", value: "public")
         ]
-        urlComps.queryItems = queryItems
+        urlComponents.queryItems = queryItems
         
-        return urlComps.url!
+        return urlComponents.url!
     }
 }
 
@@ -48,6 +71,4 @@ extension LoginSession: ASWebAuthenticationPresentationContextProviding {
         let window = windowScene?.windows.first
         return window ?? ASPresentationAnchor()
     }
-    
-    
 }

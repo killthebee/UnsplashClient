@@ -3,8 +3,7 @@ import UIKit
 class IntroViewController: UIViewController, IntroViewProtocol {
     
     // MARK: Dependencies
-    var presenter: IntroPresenterProtocol!
-    var configurator: IntroConfiguratorProtocol = IntroConfigurator()
+    var presenter: IntroPresenterProtocol?
     
     // MARK: UI Elements
     var backgroundImage: BackgroundImageView!
@@ -16,12 +15,19 @@ class IntroViewController: UIViewController, IntroViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configurator.configure(with: self)
-        presenter.configureView()
+        configureView()
+    }
+    
+    private func configureView() {
+        setBackground()
+        addSubviews()
+        disableAutoresizing()
+        addTargetsToButtons()
+        configureLayout()
     }
     
     // MARK: Action methods
-    func addTargetsToButtons() {
+    private func addTargetsToButtons() {
         loginButton.addTarget(
             self,
             action: #selector(handleLoginClicked),
@@ -36,7 +42,7 @@ class IntroViewController: UIViewController, IntroViewProtocol {
     
     @objc func handleLoginClicked(_ sender: UIButton) {
         print("login")
-        presenter.loginIsTapped()
+        presenter?.loginIsTapped()
     }
     
     @objc func handleExploreClicked(_ sender: UIButton) {
@@ -49,12 +55,12 @@ class IntroViewController: UIViewController, IntroViewProtocol {
     let thirdContainer = UIView()
     let buttonsContainer = UIView()
 
-    func setBackground() {
+    private func setBackground() {
         backgroundImage = BackgroundImageView(frame: view.bounds)
         self.view.sendSubviewToBack(backgroundImage)
     }
     
-    func addSubviews() {
+    private func addSubviews() {
         [backgroundImage, firstContainer, secondContainer, thirdContainer,
          loginButton,
         ].forEach{view.addSubview($0)}
@@ -67,18 +73,16 @@ class IntroViewController: UIViewController, IntroViewProtocol {
         ].forEach{buttonsContainer.addSubview($0)}
     }
     
-    func disableAutoresizing() {
+    private func disableAutoresizing() {
         [firstContainer, secondContainer, thirdContainer, headerLable,
-         subHeaderLable, loginButton, exploreButton, buttonsContainer,
+         subHeaderLable, loginButton, exploreButton, buttonsContainer, backgroundImage,
+         
         ].forEach{$0.translatesAutoresizingMaskIntoConstraints = false}
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    private func configureLayout() {
         backgroundImage.center = view.center
         let twoButtonsPlusSpacingHeight = Float(120)
-//        [firstContainer, thirdContainer].forEach{$0.backgroundColor = .cyan}
-//        secondContainer.backgroundColor = .yellow
         
         let constraints: [NSLayoutConstraint] = [
             firstContainer.topAnchor.constraint(equalTo: view.topAnchor),
@@ -157,8 +161,16 @@ class IntroViewController: UIViewController, IntroViewProtocol {
                 equalTo: buttonsContainer.bottomAnchor
             ),
             exploreButton.heightAnchor.constraint(equalToConstant: 56),
+            
+            backgroundImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            backgroundImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ]
         
         NSLayoutConstraint.activate(constraints)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
     }
 }

@@ -1,8 +1,4 @@
 protocol IntroViewProtocol: AnyObject {
-    func setBackground()
-    func addSubviews()
-    func disableAutoresizing()
-    func addTargetsToButtons()
 }
 
 protocol IntroConfiguratorProtocol: AnyObject {
@@ -10,15 +6,16 @@ protocol IntroConfiguratorProtocol: AnyObject {
 }
 
 protocol IntroPresenterProtocol: AnyObject {
-    func configureView()
     func loginIsTapped()
+    func presentExploreScreen()
 }
 
 protocol IntroRouterProtocol: AnyObject {
-    func showExploreScreen(_ accessToken: String?)
+    func showExploreScreen()
 }
 
 protocol IntroInteractorProtocol: AnyObject {
-    func isTokenAlive() -> String?
     func handleUserLogin()
+    var keychainService: KeyChainManagerProtocol { get }
+    func showExploreScreen()
 }
