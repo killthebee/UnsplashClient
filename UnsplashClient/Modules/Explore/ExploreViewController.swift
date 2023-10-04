@@ -1,10 +1,20 @@
 import UIKit
 
+struct photoModel {
+    let id: String
+    let title: String?
+    let image: UIImage
+}
+
 class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     // MARK: - Data
     var presenter: ExplorePresenterProtocol?
-//    var 
+    var collections: [photoModel] = [
+        photoModel(id: "1", title: "Travel", image: UIImage(named: "TravelImage")!),
+        photoModel(id: "2", title: "Pizza", image: UIImage(named: "PizzaImage")!),
+        photoModel(id: "3", title: "Sea", image: UIImage(named: "SeaImage")!)
+    ]
     
     // MARK: - UI Elements
     let headerImage: BackgroundImageView = {
