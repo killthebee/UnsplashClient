@@ -1,5 +1,6 @@
 import UIKit
-// TODO: animate button https://www.roryba.in/programming/swift/2018/03/24/animating-uibutton.html
+// TODO: animate buttons https://www.roryba.in/programming/swift/2018/03/24/animating-uibutton.html
+// TODO: Explore w0 authintecation button
 
 class IntroViewController: UIViewController, IntroViewProtocol {
     

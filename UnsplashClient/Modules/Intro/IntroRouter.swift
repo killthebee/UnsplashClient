@@ -1,6 +1,6 @@
 class IntroRouter:  IntroRouterProtocol {
     
-    weak var view: Presentable!
+    weak var view: Presentable?
     private let assembly: AppAssembly
     
     init(assembly: AppAssembly, view: Presentable) {
@@ -13,6 +13,6 @@ class IntroRouter:  IntroRouterProtocol {
         else { return }
         exploreVC.modalPresentationStyle = .fullScreen
 //        ExplorePresenter.modalTransitionStyle = .
-        view.present(exploreVC)
+        view?.present(exploreVC)
     }
 }

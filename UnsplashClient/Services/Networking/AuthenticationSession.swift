@@ -26,7 +26,7 @@ class LoginSession: NSObject {
         let authenticationSession = ASWebAuthenticationSession(
             url: makeLoginUrlWithParams(),
             callbackURLScheme: collbackScheme
-        ) { [weak self] callbackURL, error in
+        ) { callbackURL, error in
             guard
               error == nil,
               let callbackURL = callbackURL,

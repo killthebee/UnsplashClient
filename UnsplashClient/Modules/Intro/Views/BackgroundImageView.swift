@@ -2,12 +2,15 @@ import UIKit
 
 class BackgroundImageView: UIImageView {
     
-    public override init(frame: CGRect = .zero) {
+    public init(
+        frame: CGRect = .zero,
+        _ imageName: String = "IntroBackgoundImage"
+    ) {
         super.init(frame: frame)
         
         contentMode = .scaleAspectFit
         clipsToBounds = true
-        image = UIImage(named: "IntroBackgoundImage")
+        image = UIImage(named: imageName)
     }
 
     public required init?(coder: NSCoder) {

@@ -8,9 +8,14 @@ class ExploreConfigurator: ExploreConfiguratorProtocol {
     
     func configure(with viewController: ExploreViewController) {
         let presenter = ExplorePresenter(view: viewController)
+        let router = ExploreRouter(assembly: assembly, view: viewController)
+        let interactor = ExploreInteractor(
+            presenter: presenter,
+            keychainService: assembly.keychainService
+        )
         
         viewController.presenter = presenter
-        print("tuc")
-        print(assembly.keychainService.readToken(service: "access-token", account: "unsplash"))
+        presenter.interactor = interactor
+        presenter.router = router
     }
 }

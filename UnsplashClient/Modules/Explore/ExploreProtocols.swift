@@ -1,5 +1,4 @@
 protocol ExploreViewProtocol: AnyObject {
-    func setUpContainer()
 }
 
 protocol ExploreConfiguratorProtocol: AnyObject {
@@ -7,7 +6,14 @@ protocol ExploreConfiguratorProtocol: AnyObject {
 }
 
 protocol ExplorePresenterProtocol: AnyObject {
-    func configureView()
+}
+
+protocol ExploreRouterProtocol: AnyObject {
+    
+}
+
+protocol ExploreInteractorProtocol: AnyObject {
+    
 }
 
 
