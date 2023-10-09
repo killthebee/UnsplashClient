@@ -1,8 +1,14 @@
 import UIKit
 
+// Weight of container lable is set as bold, despite what it is set
+// 700 in figma, coz 700 fills way too much
+
+//TODO: I need some mechanism that will download new images in newTable if
+//TODO: scrolling past some index
 struct photoModel {
     let id: String
     let title: String?
+    // mb make image optional?
     let image: UIImage
 }
 
@@ -15,6 +21,14 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         photoModel(id: "2", title: "Pizza", image: UIImage(named: "PizzaImage")!),
         photoModel(id: "3", title: "Sea", image: UIImage(named: "SeaImage")!)
     ]]
+    
+    private var newImages: [photoModel] = [
+        photoModel(id: "4", title: nil, image: UIImage(named: "New1")!),
+        photoModel(id: "5", title: nil,  image: UIImage(named: "New2")!),
+        photoModel(id: "6", title: nil,  image: UIImage(named: "New3")!),
+    ]
+    
+    private let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
     
     // MARK: - UI Elements
     let headerImage: BackgroundImageView = {
@@ -48,7 +62,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         let lable = UILabel()
         lable.text = "Explore"
         lable.textColor = .black
-//        lable.textAlignment = .center
         lable.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         
         return lable
@@ -66,6 +79,30 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         return table
     }()
     
+    private let newLable: UILabel = {
+        let lable = UILabel()
+        lable.text = "New"
+        lable.textColor = .black
+        lable.font = UIFont.systemFont(
+            ofSize: 22,
+            weight: .bold
+        )
+        
+        return lable
+    }()
+    
+    private let newTable: UITableView = {
+        let table = UITableView()
+        table.register(
+            NewTableCell.self,
+            forCellReuseIdentifier: NewTableCell.identifier
+        )
+//        table.estimatedRowHeight = UITableView.automaticDimension
+        table.bounces = false
+        
+        return table
+    }()
+    
     // MARK: - VC setup
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +114,9 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     // MARK: - Layout
     private func configureView() {
         view.backgroundColor = .white
+        newImageTableDelegateAndDataSource.images = newImages
+        newTable.dataSource = newImageTableDelegateAndDataSource
+        newTable.delegate = newImageTableDelegateAndDataSource
         disableAutoresizing()
         addSubviews()
         configureLayout()
@@ -103,17 +143,18 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         ].forEach{headerContainer.addSubview($0)}
         [exploreLable, collectionsCarouselTableView
         ].forEach{exploreContainer.addSubview($0)}
+        [newLable, newTable
+        ].forEach{newContainer.addSubview($0)}
     }
     
     private func disableAutoresizing() {
         [headerContainer, headerImage, headerLable, credsHeaderLable,
          exploreContainer, exploreLable, collectionsCarouselTableView,
-         newContainer,
+         newContainer, newLable, newTable
         ].forEach{$0.translatesAutoresizingMaskIntoConstraints = false}
     }
     
     private func configureLayout() {
-        newContainer.backgroundColor = .cyan
         // roughly
         let caroseulHeightPlusLableHightPlusGaps: CGFloat = 188
         let constraints: [NSLayoutConstraint] = [
@@ -175,18 +216,42 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             newContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             newContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             newContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            newLable.topAnchor.constraint(
+                equalTo: newContainer.topAnchor, constant: 16
+            ),
+            newLable.leadingAnchor.constraint(
+                equalTo: newContainer.leadingAnchor, constant: 16
+            ),
+            newLable.trailingAnchor.constraint(
+                equalTo: newContainer.trailingAnchor
+            ),
+            
+            newTable.topAnchor.constraint(
+                equalTo: newLable.bottomAnchor, constant: 16),
+            newTable.leadingAnchor.constraint(
+                equalTo: newContainer.leadingAnchor
+            ),
+            newTable.trailingAnchor.constraint(
+                equalTo: newContainer.trailingAnchor
+            ),
+            newTable.bottomAnchor.constraint(
+                equalTo: newContainer.bottomAnchor
+            ),
         ]
         
         NSLayoutConstraint.activate(constraints)
     }
     
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        newTable.isScrollEnabled = newTable.contentSize.height > newTable.frame.size.height
+    }
 }
 
 
 extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return collections.count
     }
@@ -206,5 +271,36 @@ extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.frame.size.height
+    }
+}
+
+class newTableDelegateAndDataSource: NSObject {
+    
+    var images: [photoModel] = []
+}
+
+extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return images.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let photo = images[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: NewTableCell.identifier,
+            for: indexPath
+        ) as? NewTableCell else {
+            fatalError()
+        }
+        cell.configure(with: photo)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let currentImage = images[indexPath.row]
+        let imageCrop = currentImage.image.getCropRation()
+        return tableView.frame.width / imageCrop
     }
 }

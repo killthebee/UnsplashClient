@@ -31,6 +31,8 @@
 		84A1D3652ACD9B4F00A66327 /* APPModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D3642ACD9B4F00A66327 /* APPModels.swift */; };
 		84A1D3672ACF0D9100A66327 /* CarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D3662ACF0D9100A66327 /* CarouselCell.swift */; };
 		84A1D3692ACF0E5D00A66327 /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D3682ACF0E5D00A66327 /* CollectionCell.swift */; };
+		84A1D36B2AD4368900A66327 /* NewTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D36A2AD4368900A66327 /* NewTableCell.swift */; };
+		84A1D36D2AD4498F00A66327 /* UIImage + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D36C2AD4498F00A66327 /* UIImage + ext.swift */; };
 		84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */; };
 		84D90CBA2AA10A5D001E9AE3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */; };
 		84D90CC12AA10A5D001E9AE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84D90CC02AA10A5D001E9AE3 /* Assets.xcassets */; };
@@ -86,6 +88,8 @@
 		84A1D3642ACD9B4F00A66327 /* APPModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APPModels.swift; sourceTree = "<group>"; };
 		84A1D3662ACF0D9100A66327 /* CarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCell.swift; sourceTree = "<group>"; };
 		84A1D3682ACF0E5D00A66327 /* CollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
+		84A1D36A2AD4368900A66327 /* NewTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTableCell.swift; sourceTree = "<group>"; };
+		84A1D36C2AD4498F00A66327 /* UIImage + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + ext.swift"; sourceTree = "<group>"; };
 		84D90CB42AA10A5D001E9AE3 /* UnsplashClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -153,6 +157,7 @@
 			children = (
 				845A865C2AA2415500E97933 /* UILable + ext.swift */,
 				845A86762AAF5A2400E97933 /* UIViewController + ext.swift */,
+				84A1D36C2AD4498F00A66327 /* UIImage + ext.swift */,
 			);
 			path = Extetions;
 			sourceTree = "<group>";
@@ -221,6 +226,7 @@
 			children = (
 				84A1D3662ACF0D9100A66327 /* CarouselCell.swift */,
 				84A1D3682ACF0E5D00A66327 /* CollectionCell.swift */,
+				84A1D36A2AD4368900A66327 /* NewTableCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -468,12 +474,14 @@
 				845A866B2AA62F6800E97933 /* Constants.swift in Sources */,
 				845A86682AA5F9FF00E97933 /* KeyChainManager.swift in Sources */,
 				845A865F2AA4F3BB00E97933 /* SubHeaderLable.swift in Sources */,
+				84A1D36B2AD4368900A66327 /* NewTableCell.swift in Sources */,
 				845A86752AAF587600E97933 /* AppAssembly.swift in Sources */,
 				845A865D2AA2415500E97933 /* UILable + ext.swift in Sources */,
 				84A1D3652ACD9B4F00A66327 /* APPModels.swift in Sources */,
 				845A86712AAA110800E97933 /* ExploreConfigurator.swift in Sources */,
 				84D90CF02AA1FA86001E9AE3 /* IntroPresenter.swift in Sources */,
 				84D90CEE2AA1FA70001E9AE3 /* IntroRouter.swift in Sources */,
+				84A1D36D2AD4498F00A66327 /* UIImage + ext.swift in Sources */,
 				845A86732AAA139100E97933 /* ExplorePresenter.swift in Sources */,
 				84D90CBA2AA10A5D001E9AE3 /* SceneDelegate.swift in Sources */,
 				845A86652AA5EE3300E97933 /* ExploreViewController.swift in Sources */,
