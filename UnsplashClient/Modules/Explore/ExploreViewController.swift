@@ -10,11 +10,11 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     // MARK: - Data
     var presenter: ExplorePresenterProtocol?
-    var collections: [photoModel] = [
+    private var collections: [[photoModel]] = [[
         photoModel(id: "1", title: "Travel", image: UIImage(named: "TravelImage")!),
         photoModel(id: "2", title: "Pizza", image: UIImage(named: "PizzaImage")!),
         photoModel(id: "3", title: "Sea", image: UIImage(named: "SeaImage")!)
-    ]
+    ]]
     
     // MARK: - UI Elements
     let headerImage: BackgroundImageView = {
@@ -54,17 +54,29 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         return lable
     }()
     
+    let collectionsCarouselTableView: UITableView = {
+        let table = UITableView()
+        table.register(
+            CarouselCell.self,
+            forCellReuseIdentifier: CarouselCell.identifier
+        )
+        table.separatorStyle = .none
+        table.alwaysBounceVertical = false
+        
+        return table
+    }()
+    
     // MARK: - VC setup
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .red
-        exploreContainer.backgroundColor = .yellow
+//        view.backgroundColor = .red
         configureView()
     }
     
     // MARK: - Layout
     private func configureView() {
+        view.backgroundColor = .white
         disableAutoresizing()
         addSubviews()
         configureLayout()
@@ -73,6 +85,8 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     private func configureSubviews() {
         setUpFirstContainer()
+        collectionsCarouselTableView.delegate = self
+        collectionsCarouselTableView.dataSource = self
     }
     
     private var headerContainer = UIView()
@@ -86,13 +100,13 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         ].forEach{view.addSubview($0)}
         [headerImage, headerLable, credsHeaderLable
         ].forEach{headerContainer.addSubview($0)}
-        [exploreLable,
+        [exploreLable, collectionsCarouselTableView
         ].forEach{exploreContainer.addSubview($0)}
     }
     
     private func disableAutoresizing() {
         [headerContainer, headerImage, headerLable, credsHeaderLable,
-         exploreContainer, exploreLable
+         exploreContainer, exploreLable, collectionsCarouselTableView,
         ].forEach{$0.translatesAutoresizingMaskIntoConstraints = false}
     }
     
@@ -122,11 +136,16 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             ),
             exploreContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             exploreContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            exploreContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3),
+            exploreContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.23),
             
             exploreLable.topAnchor.constraint(equalTo: exploreContainer.topAnchor, constant: 16),
             exploreLable.leadingAnchor.constraint(equalTo: exploreContainer.leadingAnchor, constant: 16),
             exploreLable.trailingAnchor.constraint(equalTo: exploreContainer.trailingAnchor),
+            
+            collectionsCarouselTableView.topAnchor.constraint(equalTo: exploreLable.bottomAnchor),
+            collectionsCarouselTableView.leadingAnchor.constraint(equalTo: exploreContainer.leadingAnchor, constant: 16),
+            collectionsCarouselTableView.trailingAnchor.constraint(equalTo: exploreContainer.trailingAnchor),
+            collectionsCarouselTableView.bottomAnchor.constraint(equalTo: exploreContainer.bottomAnchor),
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -135,4 +154,28 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
 //    override func viewDidLayoutSubviews() {
 //        super.viewDidLayoutSubviews()
 //    }
+}
+
+
+extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return collections.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let collections = collections[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CarouselCell.identifier,
+            for: indexPath
+        ) as? CarouselCell else {
+            fatalError()
+        }
+        cell.configure(with: collections)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableView.frame.size.height
+    }
 }
