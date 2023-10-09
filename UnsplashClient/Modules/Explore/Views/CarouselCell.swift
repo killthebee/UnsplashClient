@@ -8,7 +8,7 @@ final class CarouselCell: UITableViewCell {
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+//        layout.sectionInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(
             CollectionCell.self,
@@ -69,6 +69,6 @@ extension CarouselCell {
 
 extension CarouselCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 325, height: 130)
+        return CGSize(width: 319, height: 130)
     }
 }

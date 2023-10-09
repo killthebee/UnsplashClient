@@ -91,12 +91,13 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     private var headerContainer = UIView()
     private var exploreContainer = UIView()
+    private var newContainer = UIView()
     
     private func setUpFirstContainer() {
     }
     
     private func addSubviews() {
-        [headerContainer, exploreContainer
+        [headerContainer, exploreContainer, newContainer
         ].forEach{view.addSubview($0)}
         [headerImage, headerLable, credsHeaderLable
         ].forEach{headerContainer.addSubview($0)}
@@ -107,10 +108,14 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     private func disableAutoresizing() {
         [headerContainer, headerImage, headerLable, credsHeaderLable,
          exploreContainer, exploreLable, collectionsCarouselTableView,
+         newContainer,
         ].forEach{$0.translatesAutoresizingMaskIntoConstraints = false}
     }
     
     private func configureLayout() {
+        newContainer.backgroundColor = .cyan
+        // roughly
+        let caroseulHeightPlusLableHightPlusGaps: CGFloat = 188
         let constraints: [NSLayoutConstraint] = [
             headerContainer.topAnchor.constraint(equalTo: view.topAnchor),
             headerContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3),
@@ -134,18 +139,42 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             exploreContainer.topAnchor.constraint(
                 equalTo: headerContainer.bottomAnchor
             ),
-            exploreContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            exploreContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            exploreContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.23),
+            exploreContainer.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor
+            ),
+            exploreContainer.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            ),
+            exploreContainer.heightAnchor.constraint(
+                equalToConstant: caroseulHeightPlusLableHightPlusGaps
+            ),
             
-            exploreLable.topAnchor.constraint(equalTo: exploreContainer.topAnchor, constant: 16),
-            exploreLable.leadingAnchor.constraint(equalTo: exploreContainer.leadingAnchor, constant: 16),
-            exploreLable.trailingAnchor.constraint(equalTo: exploreContainer.trailingAnchor),
+            collectionsCarouselTableView.heightAnchor.constraint(equalToConstant: 130),
+            collectionsCarouselTableView.leadingAnchor.constraint(
+                equalTo: exploreContainer.leadingAnchor, constant: 16
+            ),
+            collectionsCarouselTableView.trailingAnchor.constraint(
+                equalTo: exploreContainer.trailingAnchor
+            ),
+            collectionsCarouselTableView.bottomAnchor.constraint(
+                equalTo: exploreContainer.bottomAnchor
+            ),
             
-            collectionsCarouselTableView.topAnchor.constraint(equalTo: exploreLable.bottomAnchor),
-            collectionsCarouselTableView.leadingAnchor.constraint(equalTo: exploreContainer.leadingAnchor, constant: 16),
-            collectionsCarouselTableView.trailingAnchor.constraint(equalTo: exploreContainer.trailingAnchor),
-            collectionsCarouselTableView.bottomAnchor.constraint(equalTo: exploreContainer.bottomAnchor),
+            exploreLable.bottomAnchor.constraint(
+                equalTo: collectionsCarouselTableView.topAnchor, constant: -16
+            ),
+            exploreLable.leadingAnchor.constraint(
+                equalTo: exploreContainer.leadingAnchor, constant: 16
+            ),
+            exploreLable.trailingAnchor.constraint(
+                equalTo: exploreContainer.trailingAnchor
+            ),
+            
+            newContainer.topAnchor.constraint(
+                equalTo: exploreContainer.bottomAnchor),
+            newContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            newContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            newContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ]
         
         NSLayoutConstraint.activate(constraints)

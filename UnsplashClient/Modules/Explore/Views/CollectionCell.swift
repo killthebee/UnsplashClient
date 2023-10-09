@@ -47,7 +47,7 @@ final class CollectionCell: UICollectionViewCell {
         )
         
         
-        contentView.layer.cornerRadius = 15
+        contentView.layer.cornerRadius = 16
         contentView.layer.masksToBounds = true
     }
     
