@@ -1,10 +1,8 @@
 import UIKit
 
 // Weight of container lable is set as bold, despite what it is set
-// 700 in figma, coz 700 fills way too much
+// 700 in figma, coz 700 is seems too much
 
-//TODO: I need some mechanism that will download new images in newTable if
-//TODO: scrolling past some index
 struct photoModel {
     let id: String
     let title: String?
@@ -121,6 +119,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         addSubviews()
         configureLayout()
         configureSubviews()
+        presenter?.startHeaderImageTask()
     }
     
     private func configureSubviews() {
@@ -241,6 +240,13 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         ]
         
         NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setNewHeaderImage(imageData: Data, _ photographerName: String) {
+        let newImage = UIImage(data: imageData)
+        // TODO: check for memory leaks
+        headerImage.image = newImage
+        credsHeaderLable.text = "photo by \(photographerName)"
     }
     
     override func viewDidLayoutSubviews() {

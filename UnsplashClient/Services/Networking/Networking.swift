@@ -2,18 +2,33 @@ import Foundation
 
 struct Networking {
     
-    private func makeUrl(_ code: String) -> URL? {
-        let queryItems = [
-          URLQueryItem(name: "client_id", value: clientId),
-          URLQueryItem(name: "client_secret", value: clientSecret),
-          URLQueryItem(name: "redirect_uri", value: Urls.redirectUri.rawValue),
-          URLQueryItem(name: "code", value: code),
-          URLQueryItem(name: "grant_type", value: "authorization_code")
-        ]
+    enum urlTarget {
+        case codeExchange
+        case randomPhoto
+    }
+    
+    private func makeUrl(_ code: String = "", target: urlTarget) -> URL? {
         var urlComponents = URLComponents()
+        let queryItems: [URLQueryItem]!
+        switch target {
+        case .codeExchange:
+            queryItems = [
+              URLQueryItem(name: "client_id", value: clientId),
+              URLQueryItem(name: "client_secret", value: clientSecret),
+              URLQueryItem(name: "redirect_uri", value: Urls.redirectUri.rawValue),
+              URLQueryItem(name: "code", value: code),
+              URLQueryItem(name: "grant_type", value: "authorization_code")
+            ]
+            urlComponents.host = Urls.unsplashHost.rawValue
+            urlComponents.path = Urls.tokenExchangePath.rawValue
+        case .randomPhoto:
+            queryItems = [
+              URLQueryItem(name: "orientation", value: "landscape"),
+            ]
+            urlComponents.host = Urls.unslpashApiHost.rawValue
+            urlComponents.path = Urls.randomPhotoPath.rawValue
+        }
         urlComponents.scheme = HTTPScheme.secure.rawValue
-        urlComponents.host = Urls.unsplashHost.rawValue
-        urlComponents.path = "/oauth/token"
         urlComponents.queryItems = queryItems
         
         return urlComponents.url
@@ -46,6 +61,7 @@ struct Networking {
             guard (200 ... 299) ~= response.statusCode else {
                 do {
                     try failureHandler(data)
+                    print(String(data: data, encoding: .utf8))
                 } catch {
                     print(error)
 
@@ -77,11 +93,25 @@ struct Networking {
         code: String,
         _ successHandler: @escaping (Data) throws -> ()
     ) {
-        guard let url = makeUrl(code) else {
+        guard let url = makeUrl(code, target: .codeExchange) else {
             return
         }
         
         let request = setupRequest(url, .post)
+        performRequest(request, successHandler)
+    }
+    
+    func getRandomPhoto(
+        _ accessToken: String,
+        _ successHandler: @escaping (Data) throws -> ()
+    ) {
+        //Optional("{\"errors\":[\"OAuth error: The access token is invalid\"]}")
+        // TODO: make a faulire handler to hadle ^
+        guard let url = makeUrl(target: .randomPhoto) else {
+            return
+        }
+        var request = setupRequest(url, .get)
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         performRequest(request, successHandler)
     }
 }

@@ -1,11 +1,16 @@
 enum Urls: String {
     case login = "https://unsplash.com/oauth/authorize"
     case unsplashHost = "unsplash.com"
+    case unslpashApiHost = "api.unsplash.com"
     case redirectUri = "tutututuclient://"
+    case randomPhoto = "https://unsplash.com/photos/random"
+    case tokenExchangePath = "/oauth/token"
+    case randomPhotoPath = "/photos/random"
 }
 
 enum HTTPMethod: String {
     case post = "POST"
+    case get = "GET"
 }
 
 enum HTTPScheme: String {

@@ -6,18 +6,23 @@ struct TokenExchangeSuccessData: Decodable {
     let created_at: Int
 }
 
+struct UnsplashUser: Decodable {
+    let name: String
+}
+
 struct PhotoLinks: Decodable {
     let download: String
 }
 
 struct PhotoUrls: Decodable {
-    let row: String
+    let raw: String
 }
 
 struct UnsplashPhoto: Decodable {
     let id: String
     let links: PhotoLinks
     let urls: PhotoUrls
+    let user: UnsplashUser
 }
 
 struct UnsplashColletion: Decodable {
