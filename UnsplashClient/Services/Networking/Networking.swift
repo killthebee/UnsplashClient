@@ -5,6 +5,7 @@ struct Networking {
     enum urlTarget {
         case codeExchange
         case randomPhoto
+        case collectionList
     }
     
     private func makeUrl(_ code: String = "", target: urlTarget) -> URL? {
@@ -27,6 +28,12 @@ struct Networking {
             ]
             urlComponents.host = Urls.unslpashApiHost.rawValue
             urlComponents.path = Urls.randomPhotoPath.rawValue
+        case .collectionList:
+            queryItems = [
+              URLQueryItem(name: "per_page", value: "6"),
+            ]
+            urlComponents.host = Urls.unslpashApiHost.rawValue
+            urlComponents.path = Urls.collectionList.rawValue
         }
         urlComponents.scheme = HTTPScheme.secure.rawValue
         urlComponents.queryItems = queryItems
@@ -36,10 +43,14 @@ struct Networking {
     
     func setupRequest(
         _ url: URL,
-        _ method: HTTPMethod
+        _ method: HTTPMethod,
+        _ accessToken: String? = nil
     ) -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        if let accessToken = accessToken {
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        }
         
         return request
     }
@@ -110,8 +121,18 @@ struct Networking {
         guard let url = makeUrl(target: .randomPhoto) else {
             return
         }
-        var request = setupRequest(url, .get)
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        var request = setupRequest(url, .get, accessToken)
+        performRequest(request, successHandler)
+    }
+    
+    func getCollections(
+        _ accessToken: String,
+        _ successHandler: @escaping (Data) throws -> ()
+    ) {
+        guard let url = makeUrl(target: .collectionList) else {
+            return
+        }
+        var request = setupRequest(url, .get, accessToken)
         performRequest(request, successHandler)
     }
 }

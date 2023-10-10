@@ -44,4 +44,24 @@ class ExploreInteractor: ExploreInteractorProtocol {
         }
         headerImageTaskTimer?.fire()
     }
+    
+    // TODO: headerImageTaskTimer?.invalidate() !!! after implementing next module
+    
+    func getCollections() {
+        guard let accessToken = self.keychainService.readToken(
+            service: "access-token",
+            account: "unsplash"
+        ) else { return }
+        
+        let successHandler = { (data: Data) throws in
+            let responseObject = try JSONDecoder().decode(
+                [UnsplashColletion].self,
+                from: data
+            )
+            print("huh?")
+            for collection in responseObject { print(collection.title) }
+        }
+        
+        Networking().getCollections(accessToken, successHandler)
+    }
 }

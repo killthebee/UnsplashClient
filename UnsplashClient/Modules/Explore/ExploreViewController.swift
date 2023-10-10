@@ -119,6 +119,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         addSubviews()
         configureLayout()
         configureSubviews()
+        presenter?.getCollections()
         presenter?.startHeaderImageTask()
     }
     
@@ -254,7 +255,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         newTable.isScrollEnabled = newTable.contentSize.height > newTable.frame.size.height
     }
 }
-
 
 extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
     

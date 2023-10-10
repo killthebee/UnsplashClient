@@ -11,6 +11,7 @@ protocol ExploreConfiguratorProtocol: AnyObject {
 protocol ExplorePresenterProtocol: AnyObject {
     func startHeaderImageTask()
     func setNewHeaderImage(imageData: Data, _ photographerName: String)
+    func getCollections()
 }
 
 protocol ExploreRouterProtocol: AnyObject {
@@ -19,6 +20,7 @@ protocol ExploreRouterProtocol: AnyObject {
 
 protocol ExploreInteractorProtocol: AnyObject {
     func startHeaderImageTask()
+    func getCollections()
 }
 
 

@@ -16,4 +16,8 @@ class ExplorePresenter: ExplorePresenterProtocol {
     func setNewHeaderImage(imageData: Data, _ photographerName: String) {
         view?.setNewHeaderImage(imageData: imageData, photographerName)
     }
+    
+    func getCollections() {
+        interactor?.getCollections()
+    }
 }

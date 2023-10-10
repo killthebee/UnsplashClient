@@ -6,6 +6,7 @@ enum Urls: String {
     case randomPhoto = "https://unsplash.com/photos/random"
     case tokenExchangePath = "/oauth/token"
     case randomPhotoPath = "/photos/random"
+    case collectionList = "/collections"
 }
 
 enum HTTPMethod: String {

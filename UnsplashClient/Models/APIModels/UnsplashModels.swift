@@ -26,7 +26,7 @@ struct UnsplashPhoto: Decodable {
 }
 
 struct UnsplashColletion: Decodable {
-    let id: Int
+    let id: String
     let title: String
     let cover_photo: UnsplashPhoto
 }
