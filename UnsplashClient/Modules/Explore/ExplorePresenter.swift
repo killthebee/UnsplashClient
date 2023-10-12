@@ -20,4 +20,8 @@ class ExplorePresenter: ExplorePresenterProtocol {
     func getCollections() {
         interactor?.getCollections()
     }
+    
+    func setColletions(with collectionsData: [photoModel]) {
+        view?.setCollections(with: [collectionsData])
+    }
 }

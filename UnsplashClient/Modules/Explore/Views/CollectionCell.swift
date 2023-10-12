@@ -53,6 +53,6 @@ final class CollectionCell: UICollectionViewCell {
     
     func configure(with collectionData: photoModel) {
         collectionNameLable.text = collectionData.title
-        collectionCoverPhoto.image = collectionData.image
+        collectionCoverPhoto.image = UIImage(data: collectionData.image)
     }
 }

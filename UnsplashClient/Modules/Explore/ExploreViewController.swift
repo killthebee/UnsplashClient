@@ -7,23 +7,19 @@ struct photoModel {
     let id: String
     let title: String?
     // mb make image optional?
-    let image: UIImage
+    let image: Data
 }
 
 class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     // MARK: - Data
     var presenter: ExplorePresenterProtocol?
-    private var collections: [[photoModel]] = [[
-        photoModel(id: "1", title: "Travel", image: UIImage(named: "TravelImage")!),
-        photoModel(id: "2", title: "Pizza", image: UIImage(named: "PizzaImage")!),
-        photoModel(id: "3", title: "Sea", image: UIImage(named: "SeaImage")!)
-    ]]
+    private var collections: [[photoModel]] = []
     
     private var newImages: [photoModel] = [
-        photoModel(id: "4", title: nil, image: UIImage(named: "New1")!),
-        photoModel(id: "5", title: nil,  image: UIImage(named: "New2")!),
-        photoModel(id: "6", title: nil,  image: UIImage(named: "New3")!),
+//        photoModel(id: "4", title: nil, image: UIImage(named: "New1")!),
+//        photoModel(id: "5", title: nil,  image: UIImage(named: "New2")!),
+//        photoModel(id: "6", title: nil,  image: UIImage(named: "New3")!),
     ]
     
     private let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
@@ -250,6 +246,11 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         credsHeaderLable.text = "photo by \(photographerName)"
     }
     
+    func setCollections(with collectionsData: [[photoModel]]) {
+        collections = collectionsData
+        collectionsCarouselTableView.reloadData()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         newTable.isScrollEnabled = newTable.contentSize.height > newTable.frame.size.height
@@ -306,7 +307,7 @@ extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let currentImage = images[indexPath.row]
-        let imageCrop = currentImage.image.getCropRation()
+        let imageCrop = UIImage(data: currentImage.image)!.getCropRation()
         return tableView.frame.width / imageCrop
     }
 }

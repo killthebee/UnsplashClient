@@ -28,7 +28,7 @@ class NewTableCell: UITableViewCell {
     }
     
     func configure(with collectionData: photoModel) {
-        NewCoverPhoto.image = collectionData.image
+        NewCoverPhoto.image = UIImage(data: collectionData.image)
         NewCoverPhoto.frame = contentView.bounds
     }
 }

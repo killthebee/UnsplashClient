@@ -2,6 +2,7 @@ import Foundation
 
 protocol ExploreViewProtocol: AnyObject {
     func setNewHeaderImage(imageData: Data, _ photographerName: String)
+    func setCollections(with collectionsData: [[photoModel]])
 }
 
 protocol ExploreConfiguratorProtocol: AnyObject {
@@ -12,6 +13,7 @@ protocol ExplorePresenterProtocol: AnyObject {
     func startHeaderImageTask()
     func setNewHeaderImage(imageData: Data, _ photographerName: String)
     func getCollections()
+    func setColletions(with collectionsData: [photoModel]) 
 }
 
 protocol ExploreRouterProtocol: AnyObject {

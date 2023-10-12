@@ -58,8 +58,21 @@ class ExploreInteractor: ExploreInteractorProtocol {
                 [UnsplashColletion].self,
                 from: data
             )
-            print("huh?")
-            for collection in responseObject { print(collection.title) }
+            var collectionsData: [photoModel] = []
+            for collection in responseObject {
+                let coverImageUrl = URL(string: collection.cover_photo.urls.raw)!
+                if let data = try? Data(contentsOf: coverImageUrl) {
+                    // here, in interactor, i have etl and downloading image data in same method
+                    collectionsData.append(photoModel(
+                        id: collection.id,
+                        title: collection.title,
+                        image: data
+                    ))
+                }
+                DispatchQueue.main.async {
+                    self.presenter?.setColletions(with: collectionsData)
+                }
+            }
         }
         
         Networking().getCollections(accessToken, successHandler)
