@@ -60,7 +60,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
             )
             var collectionsData: [photoModel] = []
             for collection in responseObject {
-                let coverImageUrl = URL(string: collection.cover_photo.urls.raw)!
+                let coverImageUrl = URL(string: collection.cover_photo.urls.thumb)!
                 if let data = try? Data(contentsOf: coverImageUrl) {
                     // here, in interactor, i have etl and downloading image data in same method
                     collectionsData.append(photoModel(
