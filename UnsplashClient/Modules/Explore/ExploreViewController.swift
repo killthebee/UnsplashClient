@@ -2,6 +2,7 @@ import UIKit
 
 // Weight of container lable is set as bold, despite what it is set
 // 700 in figma, coz 700 is seems too much
+// Photo downloading taking quite some time tbh, mb move it into assembly?
 
 struct photoModel {
     let id: String
@@ -92,7 +93,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             forCellReuseIdentifier: NewTableCell.identifier
         )
 //        table.estimatedRowHeight = UITableView.automaticDimension
-        table.bounces = false
+//        table.bounces = false
         
         return table
     }()
@@ -108,7 +109,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     // MARK: - Layout
     private func configureView() {
         view.backgroundColor = .white
-        newImageTableDelegateAndDataSource.images = newImages
+//        newImageTableDelegateAndDataSource.images = newImages
         newTable.dataSource = newImageTableDelegateAndDataSource
         newTable.delegate = newImageTableDelegateAndDataSource
         disableAutoresizing()
@@ -117,6 +118,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         configureSubviews()
         presenter?.getCollections()
         presenter?.startHeaderImageTask()
+        getImages(page: newImageTableDelegateAndDataSource.pageCount)
     }
     
     private func configureSubviews() {
@@ -251,6 +253,22 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         collectionsCarouselTableView.reloadData()
     }
     
+    func getImages(page pageNum: Int) {
+        presenter?.getNewImages(page: pageNum)
+    }
+    
+    func addNewImages(photos newImages: [photoModel]) {
+        newImageTableDelegateAndDataSource.images.append(contentsOf: newImages)
+        newImageTableDelegateAndDataSource.pageCount += 1
+        newTable.reloadData()
+    }
+    
+    func setNewImages(photos newImages: [photoModel]) {
+        newImageTableDelegateAndDataSource.images = newImages
+        newImageTableDelegateAndDataSource.pageCount += 1
+        newTable.reloadData()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         newTable.isScrollEnabled = newTable.contentSize.height > newTable.frame.size.height
@@ -284,6 +302,7 @@ extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
 class newTableDelegateAndDataSource: NSObject {
     
     var images: [photoModel] = []
+    var pageCount = 1
 }
 
 extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSource {

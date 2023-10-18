@@ -77,4 +77,42 @@ class ExploreInteractor: ExploreInteractorProtocol {
         
         Networking().getCollections(accessToken, successHandler)
     }
+    
+    @MainActor
+    func handlerNewImages(_ pageNum: Int, _ images: [photoModel]) async {
+        // NOTE: tryin to evade gcd code in the task, feels strange, better ask
+        if pageNum != 1 {
+            self.presenter?.addNewImages(photos: images)
+            return
+        }
+        self.presenter?.setNewImages(photos: images)
+    }
+    
+    func getNewImages(page pageNum: Int) {
+        guard let accessToken = self.keychainService.readToken(
+            service: "access-token",
+            account: "unsplash"
+        ) else { return }
+        let successHandler = { (data: Data) throws in
+            let responseObject = try JSONDecoder().decode(
+                [UnsplashPhoto].self,
+                from: data
+            )
+            Task {
+                // NOTE: guess, it'll be exuted on diffent threads, doesnt matter tho
+                let newImages = await Networking.shared.downloadImagesAsync(
+                    with: responseObject
+                )
+                await self.handlerNewImages(pageNum, newImages)
+            }
+            
+            
+        }
+        
+        Networking.shared.getNewImages(
+            accessToken,
+            page: pageNum,
+            successHandler
+        )
+    }
 }

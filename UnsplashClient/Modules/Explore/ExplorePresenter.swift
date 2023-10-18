@@ -24,4 +24,17 @@ class ExplorePresenter: ExplorePresenterProtocol {
     func setColletions(with collectionsData: [photoModel]) {
         view?.setCollections(with: [collectionsData])
     }
+    
+    func getNewImages(page pageNum: Int) {
+        print("??")
+        interactor?.getNewImages(page: pageNum)
+    }
+    
+    func addNewImages(photos newImages: [photoModel]) {
+        view?.addNewImages(photos: newImages)
+    }
+    
+    func setNewImages(photos newImages: [photoModel]) {
+        view?.setNewImages(photos: newImages)
+    }
 }

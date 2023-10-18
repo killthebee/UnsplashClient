@@ -2,10 +2,17 @@ import Foundation
 
 struct Networking {
     
+    static let shared = Networking()
+    
     enum urlTarget {
         case codeExchange
         case randomPhoto
         case collectionList
+        case newImages
+    }
+    
+    enum networkingErrors: Error {
+        case imageDownloadError
     }
     
     private func makeUrl(_ code: String = "", target: urlTarget) -> URL? {
@@ -34,6 +41,13 @@ struct Networking {
             ]
             urlComponents.host = Urls.unslpashApiHost.rawValue
             urlComponents.path = Urls.collectionList.rawValue
+        case .newImages:
+            queryItems = [
+              URLQueryItem(name: "per_page", value: "5"),
+              URLQueryItem(name: "page", value: code),
+            ]
+            urlComponents.host = Urls.unslpashApiHost.rawValue
+            urlComponents.path = Urls.newPhotosPath.rawValue
         }
         urlComponents.scheme = HTTPScheme.secure.rawValue
         urlComponents.queryItems = queryItems
@@ -134,5 +148,50 @@ struct Networking {
         }
         var request = setupRequest(url, .get, accessToken)
         performRequest(request, successHandler)
+    }
+    
+    func getNewImages(
+        _ accessToken: String,
+        page pageNum: Int,
+        _ successHandler: @escaping (Data) throws -> ()
+    ) {
+        // that's ugly xD
+        guard let url = makeUrl(String(pageNum), target: .newImages) else {
+            return
+        }
+        
+        var request = setupRequest(url, .get, accessToken)
+        performRequest(request, successHandler)
+    }
+    
+    func getImage(url imageUrl: URL) async throws -> Data {
+        let (data, response) = try await URLSession.shared.data(from: imageUrl)
+
+        guard (response as? HTTPURLResponse)?.statusCode == 200
+        else {
+            throw networkingErrors.imageDownloadError
+        }
+
+        return data
+    }
+    
+    // NOTE: Do I even need main thread here?
+//    @MainActor
+    func downloadImagesAsync(with response: [UnsplashPhoto]) async -> [photoModel] {
+        var newImages: [photoModel] = []
+        do {
+            for unslpashPhotoData in response {
+                let imageUrl = URL(string: unslpashPhotoData.urls.thumb)!
+                async let data = getImage(url: imageUrl)
+                newImages.append(photoModel(
+                    id: unslpashPhotoData.id,
+                    title: nil,
+                    image: try await data
+                ))
+            }
+        } catch {
+            print(error)
+        }
+        return newImages
     }
 }

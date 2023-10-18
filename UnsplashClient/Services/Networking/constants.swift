@@ -7,6 +7,7 @@ enum Urls: String {
     case tokenExchangePath = "/oauth/token"
     case randomPhotoPath = "/photos/random"
     case collectionList = "/collections"
+    case newPhotosPath = "/photos"
 }
 
 enum HTTPMethod: String {
