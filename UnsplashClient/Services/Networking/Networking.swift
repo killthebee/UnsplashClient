@@ -1,19 +1,19 @@
 import Foundation
 
+enum networkingErrors: Error {
+    case imageDownloadError
+}
+
+enum urlTarget {
+    case codeExchange
+    case randomPhoto
+    case collectionList
+    case newImages
+}
+
 struct Networking {
     
     static let shared = Networking()
-    
-    enum urlTarget {
-        case codeExchange
-        case randomPhoto
-        case collectionList
-        case newImages
-    }
-    
-    enum networkingErrors: Error {
-        case imageDownloadError
-    }
     
     private func makeUrl(_ code: String = "", target: urlTarget) -> URL? {
         var urlComponents = URLComponents()
@@ -163,35 +163,70 @@ struct Networking {
         var request = setupRequest(url, .get, accessToken)
         performRequest(request, successHandler)
     }
+}
+
+//@MainActor
+class AsyncNetworking: ObservableObject {
     
-    func getImage(url imageUrl: URL) async throws -> Data {
+    @Published var newImages: [photoModel] = []
+    
+    func getImage(
+        id: String,
+        title: String? = nil,
+        imageURL: String
+    ) async throws -> photoModel {
+        let imageUrl = URL(string: imageURL)!
         let (data, response) = try await URLSession.shared.data(from: imageUrl)
 
         guard (response as? HTTPURLResponse)?.statusCode == 200
         else {
             throw networkingErrors.imageDownloadError
         }
-
-        return data
+        
+        return photoModel(id: id, title: title, image: data)
     }
     
-    // NOTE: Do I even need main thread here?
-//    @MainActor
-    func downloadImagesAsync(with response: [UnsplashPhoto]) async -> [photoModel] {
-        var newImages: [photoModel] = []
+    func downloadImagesAsync(with response: [UnsplashPhoto]) async {
         do {
-            for unslpashPhotoData in response {
-                let imageUrl = URL(string: unslpashPhotoData.urls.thumb)!
-                async let data = getImage(url: imageUrl)
-                newImages.append(photoModel(
-                    id: unslpashPhotoData.id,
-                    title: nil,
-                    image: try await data
-                ))
+                // NOTE: Seems to me like this code works fine and parallel oO
+//            for unslpashPhotoData in response {
+//                let imageUrl = URL(string: unslpashPhotoData.urls.thumb)!
+//                async let data = getImage(url: imageUrl)
+//                try await newImages.append(photoModel(
+//                    id: unslpashPhotoData.id,
+//                    title: nil,
+//                    image: data
+//                ))
+//            }
+            
+            try await withThrowingTaskGroup(of: photoModel.self) { taskGroup in
+                for unslpashPhotoData in response {
+                    taskGroup.addTask{
+                        try await self.getImage(
+                            id: unslpashPhotoData.id,
+                            imageURL: unslpashPhotoData.urls.thumb
+                        )
+                        
+                    }
+                }
+                
+                while let newPhotoModel = try await taskGroup.next() {
+                    newImages.append(newPhotoModel)
+                }
             }
         } catch {
             print(error)
+        }   
+    }
+    
+    private actor Generator {
+        func generate() async -> [String] {
+            var items: [String] = []
+
+            for i in 0 ..< .random(in: 4_000_000...5_000_000) { // made it random so I could see values change
+                items.append("\(i)")
+            }
+            return items
         }
-        return newImages
     }
 }

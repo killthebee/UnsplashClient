@@ -117,7 +117,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         configureLayout()
         configureSubviews()
         presenter?.getCollections()
-        presenter?.startHeaderImageTask()
+//        presenter?.startHeaderImageTask()
         getImages(page: newImageTableDelegateAndDataSource.pageCount)
     }
     
@@ -267,12 +267,19 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         newImageTableDelegateAndDataSource.images = newImages
         newImageTableDelegateAndDataSource.pageCount += 1
         newTable.reloadData()
+//        forbidScrollNewTableIfNeeded()
+    }
+    
+    private func forbidScrollNewTableIfNeeded() {
+        newTable.isScrollEnabled = newTable.contentSize.height > newTable.frame.size.height
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        newTable.isScrollEnabled = newTable.contentSize.height > newTable.frame.size.height
+//        forbidScrollNewTableIfNeeded()
     }
+    
+    
 }
 
 extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {

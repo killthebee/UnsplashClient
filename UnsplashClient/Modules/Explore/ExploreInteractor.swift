@@ -78,9 +78,10 @@ class ExploreInteractor: ExploreInteractorProtocol {
         Networking().getCollections(accessToken, successHandler)
     }
     
-    @MainActor
-    func handlerNewImages(_ pageNum: Int, _ images: [photoModel]) async {
+//    @MainActor
+    func handlerNewImages(_ pageNum: Int, _ images: [photoModel]) {
         // NOTE: tryin to evade gcd code in the task, feels strange, better ask
+        print("hello?!")
         if pageNum != 1 {
             self.presenter?.addNewImages(photos: images)
             return
@@ -99,14 +100,12 @@ class ExploreInteractor: ExploreInteractorProtocol {
                 from: data
             )
             Task {
-                // NOTE: guess, it'll be exuted on diffent threads, doesnt matter tho
-                let newImages = await Networking.shared.downloadImagesAsync(
-                    with: responseObject
-                )
-                await self.handlerNewImages(pageNum, newImages)
+                let asyncNetworking = AsyncNetworking()
+                await asyncNetworking.downloadImagesAsync(with: responseObject)
+                await MainActor.run {
+                    self.handlerNewImages(pageNum, asyncNetworking.newImages)
+                }
             }
-            
-            
         }
         
         Networking.shared.getNewImages(
