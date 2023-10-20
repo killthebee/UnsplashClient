@@ -58,19 +58,11 @@ class ExploreInteractor: ExploreInteractorProtocol {
                 [UnsplashColletion].self,
                 from: data
             )
-            var collectionsData: [photoModel] = []
-            for collection in responseObject {
-                let coverImageUrl = URL(string: collection.cover_photo.urls.thumb)!
-                if let data = try? Data(contentsOf: coverImageUrl) {
-                    // here, in interactor, i have etl and downloading image data in same method
-                    collectionsData.append(photoModel(
-                        id: collection.id,
-                        title: collection.title,
-                        image: data
-                    ))
-                }
-                DispatchQueue.main.async {
-                    self.presenter?.setColletions(with: collectionsData)
+            Task {
+                let asyncNetworking = AsyncNetworking()
+                await asyncNetworking.downloadCollections(with: responseObject)
+                await MainActor.run {
+                    self.presenter?.setColletions(with: asyncNetworking.collectionImages)
                 }
             }
         }
@@ -78,10 +70,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
         Networking().getCollections(accessToken, successHandler)
     }
     
-//    @MainActor
     func handlerNewImages(_ pageNum: Int, _ images: [photoModel]) {
-        // NOTE: tryin to evade gcd code in the task, feels strange, better ask
-        print("hello?!")
         if pageNum != 1 {
             self.presenter?.addNewImages(photos: images)
             return
@@ -103,6 +92,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
                 let asyncNetworking = AsyncNetworking()
                 await asyncNetworking.downloadImagesAsync(with: responseObject)
                 await MainActor.run {
+                    // Do i rly need suspention point here? is it even a suspention point or is it fires w/o waiting?!
                     self.handlerNewImages(pageNum, asyncNetworking.newImages)
                 }
             }

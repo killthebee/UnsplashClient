@@ -267,7 +267,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         newImageTableDelegateAndDataSource.images = newImages
         newImageTableDelegateAndDataSource.pageCount += 1
         newTable.reloadData()
-//        forbidScrollNewTableIfNeeded()
     }
     
     private func forbidScrollNewTableIfNeeded() {

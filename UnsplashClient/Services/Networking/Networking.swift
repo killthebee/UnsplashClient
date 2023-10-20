@@ -167,8 +167,10 @@ struct Networking {
 
 //@MainActor
 class AsyncNetworking: ObservableObject {
+    // NOTE: the only thing keeping me from merging networkings into 1 class is the shared property. Should I merge anyway tho?
     
     @Published var newImages: [photoModel] = []
+    @Published var collectionImages: [photoModel] = []
     
     func getImage(
         id: String,
@@ -188,17 +190,7 @@ class AsyncNetworking: ObservableObject {
     
     func downloadImagesAsync(with response: [UnsplashPhoto]) async {
         do {
-                // NOTE: Seems to me like this code works fine and parallel oO
-//            for unslpashPhotoData in response {
-//                let imageUrl = URL(string: unslpashPhotoData.urls.thumb)!
-//                async let data = getImage(url: imageUrl)
-//                try await newImages.append(photoModel(
-//                    id: unslpashPhotoData.id,
-//                    title: nil,
-//                    image: data
-//                ))
-//            }
-            
+            // NOTE: here i learned that async let in forloop doesnt work coz amount of tasks is dynamic ( calculated in runtime ? )
             try await withThrowingTaskGroup(of: photoModel.self) { taskGroup in
                 for unslpashPhotoData in response {
                     taskGroup.addTask{
@@ -206,7 +198,6 @@ class AsyncNetworking: ObservableObject {
                             id: unslpashPhotoData.id,
                             imageURL: unslpashPhotoData.urls.thumb
                         )
-                        
                     }
                 }
                 
@@ -219,14 +210,25 @@ class AsyncNetworking: ObservableObject {
         }   
     }
     
-    private actor Generator {
-        func generate() async -> [String] {
-            var items: [String] = []
-
-            for i in 0 ..< .random(in: 4_000_000...5_000_000) { // made it random so I could see values change
-                items.append("\(i)")
+    func downloadCollections(with response: [UnsplashColletion]) async {
+        do {
+            try await withThrowingTaskGroup(of: photoModel.self) { taskGroup in
+                for collection in response {
+                    taskGroup.addTask{
+                        try await self.getImage(
+                            id: collection.id,
+                            title: collection.title,
+                            imageURL: collection.cover_photo.urls.thumb
+                        )
+                    }
+                }
+                
+                while let newPhotoModel = try await taskGroup.next() {
+                    collectionImages.append(newPhotoModel)
+                }
             }
-            return items
+        } catch {
+            print(error)
         }
     }
 }
