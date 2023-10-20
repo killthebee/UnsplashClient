@@ -86,14 +86,22 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         return lable
     }()
     
-    private let newTable: UITableView = {
+    private lazy var newTable: UITableView = {
         let table = UITableView()
         table.register(
             NewTableCell.self,
             forCellReuseIdentifier: NewTableCell.identifier
         )
-//        table.estimatedRowHeight = UITableView.automaticDimension
-//        table.bounces = false
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(
+         self,
+         action: #selector(getNextImages(_:)),
+         for: .valueChanged
+        )
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull down to refresh...")
+        table.refreshControl = refreshControl
+        table.addSubview(refreshControl)
         
         return table
     }()
@@ -106,7 +114,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         configureView()
     }
     
-    // MARK: - Layout
     private func configureView() {
         view.backgroundColor = .white
 //        newImageTableDelegateAndDataSource.images = newImages
@@ -116,11 +123,12 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         addSubviews()
         configureLayout()
         configureSubviews()
-        presenter?.getCollections()
+//        presenter?.getCollections()
 //        presenter?.startHeaderImageTask()
-        getImages(page: newImageTableDelegateAndDataSource.pageCount)
+        getImages()
     }
     
+    // MARK: - Layout
     private func configureSubviews() {
         setUpFirstContainer()
         collectionsCarouselTableView.delegate = self
@@ -253,8 +261,14 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         collectionsCarouselTableView.reloadData()
     }
     
-    func getImages(page pageNum: Int) {
-        presenter?.getNewImages(page: pageNum)
+    func getImages() {
+        presenter?.getNewImages(page: 1)
+    }
+    
+    @objc func getNextImages(_ sender: Any) {
+        print("1")
+        presenter?.getNewImages(page: newImageTableDelegateAndDataSource.pageCount)
+//        refreshControl.endRefreshing()
     }
     
     func addNewImages(photos newImages: [photoModel]) {
@@ -267,6 +281,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         newImageTableDelegateAndDataSource.images = newImages
         newImageTableDelegateAndDataSource.pageCount += 1
         newTable.reloadData()
+        newTable.refreshControl?.endRefreshing()
     }
     
     private func forbidScrollNewTableIfNeeded() {
