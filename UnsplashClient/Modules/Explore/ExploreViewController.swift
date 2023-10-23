@@ -123,7 +123,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         addSubviews()
         configureLayout()
         configureSubviews()
-//        presenter?.getCollections()
+        presenter?.getCollections()
 //        presenter?.startHeaderImageTask()
         getImages()
     }
@@ -311,6 +311,7 @@ extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
             fatalError()
         }
         cell.configure(with: collections)
+        cell.explorePresenter = presenter
         
         return cell
     }
@@ -349,5 +350,9 @@ extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSou
         let currentImage = images[indexPath.row]
         let imageCrop = UIImage(data: currentImage.image)!.getCropRation()
         return tableView.frame.width / imageCrop
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        print(images[indexPath.row].id)
     }
 }

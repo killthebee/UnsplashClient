@@ -9,6 +9,7 @@ enum urlTarget {
     case randomPhoto
     case collectionList
     case newImages
+    case collectionPhotos
 }
 
 struct Networking {
@@ -48,6 +49,15 @@ struct Networking {
             ]
             urlComponents.host = Urls.unslpashApiHost.rawValue
             urlComponents.path = Urls.newPhotosPath.rawValue
+        case .collectionPhotos:
+            queryItems = [
+              URLQueryItem(name: "per_page", value: "5"),
+              URLQueryItem(name: "page", value: "1"),
+              URLQueryItem(name: "orientation", value: "landscape"),
+            ]
+            urlComponents.host = Urls.unslpashApiHost.rawValue
+            urlComponents.path = (Urls.collectionList.rawValue +
+                                  "/\(code)" + Urls.newPhotosPath.rawValue)
         }
         urlComponents.scheme = HTTPScheme.secure.rawValue
         urlComponents.queryItems = queryItems
@@ -163,6 +173,21 @@ struct Networking {
         var request = setupRequest(url, .get, accessToken)
         performRequest(request, successHandler)
     }
+    
+    func getCollectionPhotos(
+        // NOTE: think about refactoring( merging with func above ) (:
+        // i mean this whole code/page/id arg situations looks kinda ugly
+        _ accessToken: String,
+        id: String,
+        _ successHandler: @escaping (Data) throws -> ()
+    ) {
+        guard let url = makeUrl(id, target: .collectionPhotos) else {
+            return
+        }
+        
+        var request = setupRequest(url, .get, accessToken)
+        performRequest(request, successHandler)
+    }
 }
 
 //@MainActor
@@ -178,13 +203,15 @@ class AsyncNetworking: ObservableObject {
         imageURL: String
     ) async throws -> photoModel {
         let imageUrl = URL(string: imageURL)!
+        print(title)
+        print(imageURL)
         let (data, response) = try await URLSession.shared.data(from: imageUrl)
-
+        
         guard (response as? HTTPURLResponse)?.statusCode == 200
         else {
             throw networkingErrors.imageDownloadError
         }
-        
+        if title != nil { print("hmm")}
         return photoModel(id: id, title: title, image: data)
     }
     
@@ -213,12 +240,12 @@ class AsyncNetworking: ObservableObject {
     func downloadCollections(with response: [UnsplashColletion]) async {
         do {
             try await withThrowingTaskGroup(of: photoModel.self) { taskGroup in
-                for collection in response {
+                for unslpashPhotoData in response {
                     taskGroup.addTask{
                         try await self.getImage(
-                            id: collection.id,
-                            title: collection.title,
-                            imageURL: collection.cover_photo.urls.thumb
+                            id: unslpashPhotoData.id,
+                            title: unslpashPhotoData.title,
+                            imageURL: unslpashPhotoData.cover_photo.urls.thumb
                         )
                     }
                 }

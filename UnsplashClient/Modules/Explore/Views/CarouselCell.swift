@@ -5,6 +5,8 @@ final class CarouselCell: UITableViewCell {
     
     var collections: [photoModel] = []
     
+    weak var explorePresenter: ExplorePresenterProtocol?
+    
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -57,6 +59,10 @@ extension CarouselCell: UICollectionViewDelegate, UICollectionViewDataSource {
 //        cell.contentView.layer.masksToBounds = true
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        explorePresenter?.collectionSelected(id: collections[indexPath.row].id)
     }
 }
 

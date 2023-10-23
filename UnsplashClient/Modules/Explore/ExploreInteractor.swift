@@ -1,5 +1,7 @@
 import Foundation
 
+// NOTE: btw, i think my success closures making a strong link to interactor, mb i should use capture manager to mark this links as weak?
+
 class ExploreInteractor: ExploreInteractorProtocol {
     
     weak var presenter: ExplorePresenterProtocol?
@@ -101,6 +103,34 @@ class ExploreInteractor: ExploreInteractorProtocol {
         Networking.shared.getNewImages(
             accessToken,
             page: pageNum,
+            successHandler
+        )
+    }
+    
+    func collectionSelected(id: String) {
+        guard let accessToken = self.keychainService.readToken(
+            service: "access-token",
+            account: "unsplash"
+        ) else { return }
+        
+        let successHandler = { (data: Data) throws in
+            let responseObject = try JSONDecoder().decode(
+                [UnsplashPhoto].self,
+                from: data
+            )
+            
+            Task {
+                let asyncNetworking = AsyncNetworking()
+                await asyncNetworking.downloadImagesAsync(with: responseObject)
+                await MainActor.run {
+                    self.presenter?.setNewImages(photos: asyncNetworking.newImages)
+                }
+            }
+        }
+        
+        Networking.shared.getCollectionPhotos(
+            accessToken,
+            id: id,
             successHandler
         )
     }
