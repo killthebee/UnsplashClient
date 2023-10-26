@@ -203,15 +203,13 @@ class AsyncNetworking: ObservableObject {
         imageURL: String
     ) async throws -> photoModel {
         let imageUrl = URL(string: imageURL)!
-        print(title)
-        print(imageURL)
         let (data, response) = try await URLSession.shared.data(from: imageUrl)
         
         guard (response as? HTTPURLResponse)?.statusCode == 200
         else {
             throw networkingErrors.imageDownloadError
         }
-        if title != nil { print("hmm")}
+        
         return photoModel(id: id, title: title, image: data)
     }
     
@@ -229,6 +227,7 @@ class AsyncNetworking: ObservableObject {
                 }
                 
                 while let newPhotoModel = try await taskGroup.next() {
+                    print(newPhotoModel.id)
                     newImages.append(newPhotoModel)
                 }
             }

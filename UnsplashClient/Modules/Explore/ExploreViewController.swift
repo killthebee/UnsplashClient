@@ -2,7 +2,7 @@ import UIKit
 
 // Weight of container lable is set as bold, despite what it is set
 // 700 in figma, coz 700 is seems too much
-// Photo downloading taking quite some time tbh, mb move it into assembly?
+// Photo downloading(async) taking quite some time tbh, mb move it into assembly?
 
 struct photoModel {
     let id: String
@@ -15,20 +15,21 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     // MARK: - Data
     var presenter: ExplorePresenterProtocol?
+    // this [[]] is for  carousel porpuses
     private var collections: [[photoModel]] = []
     
-    private var newImages: [photoModel] = [
-//        photoModel(id: "4", title: nil, image: UIImage(named: "New1")!),
-//        photoModel(id: "5", title: nil,  image: UIImage(named: "New2")!),
-//        photoModel(id: "6", title: nil,  image: UIImage(named: "New3")!),
-    ]
+    private var newImages: [photoModel] = []
     
     private let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
+    
+    // transitionDelegate property is weak, so, retain with a strong reference
+    private let customTransitioningDelegate = BSTransitioningDelegate()
     
     // MARK: - UI Elements
     let headerImage: BackgroundImageView = {
         let image = BackgroundImageView(frame: .zero, "ExploreHeader")
         image.contentMode = .scaleAspectFill
+        image.isUserInteractionEnabled = true
 
         return image
     }()
@@ -106,12 +107,28 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         return table
     }()
     
+//    private let infoView: InfoView = {
+//        let view = InfoView(frame: .zero, purpose: .errorInfo)
+//
+//        return view
+//    }()
+    
     // MARK: - VC setup
     override func viewDidLoad() {
         super.viewDidLoad()
         
 //        view.backgroundColor = .red
         configureView()
+        
+    }
+    
+    @objc func presentInfo(sender: UITapGestureRecognizer) {
+        print("eeeee")
+        let vc = InfoView()
+        vc.transitioningDelegate = customTransitioningDelegate
+        vc.modalPresentationStyle = .custom
+
+        present(vc, animated: true)
     }
     
     private func configureView() {
@@ -123,9 +140,13 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         addSubviews()
         configureLayout()
         configureSubviews()
-        presenter?.getCollections()
+//        presenter?.getCollections()
 //        presenter?.startHeaderImageTask()
-        getImages()
+//        getImages()
+        let tapOnProfileIconGesutre = UITapGestureRecognizer(
+            target: self, action: #selector(presentInfo(sender:))
+        )
+        headerImage.addGestureRecognizer(tapOnProfileIconGesutre)
     }
     
     // MARK: - Layout
@@ -196,7 +217,9 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
                 equalToConstant: caroseulHeightPlusLableHightPlusGaps
             ),
             
-            collectionsCarouselTableView.heightAnchor.constraint(equalToConstant: 130),
+            collectionsCarouselTableView.heightAnchor.constraint(
+                equalToConstant: 130
+            ),
             collectionsCarouselTableView.leadingAnchor.constraint(
                 equalTo: exploreContainer.leadingAnchor, constant: 16
             ),
@@ -218,7 +241,8 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             ),
             
             newContainer.topAnchor.constraint(
-                equalTo: exploreContainer.bottomAnchor),
+                equalTo: exploreContainer.bottomAnchor
+            ),
             newContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             newContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             newContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -234,7 +258,8 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             ),
             
             newTable.topAnchor.constraint(
-                equalTo: newLable.bottomAnchor, constant: 16),
+                equalTo: newLable.bottomAnchor, constant: 16
+            ),
             newTable.leadingAnchor.constraint(
                 equalTo: newContainer.leadingAnchor
             ),
@@ -244,6 +269,14 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             newTable.bottomAnchor.constraint(
                 equalTo: newContainer.bottomAnchor
             ),
+            
+            
+//            infoView.heightAnchor.constraint(
+//                equalTo: view.heightAnchor, multiplier: infoViewProprtion
+//            ),
+//            infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            infoView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -266,7 +299,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     }
     
     @objc func getNextImages(_ sender: Any) {
-        print("1")
+        print("1!!")
         presenter?.getNewImages(page: newImageTableDelegateAndDataSource.pageCount)
 //        refreshControl.endRefreshing()
     }
@@ -286,6 +319,10 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     private func forbidScrollNewTableIfNeeded() {
         newTable.isScrollEnabled = newTable.contentSize.height > newTable.frame.size.height
+    }
+    
+    private func showInfoView() {
+        
     }
     
     override func viewDidLayoutSubviews() {

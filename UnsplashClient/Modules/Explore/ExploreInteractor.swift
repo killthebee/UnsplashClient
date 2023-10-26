@@ -94,7 +94,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
                 let asyncNetworking = AsyncNetworking()
                 await asyncNetworking.downloadImagesAsync(with: responseObject)
                 await MainActor.run {
-                    // Do i rly need suspention point here? is it even a suspention point or is it fires w/o waiting?!
+                    // Do i rly need suspention point here? is it even a suspention point or is it fires w/o waiting?! 96 to 97 looks pretty sync
                     self.handlerNewImages(pageNum, asyncNetworking.newImages)
                 }
             }
@@ -118,11 +118,15 @@ class ExploreInteractor: ExploreInteractorProtocol {
                 [UnsplashPhoto].self,
                 from: data
             )
-            
+            print("at selected")
+            for obj in responseObject {
+                print(obj.urls.thumb)
+            }
             Task {
                 let asyncNetworking = AsyncNetworking()
                 await asyncNetworking.downloadImagesAsync(with: responseObject)
                 await MainActor.run {
+                    // TODO: Check if the array is empty!!
                     self.presenter?.setNewImages(photos: asyncNetworking.newImages)
                 }
             }

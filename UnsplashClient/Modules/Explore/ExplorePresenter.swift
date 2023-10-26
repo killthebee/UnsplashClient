@@ -26,7 +26,6 @@ class ExplorePresenter: ExplorePresenterProtocol {
     }
     
     func getNewImages(page pageNum: Int) {
-        print("??")
         interactor?.getNewImages(page: pageNum)
     }
     
