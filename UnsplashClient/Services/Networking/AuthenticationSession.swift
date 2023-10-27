@@ -1,6 +1,3 @@
-// not so sure about file name...
-// I need to find a way to safly store keys
-
 import AuthenticationServices
 
 class LoginSession: NSObject {
@@ -13,7 +10,6 @@ class LoginSession: NSObject {
                 TokenExchangeSuccessData.self,
                 from: data
             )
-            print(responseObject)
             interactor.keychainService.save(
                 Data(responseObject.access_token.utf8),
                 service: "access-token",

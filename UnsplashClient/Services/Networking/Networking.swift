@@ -175,7 +175,7 @@ struct Networking {
     }
     
     func getCollectionPhotos(
-        // NOTE: think about refactoring( merging with func above ) (:
+        // TODO: think about refactoring( merging with func above ) (:
         // i mean this whole code/page/id arg situations looks kinda ugly
         _ accessToken: String,
         id: String,
@@ -215,7 +215,7 @@ class AsyncNetworking: ObservableObject {
     
     func downloadImagesAsync(with response: [UnsplashPhoto]) async {
         do {
-            // NOTE: here i learned that async let in forloop doesnt work coz amount of tasks is dynamic ( calculated in runtime ? )
+            // NOTE: here i learned that async let in forloop doesnt work coz amount of tasks is dynamic ( calculated in runtime ? ) xD
             try await withThrowingTaskGroup(of: photoModel.self) { taskGroup in
                 for unslpashPhotoData in response {
                     taskGroup.addTask{

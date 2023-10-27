@@ -1,5 +1,5 @@
 import UIKit
-// Photo downloading(async) taking quite some time tbh, mb move it into assembly?
+// Photo downloading(even async) taking quite some time tbh, mb move it into assembly or something?
 
 struct photoModel {
     let id: String
@@ -167,12 +167,15 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     }
     
     private func configureLayout() {
-        // roughly
-        let caroseulHeightPlusLableHightPlusGaps: CGFloat = 188
+        let roughlyCaroseulHeightPlusLableHightPlusGaps: CGFloat = 188
         let constraints: [NSLayoutConstraint] = [
             headerContainer.topAnchor.constraint(equalTo: view.topAnchor),
-            headerContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.3),
-            headerContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerContainer.heightAnchor.constraint(
+                equalTo: view.heightAnchor, multiplier: 0.3
+            ),
+            headerContainer.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor
+            ),
             headerContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             headerImage.topAnchor.constraint(equalTo: headerContainer.topAnchor),
@@ -199,7 +202,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
                 equalTo: view.trailingAnchor
             ),
             exploreContainer.heightAnchor.constraint(
-                equalToConstant: caroseulHeightPlusLableHightPlusGaps
+                equalToConstant: roughlyCaroseulHeightPlusLableHightPlusGaps
             ),
             
             collectionsCarouselTableView.heightAnchor.constraint(

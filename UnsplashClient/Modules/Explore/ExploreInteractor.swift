@@ -33,7 +33,10 @@ class ExploreInteractor: ExploreInteractorProtocol {
             let photographerName = responseObject.user.name
             if let imageData = try? Data(contentsOf: imageDownloadUrl) {
                 DispatchQueue.main.async {
-                    self.presenter?.setNewHeaderImage(imageData: imageData, photographerName)
+                    self.presenter?.setNewHeaderImage(
+                        imageData: imageData,
+                        photographerName
+                    )
                 }
             }
         }
@@ -42,7 +45,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
             withTimeInterval: 20,
             repeats: true
         ) {_ in
-            Networking().getRandomPhoto(accessToken, successHandler)
+            Networking.shared.getRandomPhoto(accessToken, successHandler)
         }
         headerImageTaskTimer?.fire()
     }
@@ -66,12 +69,14 @@ class ExploreInteractor: ExploreInteractorProtocol {
                 let asyncNetworking = AsyncNetworking()
                 await asyncNetworking.downloadCollections(with: responseObject)
                 await MainActor.run {
-                    self.presenter?.setColletions(with: asyncNetworking.collectionImages)
+                    self.presenter?.setColletions(
+                        with: asyncNetworking.collectionImages
+                    )
                 }
             }
         }
         
-        Networking().getCollections(accessToken, successHandler)
+        Networking.shared.getCollections(accessToken, successHandler)
     }
     
     func handlerNewImages(_ pageNum: Int, _ images: [photoModel]) {
@@ -97,6 +102,8 @@ class ExploreInteractor: ExploreInteractorProtocol {
                 await asyncNetworking.downloadImagesAsync(with: responseObject)
                 await MainActor.run {
                     // Do i rly need suspention point here? is it even a suspention point or is it fires w/o waiting?! 96 to 97 looks pretty sync
+                    // i mean, i'm tryin to figure out whether this await is
+                    // givingup control of thread? And if so, is it necessary?
                     self.handlerNewImages(pageNum, asyncNetworking.newImages)
                 }
             }
@@ -110,6 +117,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
     }
     
     func collectionSelected(id: String) {
+        // TODO: Yeah, it must be a whole new screen... lol
         guard let accessToken = self.keychainService.readToken(
             service: "access-token",
             account: "unsplash"
@@ -120,15 +128,11 @@ class ExploreInteractor: ExploreInteractorProtocol {
                 [UnsplashPhoto].self,
                 from: data
             )
-            print("at selected")
-            for obj in responseObject {
-                print(obj.urls.thumb)
-            }
             Task {
                 let asyncNetworking = AsyncNetworking()
                 await asyncNetworking.downloadImagesAsync(with: responseObject)
                 await MainActor.run {
-                    // TODO: Check if the array is empty!!
+                    // NOTE: array might be empty
                     self.presenter?.setNewImages(photos: asyncNetworking.newImages)
                 }
             }
