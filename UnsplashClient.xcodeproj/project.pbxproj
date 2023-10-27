@@ -38,6 +38,12 @@
 		84D2FFC52AE7C2F900516873 /* BSPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */; };
 		84D2FFCB2AE92DAB00516873 /* BSTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFCA2AE92DAB00516873 /* BSTransition.swift */; };
 		84D2FFCD2AE936AC00516873 /* UIView + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFCC2AE936AC00516873 /* UIView + ext.swift */; };
+		84D2FFD02AEC01B100516873 /* ExifConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFCF2AEC01B100516873 /* ExifConfigurator.swift */; };
+		84D2FFD22AEC01C300516873 /* ExifProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFD12AEC01C300516873 /* ExifProtocols.swift */; };
+		84D2FFD42AEC039B00516873 /* ExifPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFD32AEC039B00516873 /* ExifPresenter.swift */; };
+		84D2FFD62AEC04A700516873 /* ExifRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFD52AEC04A700516873 /* ExifRouter.swift */; };
+		84D2FFD82AEC053500516873 /* ExifViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFD72AEC053500516873 /* ExifViewController.swift */; };
+		84D2FFDA2AEC059400516873 /* ExifInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFD92AEC059400516873 /* ExifInteractor.swift */; };
 		84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */; };
 		84D90CBA2AA10A5D001E9AE3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */; };
 		84D90CC12AA10A5D001E9AE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84D90CC02AA10A5D001E9AE3 /* Assets.xcassets */; };
@@ -100,6 +106,12 @@
 		84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSPresentationController.swift; sourceTree = "<group>"; };
 		84D2FFCA2AE92DAB00516873 /* BSTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransition.swift; sourceTree = "<group>"; };
 		84D2FFCC2AE936AC00516873 /* UIView + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + ext.swift"; sourceTree = "<group>"; };
+		84D2FFCF2AEC01B100516873 /* ExifConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifConfigurator.swift; sourceTree = "<group>"; };
+		84D2FFD12AEC01C300516873 /* ExifProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifProtocols.swift; sourceTree = "<group>"; };
+		84D2FFD32AEC039B00516873 /* ExifPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifPresenter.swift; sourceTree = "<group>"; };
+		84D2FFD52AEC04A700516873 /* ExifRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifRouter.swift; sourceTree = "<group>"; };
+		84D2FFD72AEC053500516873 /* ExifViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifViewController.swift; sourceTree = "<group>"; };
+		84D2FFD92AEC059400516873 /* ExifInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifInteractor.swift; sourceTree = "<group>"; };
 		84D90CB42AA10A5D001E9AE3 /* UnsplashClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -261,6 +273,19 @@
 			path = Transition;
 			sourceTree = "<group>";
 		};
+		84D2FFCE2AEC012E00516873 /* Exif */ = {
+			isa = PBXGroup;
+			children = (
+				84D2FFCF2AEC01B100516873 /* ExifConfigurator.swift */,
+				84D2FFD12AEC01C300516873 /* ExifProtocols.swift */,
+				84D2FFD32AEC039B00516873 /* ExifPresenter.swift */,
+				84D2FFD52AEC04A700516873 /* ExifRouter.swift */,
+				84D2FFD72AEC053500516873 /* ExifViewController.swift */,
+				84D2FFD92AEC059400516873 /* ExifInteractor.swift */,
+			);
+			path = Exif;
+			sourceTree = "<group>";
+		};
 		84D90CAB2AA10A5D001E9AE3 = {
 			isa = PBXGroup;
 			children = (
@@ -320,6 +345,7 @@
 		84D90CE72AA1F888001E9AE3 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				84D2FFCE2AEC012E00516873 /* Exif */,
 				845A86632AA5EE1500E97933 /* Explore */,
 				84D90CE82AA1F8A9001E9AE3 /* Intro */,
 			);
@@ -489,17 +515,22 @@
 				84D2FFCD2AE936AC00516873 /* UIView + ext.swift in Sources */,
 				84D90CF42AA1FAAC001E9AE3 /* IntroConfigurator.swift in Sources */,
 				845A866F2AA9D4D900E97933 /* ExploreProtocols.swift in Sources */,
+				84D2FFD22AEC01C300516873 /* ExifProtocols.swift in Sources */,
 				845A86822AB4AEA900E97933 /* ExploreInteractor.swift in Sources */,
 				845A86792AAF846D00E97933 /* Networking.swift in Sources */,
 				84A1D3692ACF0E5D00A66327 /* CollectionCell.swift in Sources */,
 				84D90CEA2AA1FA20001E9AE3 /* IntroViewController.swift in Sources */,
 				84A1D3672ACF0D9100A66327 /* CarouselCell.swift in Sources */,
+				84D2FFD82AEC053500516873 /* ExifViewController.swift in Sources */,
 				845A86512AA21EDB00E97933 /* BackgroundImageView.swift in Sources */,
 				845A86802AB4AE8200E97933 /* ExploreRouter.swift in Sources */,
 				84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */,
 				84D2FFC32AE7C1EF00516873 /* BSTransitioningDelegate.swift in Sources */,
+				84D2FFDA2AEC059400516873 /* ExifInteractor.swift in Sources */,
 				8470ABDF2AE6BEE700E09183 /* InfoView.swift in Sources */,
+				84D2FFD42AEC039B00516873 /* ExifPresenter.swift in Sources */,
 				845A866B2AA62F6800E97933 /* Constants.swift in Sources */,
+				84D2FFD62AEC04A700516873 /* ExifRouter.swift in Sources */,
 				845A86682AA5F9FF00E97933 /* KeyChainManager.swift in Sources */,
 				845A865F2AA4F3BB00E97933 /* SubHeaderLable.swift in Sources */,
 				84A1D36B2AD4368900A66327 /* NewTableCell.swift in Sources */,
@@ -513,6 +544,7 @@
 				845A86732AAA139100E97933 /* ExplorePresenter.swift in Sources */,
 				84D90CBA2AA10A5D001E9AE3 /* SceneDelegate.swift in Sources */,
 				845A86652AA5EE3300E97933 /* ExploreViewController.swift in Sources */,
+				84D2FFD02AEC01B100516873 /* ExifConfigurator.swift in Sources */,
 				84D90CF22AA1FA9A001E9AE3 /* IntroInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

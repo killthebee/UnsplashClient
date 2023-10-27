@@ -23,7 +23,7 @@ protocol ExplorePresenterProtocol: AnyObject {
 }
 
 protocol ExploreRouterProtocol: AnyObject {
-    
+    func showExifDataScreen()
 }
 
 protocol ExploreInteractorProtocol: AnyObject {
@@ -31,6 +31,7 @@ protocol ExploreInteractorProtocol: AnyObject {
     func getCollections()
     func getNewImages(page pageNum: Int)
     func collectionSelected(id: String)
+    func invalidateHeaderTask()
 }
 
 

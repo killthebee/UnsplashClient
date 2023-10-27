@@ -42,4 +42,5 @@ struct exifMetadata: Decodable {
 
 struct photoData: Decodable {
     let exif: exifMetadata
+    let urls: PhotoUrls
 }

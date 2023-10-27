@@ -1,13 +1,9 @@
 import UIKit
-
-// Weight of container lable is set as bold, despite what it is set
-// 700 in figma, coz 700 is seems too much
 // Photo downloading(async) taking quite some time tbh, mb move it into assembly?
 
 struct photoModel {
     let id: String
     let title: String?
-    // mb make image optional?
     let image: Data
 }
 
@@ -123,7 +119,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     private func configureView() {
         view.backgroundColor = .white
-//        newImageTableDelegateAndDataSource.images = newImages
         newTable.dataSource = newImageTableDelegateAndDataSource
         newTable.delegate = newImageTableDelegateAndDataSource
         disableAutoresizing()
@@ -302,16 +297,9 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         newTable.isScrollEnabled = newTable.contentSize.height > newTable.frame.size.height
     }
     
-    private func showInfoView() {
-        
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        forbidScrollNewTableIfNeeded()
     }
-    
-    
 }
 
 extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
@@ -371,6 +359,6 @@ extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print(images[indexPath.row].id)
+        print(images[indexPath.row].id)
     }
 }

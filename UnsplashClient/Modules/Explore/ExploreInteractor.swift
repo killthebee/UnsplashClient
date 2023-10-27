@@ -47,7 +47,9 @@ class ExploreInteractor: ExploreInteractorProtocol {
         headerImageTaskTimer?.fire()
     }
     
-    // TODO: headerImageTaskTimer?.invalidate() !!! after implementing next module
+    func invalidateHeaderTask() {
+        headerImageTaskTimer?.invalidate()
+    }
     
     func getCollections() {
         guard let accessToken = self.keychainService.readToken(
