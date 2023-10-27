@@ -91,6 +91,7 @@ extension BSTransition: UIViewControllerAnimatedTransitioning {
     private func createDismissAnimator(
         using transitionContext: UIViewControllerContextTransitioning
     ) -> UIViewImplicitlyAnimating {
+        
         guard let fromView = transitionContext.view(forKey: .from) else {
             return UIViewPropertyAnimator()
         }
@@ -110,9 +111,16 @@ extension BSTransition: UIViewControllerAnimatedTransitioning {
                 transitionContext.completeTransition(false)
                 return
             }
+            
             fromView.removeFromSuperview()
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+            transitionContext.completeTransition(
+//                !transitionContext.transitionWasCancelled
+                true
+            )
+            // NOTE: the one place I register transition cancel() is here, in the closure. I dunno how to use to make transition inturrabtile...
+            // also, !transitionContext.transitionWasCancelled basiclly is keeping transition view container ( whats the right termin? ) in view heirarchy and blocks ui 
         }
+        
         return animator
     }
 }

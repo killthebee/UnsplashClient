@@ -9,58 +9,72 @@ final class BSPresentationController: UIPresentationController {
         presentedViewController.transitioningDelegate as? BSTransitioningDelegate
     }
     
+    override var shouldPresentInFullscreen: Bool {
+        false
+        // ? xD
+    }
+    
     private lazy var panGesture = UIPanGestureRecognizer(
         target: self,
         action: #selector(pannedPresentedView)
     )
                                         
     private let pullBarView: UIView = {
-            let view = UIView()
-            view.bounds.size = CGSize(width: 32, height: 4)
-            view.backgroundColor = .systemFill
-        
-            return view
-        }()
+        let view = UIView()
+        view.bounds.size = CGSize(width: 32, height: 4)
+        view.backgroundColor = .systemFill
+    
+        return view
+    }()
+    
+    private lazy var dimmView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+//        view.addGestureRecognizer(tapRecognizer)
+        return view
+    }()
     
     // MARK: - PresentationController
-    override var frameOfPresentedViewInContainerView: CGRect {
-        guard
-            let containerView = containerView,
-            let presentedView = presentedView
-        else {
-            return super.frameOfPresentedViewInContainerView
-        }
-        
-        let maximumHeight = containerView.frame.height - containerView.safeAreaInsets.top - containerView.safeAreaInsets.bottom
-        
-        
-        let fittingSize = CGSize(width: containerView.bounds.width,
-                                 height: UIView.layoutFittingCompressedSize.height)
-        
-        let presentedViewHeight: CGFloat = 200
-        // TODO: i better fine tune the height)
-        
-        let targetSize = CGSize(
-            width: containerView.frame.width,
-            height: presentedViewHeight
-        )
-        let targetOrigin = CGPoint(
-            x: .zero,
-            y: containerView.frame.maxY - targetSize.height
-        )
-        
-        return CGRect(origin: targetOrigin, size: targetSize)
-    }
+//    override var frameOfPresentedViewInContainerView: CGRect {
+//        guard
+//            let containerView = containerView,
+//            let presentedView = presentedView
+//        else {
+//            return super.frameOfPresentedViewInContainerView
+//        }
+//        
+//        let maximumHeight = containerView.frame.height - containerView.safeAreaInsets.top - containerView.safeAreaInsets.bottom
+//        
+//        
+//        let fittingSize = CGSize(width: containerView.bounds.width,
+//                                 height: UIView.layoutFittingCompressedSize.height)
+//        
+//        let presentedViewHeight: CGFloat = 200
+//        // TODO: i better fine tune the height)
+//        
+//        let targetSize = CGSize(
+//            width: containerView.frame.width,
+//            height: presentedViewHeight
+//        )
+//        let targetOrigin = CGPoint(
+//            x: .zero,
+//            y: containerView.frame.maxY - targetSize.height
+//        )
+//        
+//        return CGRect(origin: targetOrigin, size: targetSize)
+//    }
     
     override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
         
         presentedView?.addSubview(pullBarView)
         
+        dimmView.alpha = 0
         presentedViewController.transitionCoordinator?.animate(
             alongsideTransition: { [weak self] _ in
                 guard let self = self else { return }
                 self.presentedView?.layer.cornerRadius = self.cornerRadius
+                dimmView.alpha = 1
             })
     }
     
@@ -72,6 +86,7 @@ final class BSPresentationController: UIPresentationController {
                 guard let self = self else { return }
                 
                 self.presentedView?.layer.cornerRadius = .zero
+                dimmView.alpha = 0
             })
     }
     
@@ -120,6 +135,26 @@ final class BSPresentationController: UIPresentationController {
         presentedView.layer.cornerCurve = .continuous
         presentedView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         presentedViewController.additionalSafeAreaInsets.top = pullBarView.frame.maxY
+        
+        presentedView.translatesAutoresizingMaskIntoConstraints = false
+        dimmView.translatesAutoresizingMaskIntoConstraints = false
+
+        containerView.addSubview(dimmView)
+        containerView.addSubview(presentedView)
+
+        NSLayoutConstraint.activate(
+            [
+                dimmView.topAnchor.constraint(equalTo: containerView.topAnchor),
+                dimmView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+                dimmView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+                dimmView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+                presentedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+                presentedView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+                presentedView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+                presentedView.heightAnchor.constraint(
+                    equalToConstant: 250),
+            ]
+        )
     }
     
     private func setupPresentedViewInteraction() {
