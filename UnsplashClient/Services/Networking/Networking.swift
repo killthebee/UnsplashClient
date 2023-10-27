@@ -227,7 +227,6 @@ class AsyncNetworking: ObservableObject {
                 }
                 
                 while let newPhotoModel = try await taskGroup.next() {
-                    print(newPhotoModel.id)
                     newImages.append(newPhotoModel)
                 }
             }

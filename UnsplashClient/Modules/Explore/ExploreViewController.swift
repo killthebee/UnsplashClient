@@ -107,23 +107,13 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         return table
     }()
     
-//    private let infoView: InfoView = {
-//        let view = InfoView(frame: .zero, purpose: .errorInfo)
-//
-//        return view
-//    }()
-    
     // MARK: - VC setup
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        view.backgroundColor = .red
         configureView()
-        
     }
     
     @objc func presentInfo(sender: UITapGestureRecognizer) {
-        print("eeeee")
         let vc = InfoView()
         vc.transitioningDelegate = customTransitioningDelegate
         vc.modalPresentationStyle = .custom
@@ -142,7 +132,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         configureSubviews()
 //        presenter?.getCollections()
 //        presenter?.startHeaderImageTask()
-//        getImages()
+        getImages()
         let tapOnProfileIconGesutre = UITapGestureRecognizer(
             target: self, action: #selector(presentInfo(sender:))
         )
@@ -269,14 +259,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             newTable.bottomAnchor.constraint(
                 equalTo: newContainer.bottomAnchor
             ),
-            
-            
-//            infoView.heightAnchor.constraint(
-//                equalTo: view.heightAnchor, multiplier: infoViewProprtion
-//            ),
-//            infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            infoView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -299,15 +281,14 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     }
     
     @objc func getNextImages(_ sender: Any) {
-        print("1!!")
         presenter?.getNewImages(page: newImageTableDelegateAndDataSource.pageCount)
-//        refreshControl.endRefreshing()
     }
     
     func addNewImages(photos newImages: [photoModel]) {
         newImageTableDelegateAndDataSource.images.append(contentsOf: newImages)
         newImageTableDelegateAndDataSource.pageCount += 1
         newTable.reloadData()
+        newTable.refreshControl?.endRefreshing()
     }
     
     func setNewImages(photos newImages: [photoModel]) {

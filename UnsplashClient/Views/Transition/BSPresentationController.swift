@@ -31,6 +31,11 @@ final class BSPresentationController: UIPresentationController {
         let view = UIView()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
 //        view.addGestureRecognizer(tapRecognizer)
+        let tapGR = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didTapDimmView)
+        )
+        view.addGestureRecognizer(tapGR)
         return view
     }()
     
@@ -184,6 +189,10 @@ final class BSPresentationController: UIPresentationController {
         @unknown default:
             break
         }
-        
+    }
+    
+    @objc
+    private func didTapDimmView() {
+        dismiss(interactively: false)
     }
 }
