@@ -60,23 +60,36 @@ class ExploreInteractor: ExploreInteractorProtocol {
             account: "unsplash"
         ) else { return }
         
-        let successHandler = { (data: Data) throws in
-            let responseObject = try JSONDecoder().decode(
-                [UnsplashColletion].self,
-                from: data
-            )
-            Task {
-                let asyncNetworking = AsyncNetworking()
-                await asyncNetworking.downloadCollections(with: responseObject)
-                await MainActor.run {
-                    self.presenter?.setColletions(
-                        with: asyncNetworking.collectionImages
-                    )
-                }
+//        let successHandler = { (data: Data) throws in
+//            let responseObject = try JSONDecoder().decode(
+//                [UnsplashColletion].self,
+//                from: data
+//            )
+//            Task {
+//                let asyncNetworking = AsyncNetworking()
+//                await asyncNetworking.downloadCollections(with: responseObject)
+//                await MainActor.run {
+//                    self.presenter?.setColletions(
+//                        with: asyncNetworking.collectionImages
+//                    )
+//                }
+//            }
+//        }
+        let complitionHandler = { [weak self] (collections: [UnsplashColletion]) in
+            let asyncNetworking = AsyncNetworking()
+            await asyncNetworking.downloadCollections(with: collections)
+            await MainActor.run { [weak self] in
+                self?.presenter?.setColletions(
+                    with: asyncNetworking.collectionImages
+                )
             }
+            
+            
         }
-        
-        Networking.shared.getCollections(accessToken, successHandler)
+        Task {
+            await Networking.shared.getCollections(
+                accessToken, complitionHandler)
+        }
     }
     
     func handlerNewImages(_ pageNum: Int, _ images: [photoModel]) {

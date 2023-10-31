@@ -44,6 +44,7 @@
 		84D2FFD62AEC04A700516873 /* ExifRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFD52AEC04A700516873 /* ExifRouter.swift */; };
 		84D2FFD82AEC053500516873 /* ExifViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFD72AEC053500516873 /* ExifViewController.swift */; };
 		84D2FFDA2AEC059400516873 /* ExifInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFD92AEC059400516873 /* ExifInteractor.swift */; };
+		84D2FFDC2AEC13A000516873 /* UIColor + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFDB2AEC13A000516873 /* UIColor + ext.swift */; };
 		84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */; };
 		84D90CBA2AA10A5D001E9AE3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */; };
 		84D90CC12AA10A5D001E9AE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84D90CC02AA10A5D001E9AE3 /* Assets.xcassets */; };
@@ -112,6 +113,7 @@
 		84D2FFD52AEC04A700516873 /* ExifRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifRouter.swift; sourceTree = "<group>"; };
 		84D2FFD72AEC053500516873 /* ExifViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifViewController.swift; sourceTree = "<group>"; };
 		84D2FFD92AEC059400516873 /* ExifInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifInteractor.swift; sourceTree = "<group>"; };
+		84D2FFDB2AEC13A000516873 /* UIColor + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + ext.swift"; sourceTree = "<group>"; };
 		84D90CB42AA10A5D001E9AE3 /* UnsplashClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				845A86762AAF5A2400E97933 /* UIViewController + ext.swift */,
 				84A1D36C2AD4498F00A66327 /* UIImage + ext.swift */,
 				84D2FFCC2AE936AC00516873 /* UIView + ext.swift */,
+				84D2FFDB2AEC13A000516873 /* UIColor + ext.swift */,
 			);
 			path = Extetions;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 				84D2FFD22AEC01C300516873 /* ExifProtocols.swift in Sources */,
 				845A86822AB4AEA900E97933 /* ExploreInteractor.swift in Sources */,
 				845A86792AAF846D00E97933 /* Networking.swift in Sources */,
+				84D2FFDC2AEC13A000516873 /* UIColor + ext.swift in Sources */,
 				84A1D3692ACF0E5D00A66327 /* CollectionCell.swift in Sources */,
 				84D90CEA2AA1FA20001E9AE3 /* IntroViewController.swift in Sources */,
 				84A1D3672ACF0D9100A66327 /* CarouselCell.swift in Sources */,

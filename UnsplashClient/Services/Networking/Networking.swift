@@ -2,6 +2,7 @@ import Foundation
 
 enum networkingErrors: Error {
     case imageDownloadError
+    case customError(Data)
 }
 
 enum urlTarget {
@@ -10,6 +11,10 @@ enum urlTarget {
     case collectionList
     case newImages
     case collectionPhotos
+}
+
+struct ResponseWithErrors: Decodable {
+    let errors: [String]
 }
 
 struct Networking {
@@ -79,7 +84,74 @@ struct Networking {
         return request
     }
     
+    func performRequest<ResponseType: Decodable>(
+        _ request: URLRequest,
+        _ complitionHandler: @escaping (Result<ResponseType, Error>) async -> Void
+    ) async {
+        // TODO: chech whether i really need those returns!
+        await performRequest(request) { result async in
+            switch result {
+            case .success(let data):
+                do {
+                    let responseObject = try JSONDecoder().decode(
+                        ResponseType.self,
+                        from: data
+                    )
+                    await complitionHandler(.success(responseObject))
+                } catch {
+                    await complitionHandler(.failure(error))
+                }
+            case .failure(let error):
+                await complitionHandler(.failure(error))
+            }
+        }
+    }
+    
     func performRequest(
+        _ request: URLRequest,
+        _ complitionHandler: @escaping (Result<Data, Error>) async -> Void
+    ) async {
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            guard
+                let response = response as? HTTPURLResponse
+            else {
+                return await complitionHandler(.failure(URLError(.badServerResponse)))
+            }
+            
+            guard (200 ... 299) ~= response.statusCode else {
+                return await complitionHandler(.failure(networkingErrors.customError(data)))
+            }
+            
+            
+            return await complitionHandler(.success(data))
+        } catch {
+            return await complitionHandler(.failure(error))
+        }
+        
+//        URLSession.shared.dataTask(with: request) { data, response, error in
+//            if let error = error {
+//                return complitionHandler(.failure(error))
+//            }
+//
+//            guard
+//                let response = response as? HTTPURLResponse,
+//                let data = data
+//            else {
+//                return complitionHandler(.failure(URLError(.badServerResponse)))
+//            }
+//
+//            guard (200 ... 299) ~= response.statusCode else {
+//                return complitionHandler(.failure(networkingErrors.customError(data)))
+//            }
+//
+//            return complitionHandler(.success(data))
+//        }.resume()
+    }
+    
+    func performRequest1(
         _ request: URLRequest,
         _ successHandler: @escaping (Data) throws -> (),
         _ failureHandler: @escaping (Data) throws -> () = { _ in }
@@ -133,7 +205,7 @@ struct Networking {
         }
         
         let request = setupRequest(url, .post)
-        performRequest(request, successHandler)
+//        performRequest(request, successHandler)
     }
     
     func getRandomPhoto(
@@ -146,18 +218,41 @@ struct Networking {
             return
         }
         var request = setupRequest(url, .get, accessToken)
-        performRequest(request, successHandler)
+//        performRequest(request, successHandler)
     }
     
     func getCollections(
         _ accessToken: String,
-        _ successHandler: @escaping (Data) throws -> ()
-    ) {
+        _ complitionHandler: @escaping ([UnsplashColletion]) async -> Void
+    ) async {
         guard let url = makeUrl(target: .collectionList) else {
             return
         }
         var request = setupRequest(url, .get, accessToken)
-        performRequest(request, successHandler)
+        await performRequest(request) { (result: Result<[UnsplashColletion], Error>) async in
+            switch result {
+            case let .success(collections):
+                await complitionHandler(collections)
+            case let .failure(error):
+                if let error = error as? networkingErrors {
+                    handleError(error)
+                } else {
+                    print("unsplash returned something else Oo")
+                }
+                print("!!11")
+                //                print(type(of: error))
+                //TODO: remove token and look at errors :)
+            }
+        }
+    }
+    
+    func handleError(_ error: networkingErrors) {
+//         wtf is going on here what a fucking epic syntaxis
+        if case let . customError(errodData) = error as? networkingErrors,
+           let responseWithError = try? JSONDecoder().decode(ResponseWithErrors.self, from: errodData) {
+            print("gonna make a vsplivashka pop up!")
+            print("Unsplash errors: \(responseWithError.errors)")
+        }
     }
     
     func getNewImages(
@@ -171,7 +266,7 @@ struct Networking {
         }
         
         var request = setupRequest(url, .get, accessToken)
-        performRequest(request, successHandler)
+//        performRequest(request, successHandler)
     }
     
     func getCollectionPhotos(
@@ -186,7 +281,7 @@ struct Networking {
         }
         
         var request = setupRequest(url, .get, accessToken)
-        performRequest(request, successHandler)
+//        performRequest(request, successHandler)
     }
 }
 
@@ -215,7 +310,7 @@ class AsyncNetworking: ObservableObject {
     
     func downloadImagesAsync(with response: [UnsplashPhoto]) async {
         do {
-            // NOTE: here i learned that async let in forloop doesnt work coz amount of tasks is dynamic ( calculated in runtime ? ) xD
+            // NOTE: here i learned that async let in forloop doesnt work coz amount of tasks is dynamic ( calculated in runtime ? )
             try await withThrowingTaskGroup(of: photoModel.self) { taskGroup in
                 for unslpashPhotoData in response {
                     taskGroup.addTask{

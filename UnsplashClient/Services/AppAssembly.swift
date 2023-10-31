@@ -11,6 +11,7 @@ class AppAssembly {
 extension AppAssembly {
     
     func makeFirstScreen() -> Presentable {
+//        return makeExifScreen()
         if let accessToken = keychainService.readToken(
             service: "access-token",
             account: "unsplash"
@@ -31,11 +32,23 @@ extension AppAssembly {
 
 // MARK: - ExploreScreen
 extension AppAssembly {
+    
     func makeExploreScreen() -> Presentable {
         let exploreVC = ExploreViewController()
         let configurator = ExploreConfigurator(assembly: self)
         configurator.configure(with: exploreVC)
         return exploreVC
+    }
+}
+
+// MARK: - ExifScreen
+extension AppAssembly {
+    
+    func makeExifScreen() -> Presentable {
+        let exifVC = ExifViewController()
+        let configurator = ExifConfigurator(assembly: self)
+        configurator.configure(with: exifVC)
+        return exifVC
     }
 }
 

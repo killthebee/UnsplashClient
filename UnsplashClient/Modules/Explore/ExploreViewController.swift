@@ -96,7 +96,9 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
          action: #selector(getNextImages(_:)),
          for: .valueChanged
         )
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull down to refresh...")
+        refreshControl.attributedTitle = NSAttributedString(
+            string: "Pull down to refresh..."
+        )
         table.refreshControl = refreshControl
         table.addSubview(refreshControl)
         
@@ -125,9 +127,9 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         addSubviews()
         configureLayout()
         configureSubviews()
-//        presenter?.getCollections()
+        presenter?.getCollections()
 //        presenter?.startHeaderImageTask()
-        getImages()
+//        getImages()
         let tapOnProfileIconGesutre = UITapGestureRecognizer(
             target: self, action: #selector(presentInfo(sender:))
         )
