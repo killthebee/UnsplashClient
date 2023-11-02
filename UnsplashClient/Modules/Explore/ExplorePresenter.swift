@@ -21,7 +21,8 @@ class ExplorePresenter: ExplorePresenterProtocol {
         interactor?.getCollections()
     }
     
-    func setColletions(with collectionsData: [photoModel]) {
+    //@MainActor // hmmmmm its not working
+    func setColletions(with collectionsData: [UnsplashColletion]) {
         view?.setCollections(with: [collectionsData])
     }
     

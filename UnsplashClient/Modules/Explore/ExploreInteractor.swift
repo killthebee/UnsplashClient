@@ -59,36 +59,18 @@ class ExploreInteractor: ExploreInteractorProtocol {
             service: "access-token",
             account: "unsplash"
         ) else { return }
-        
-//        let successHandler = { (data: Data) throws in
-//            let responseObject = try JSONDecoder().decode(
-//                [UnsplashColletion].self,
-//                from: data
-//            )
-//            Task {
-//                let asyncNetworking = AsyncNetworking()
-//                await asyncNetworking.downloadCollections(with: responseObject)
-//                await MainActor.run {
-//                    self.presenter?.setColletions(
-//                        with: asyncNetworking.collectionImages
-//                    )
-//                }
-//            }
-//        }
         let complitionHandler = { [weak self] (collections: [UnsplashColletion]) in
-            let asyncNetworking = AsyncNetworking()
-            await asyncNetworking.downloadCollections(with: collections)
-            await MainActor.run { [weak self] in
-                self?.presenter?.setColletions(
-                    with: asyncNetworking.collectionImages
-                )
-            }
-            
-            
+            self?.presenter?.setColletions(with: collections)
         }
+        
         Task {
-            await Networking.shared.getCollections(
-                accessToken, complitionHandler)
+            await Networking.shared.getCollections(accessToken) { [weak self] collections in
+//                UnsplashColletion
+                await MainActor.run { [weak self] in
+                    self?.presenter?.setColletions(with: collections)
+                }
+                
+            }
         }
     }
     

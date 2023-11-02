@@ -43,7 +43,7 @@ struct Networking {
             urlComponents.path = Urls.randomPhotoPath.rawValue
         case .collectionList:
             queryItems = [
-              URLQueryItem(name: "per_page", value: "6"),
+              URLQueryItem(name: "per_page", value: "5"),
             ]
             urlComponents.host = Urls.unslpashApiHost.rawValue
             urlComponents.path = Urls.collectionList.rawValue
@@ -88,7 +88,6 @@ struct Networking {
         _ request: URLRequest,
         _ complitionHandler: @escaping (Result<ResponseType, Error>) async -> Void
     ) async {
-        // TODO: chech whether i really need those returns!
         await performRequest(request) { result async in
             switch result {
             case .success(let data):
@@ -111,89 +110,28 @@ struct Networking {
         _ request: URLRequest,
         _ complitionHandler: @escaping (Result<Data, Error>) async -> Void
     ) async {
-        
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
             
             guard
                 let response = response as? HTTPURLResponse
             else {
-                return await complitionHandler(.failure(URLError(.badServerResponse)))
+                await complitionHandler(.failure(URLError(.badServerResponse)))
+                return
             }
             
             guard (200 ... 299) ~= response.statusCode else {
-                return await complitionHandler(.failure(networkingErrors.customError(data)))
+                await complitionHandler(
+                    .failure(networkingErrors.customError(data))
+                )
+                return
             }
             
             
-            return await complitionHandler(.success(data))
+            await complitionHandler(.success(data))
         } catch {
-            return await complitionHandler(.failure(error))
+            await complitionHandler(.failure(error))
         }
-        
-//        URLSession.shared.dataTask(with: request) { data, response, error in
-//            if let error = error {
-//                return complitionHandler(.failure(error))
-//            }
-//
-//            guard
-//                let response = response as? HTTPURLResponse,
-//                let data = data
-//            else {
-//                return complitionHandler(.failure(URLError(.badServerResponse)))
-//            }
-//
-//            guard (200 ... 299) ~= response.statusCode else {
-//                return complitionHandler(.failure(networkingErrors.customError(data)))
-//            }
-//
-//            return complitionHandler(.success(data))
-//        }.resume()
-    }
-    
-    func performRequest1(
-        _ request: URLRequest,
-        _ successHandler: @escaping (Data) throws -> (),
-        _ failureHandler: @escaping (Data) throws -> () = { _ in }
-    ) {
-        let tast = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard
-                let data = data,
-                let response = response as? HTTPURLResponse,
-                error == nil
-            else {
-                print("error", error ?? URLError(.badServerResponse))
-                return
-            }
-            guard (200 ... 299) ~= response.statusCode else {
-                do {
-                    try failureHandler(data)
-                    print(String(data: data, encoding: .utf8))
-                } catch {
-                    print(error)
-
-                    if let responseString = String(data: data, encoding: .utf8) {
-                        print("responseString = \(responseString)")
-                    } else {
-                        print("unable to parse response as string")
-                    }
-                }
-                return
-            }
-            do {
-                try successHandler(data)
-            } catch {
-                print(error)
-
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("responseString = \(responseString)")
-                } else {
-                    print("unable to parse response as string")
-                }
-            }
-        }
-
-        tast.resume()
     }
     
     func exchangeCode(
@@ -239,17 +177,15 @@ struct Networking {
                 } else {
                     print("unsplash returned something else Oo")
                 }
-                print("!!11")
-                //                print(type(of: error))
-                //TODO: remove token and look at errors :)
             }
         }
     }
     
     func handleError(_ error: networkingErrors) {
-//         wtf is going on here what a fucking epic syntaxis
-        if case let . customError(errodData) = error as? networkingErrors,
+//         what a fucking epic syntaxis
+        if case let . customError(errodData) = error,
            let responseWithError = try? JSONDecoder().decode(ResponseWithErrors.self, from: errodData) {
+            // TODO: Wire BS here!
             print("gonna make a vsplivashka pop up!")
             print("Unsplash errors: \(responseWithError.errors)")
         }
@@ -282,6 +218,26 @@ struct Networking {
         
         var request = setupRequest(url, .get, accessToken)
 //        performRequest(request, successHandler)
+    }
+    
+    func getCollectionCoverPhoto(
+        _ imageURL: String,
+        _ complitionHandler: @escaping (Data) async -> Void
+    ) async {
+        let imageUrl = URL(string: imageURL)!
+        do {
+            let (data, response) = try await URLSession.shared.data(from: imageUrl)
+            
+            guard (response as? HTTPURLResponse)?.statusCode == 200
+            else {
+                throw networkingErrors.imageDownloadError
+            }
+            
+             await complitionHandler(data)
+        } catch {
+            print("failed to download cover photo; \(error)")
+        }
+        
     }
 }
 

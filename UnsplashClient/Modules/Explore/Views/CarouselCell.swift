@@ -1,9 +1,12 @@
 import UIKit
 
-final class CarouselCell: UITableViewCell {
+final class CarouselCell: UITableViewCell, CarouselCellDelegateProtocol {
+    
     static let identifier = "CarouselCell"
     
-    var collections: [photoModel] = []
+    var collections: [UnsplashColletion] = []
+    
+    var dataMap: [Int: Data] = [:]
     
     weak var explorePresenter: ExplorePresenterProtocol?
     
@@ -42,7 +45,8 @@ final class CarouselCell: UITableViewCell {
 
 extension CarouselCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collections.count
+//        return collections.count
+        return collections.count == 0 ? 5 : collections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
@@ -53,22 +57,25 @@ extension CarouselCell: UICollectionViewDelegate, UICollectionViewDataSource {
         ) as? CollectionCell else {
             fatalError()
         }
-        cell.configure(with: collections[indexPath.row])
-//        cell.contentView.layer.cornerRadius = 15
-//        cell.contentView.layer.borderWidth = 1
-//        cell.contentView.layer.masksToBounds = true
+        cell.carouselDelegate = self
+        if collections.count == 0 { return cell }
+        cell.configure(
+            with: collections[indexPath.row],
+            index: indexPath.row,
+            imageData: dataMap[indexPath.row]
+        )
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        explorePresenter?.collectionSelected(id: collections[indexPath.row].id)
+//        explorePresenter?.collectionSelected(id: collections[indexPath.row].id)
     }
 }
 
 extension CarouselCell {
-    func configure(with photoModels: [photoModel]) {
-        collections = photoModels
+    func configure(with collectionsData: [UnsplashColletion]) {
+        collections = collectionsData
         collectionView.reloadData()
     }
 }

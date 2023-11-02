@@ -34,6 +34,7 @@
 		84A1D3692ACF0E5D00A66327 /* CollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D3682ACF0E5D00A66327 /* CollectionCell.swift */; };
 		84A1D36B2AD4368900A66327 /* NewTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D36A2AD4368900A66327 /* NewTableCell.swift */; };
 		84A1D36D2AD4498F00A66327 /* UIImage + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D36C2AD4498F00A66327 /* UIImage + ext.swift */; };
+		84D200112AF39E2100516873 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200102AF39E2100516873 /* SpinnerViewController.swift */; };
 		84D2FFC32AE7C1EF00516873 /* BSTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */; };
 		84D2FFC52AE7C2F900516873 /* BSPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */; };
 		84D2FFCB2AE92DAB00516873 /* BSTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFCA2AE92DAB00516873 /* BSTransition.swift */; };
@@ -103,6 +104,7 @@
 		84A1D3682ACF0E5D00A66327 /* CollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCell.swift; sourceTree = "<group>"; };
 		84A1D36A2AD4368900A66327 /* NewTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTableCell.swift; sourceTree = "<group>"; };
 		84A1D36C2AD4498F00A66327 /* UIImage + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + ext.swift"; sourceTree = "<group>"; };
+		84D200102AF39E2100516873 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
 		84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransitioningDelegate.swift; sourceTree = "<group>"; };
 		84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSPresentationController.swift; sourceTree = "<group>"; };
 		84D2FFCA2AE92DAB00516873 /* BSTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransition.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 				84D2FFC12AE7BFB700516873 /* Transition */,
 				845A86612AA4FBA300E97933 /* GenericActionButton.swift */,
 				8470ABDE2AE6BEE700E09183 /* InfoView.swift */,
+				84D200102AF39E2100516873 /* SpinnerViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -507,6 +510,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84D200112AF39E2100516873 /* SpinnerViewController.swift in Sources */,
 				845A86622AA4FBA300E97933 /* GenericActionButton.swift in Sources */,
 				845A867D2AB4519700E97933 /* UnsplashModels.swift in Sources */,
 				84D90CEC2AA1FA60001E9AE3 /* IntroProtocols.swift in Sources */,

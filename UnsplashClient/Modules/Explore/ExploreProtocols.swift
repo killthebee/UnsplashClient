@@ -2,7 +2,7 @@ import Foundation
 
 protocol ExploreViewProtocol: AnyObject {
     func setNewHeaderImage(imageData: Data, _ photographerName: String)
-    func setCollections(with collectionsData: [[photoModel]])
+    func setCollections(with collectionsData: [[UnsplashColletion]])
     func addNewImages(photos newImages: [photoModel])
     func setNewImages(photos newImages: [photoModel])
 }
@@ -15,7 +15,7 @@ protocol ExplorePresenterProtocol: AnyObject {
     func startHeaderImageTask()
     func setNewHeaderImage(imageData: Data, _ photographerName: String)
     func getCollections()
-    func setColletions(with collectionsData: [photoModel])
+    func setColletions(with collectionsData: [UnsplashColletion])
     func getNewImages(page pageNum: Int)
     func addNewImages(photos newImages: [photoModel])
     func setNewImages(photos newImages: [photoModel])
@@ -34,4 +34,6 @@ protocol ExploreInteractorProtocol: AnyObject {
     func invalidateHeaderTask()
 }
 
-
+protocol CarouselCellDelegateProtocol {
+    var dataMap: [Int: Data] { get set }
+}

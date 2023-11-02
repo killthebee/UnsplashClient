@@ -3,6 +3,10 @@ import UIKit
 final class CollectionCell: UICollectionViewCell {
     static let identifier = "CollectionCell"
     
+    private let spinner = SpinnerViewController()
+    
+    var carouselDelegate: CarouselCellDelegateProtocol? = nil
+    
     private let collectionNameLable: UILabel = {
         let lable = UILabel()
         lable.font = UIFont.systemFont(
@@ -30,12 +34,17 @@ final class CollectionCell: UICollectionViewCell {
         [collectionCoverPhoto, collectionNameLable,
         ].forEach{contentView.addSubview($0)}
         setupViewLayout()
+        addSpinner()
     }
 
     required init?(coder: NSCoder) {
         fatalError()
     }
     
+    private func addSpinner() {
+        spinner.view.frame = contentView.frame
+        contentView.addSubview(spinner.view)
+    }
     
     private func setupViewLayout() {
         collectionCoverPhoto.frame = contentView.bounds
@@ -49,10 +58,51 @@ final class CollectionCell: UICollectionViewCell {
         
         contentView.layer.cornerRadius = 16
         contentView.layer.masksToBounds = true
+        
+        // yeah xD
+        contentView.backgroundColor = .black
+        contentView.alpha = 0.5
+        contentView.isOpaque = false
     }
     
-    func configure(with collectionData: photoModel) {
+    private func setupCellWithData(
+        collectionData: UnsplashColletion,
+        imageData: Data
+    ) {
+        spinner.view.removeFromSuperview()
+        contentView.alpha = 1
+        contentView.isOpaque = true
         collectionNameLable.text = collectionData.title
-        collectionCoverPhoto.image = UIImage(data: collectionData.image)
+        contentView.backgroundColor = .clear
+        collectionCoverPhoto.image = UIImage(data: imageData)
+    }
+    
+    func configure(
+        with collectionData: UnsplashColletion,
+        index: Int,
+        imageData: Data? = nil
+    ) {
+        if let imageData = imageData {
+            setupCellWithData(
+                collectionData: collectionData,
+                imageData: imageData
+            )
+            
+            return
+        }
+        Task {
+            await Networking.shared.getCollectionCoverPhoto(
+                collectionData.cover_photo.urls.thumb
+            ) { [weak self] data in
+                await MainActor.run { [weak self] in
+                    self?.setupCellWithData(
+                        collectionData: collectionData,
+                        imageData: data
+                    )
+                    self?.carouselDelegate?.dataMap[index] = data
+                }
+                
+            }
+        }
     }
 }

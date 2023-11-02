@@ -1,6 +1,9 @@
 import UIKit
 // Photo downloading(even async) taking quite some time tbh, mb move it into assembly or something?
 
+// NOTE: this whole "download image for each cell seperatly" is a complite disaster :D
+// NOTE: fills like im force to ether redownload image or get reused cell
+
 struct photoModel {
     let id: String
     let title: String?
@@ -12,7 +15,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     // MARK: - Data
     var presenter: ExplorePresenterProtocol?
     // this [[]] is for  carousel porpuses
-    private var collections: [[photoModel]] = []
+    private var collections: [[UnsplashColletion]] = []
     
     private var newImages: [photoModel] = []
     
@@ -271,7 +274,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         credsHeaderLable.text = "photo by \(photographerName)"
     }
     
-    func setCollections(with collectionsData: [[photoModel]]) {
+    func setCollections(with collectionsData: [[UnsplashColletion]]) {
         collections = collectionsData
         collectionsCarouselTableView.reloadData()
     }
@@ -310,18 +313,18 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
 extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return collections.count
+        return collections.count == 0 ? 5 : collections.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let collections = collections[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: CarouselCell.identifier,
             for: indexPath
         ) as? CarouselCell else {
             fatalError()
         }
-        cell.configure(with: collections)
+        if collections.count == 0 { return cell }
+        cell.configure(with: collections[0])
         cell.explorePresenter = presenter
         
         return cell
