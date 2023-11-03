@@ -59,17 +59,12 @@ class ExploreInteractor: ExploreInteractorProtocol {
             service: "access-token",
             account: "unsplash"
         ) else { return }
-        let complitionHandler = { [weak self] (collections: [UnsplashColletion]) in
-            self?.presenter?.setColletions(with: collections)
-        }
         
         Task {
             await Networking.shared.getCollections(accessToken) { [weak self] collections in
-//                UnsplashColletion
                 await MainActor.run { [weak self] in
                     self?.presenter?.setColletions(with: collections)
                 }
-                
             }
         }
     }
@@ -87,28 +82,37 @@ class ExploreInteractor: ExploreInteractorProtocol {
             service: "access-token",
             account: "unsplash"
         ) else { return }
-        let successHandler = { (data: Data) throws in
-            let responseObject = try JSONDecoder().decode(
-                [UnsplashPhoto].self,
-                from: data
-            )
-            Task {
-                let asyncNetworking = AsyncNetworking()
-                await asyncNetworking.downloadImagesAsync(with: responseObject)
-                await MainActor.run {
-                    // Do i rly need suspention point here? is it even a suspention point or is it fires w/o waiting?! 96 to 97 looks pretty sync
-                    // i mean, i'm tryin to figure out whether this await is
-                    // givingup control of thread? And if so, is it necessary?
-                    self.handlerNewImages(pageNum, asyncNetworking.newImages)
+        
+        Task {
+            await Networking.shared.getNewImages(
+                accessToken,
+                page: pageNum
+            ) { [weak self] photoModels in
+                await MainActor.run { [weak self] in
+                    self?.handlerNewImages(pageNum, photoModels)
                 }
             }
         }
         
-        Networking.shared.getNewImages(
-            accessToken,
-            page: pageNum,
-            successHandler
-        )
+//        let successHandler = { (data: Data) throws in
+//            let responseObject = try JSONDecoder().decode(
+//                [UnsplashPhoto].self,
+//                from: data
+//            )
+//            Task {
+//                let asyncNetworking = AsyncNetworking()
+//                await asyncNetworking.downloadImagesAsync(with: responseObject)
+//                await MainActor.run {
+//                    self.handlerNewImages(pageNum, asyncNetworking.newImages)
+//                }
+//            }
+//        }
+//        
+//        Networking.shared.getNewImages(
+//            accessToken,
+//            page: pageNum,
+//            successHandler
+//        )
     }
     
     func collectionSelected(id: String) {

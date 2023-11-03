@@ -2,7 +2,6 @@ import UIKit
 // Photo downloading(even async) taking quite some time tbh, mb move it into assembly or something?
 
 // NOTE: this whole "download image for each cell seperatly" is a complite disaster :D
-// NOTE: fills like im force to ether redownload image or get reused cell
 
 struct photoModel {
     let id: String
@@ -132,7 +131,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         configureSubviews()
         presenter?.getCollections()
 //        presenter?.startHeaderImageTask()
-//        getImages()
+        getImages()
         let tapOnProfileIconGesutre = UITapGestureRecognizer(
             target: self, action: #selector(presentInfo(sender:))
         )

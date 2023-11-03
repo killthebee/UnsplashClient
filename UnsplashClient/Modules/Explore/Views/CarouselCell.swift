@@ -45,7 +45,6 @@ final class CarouselCell: UITableViewCell, CarouselCellDelegateProtocol {
 
 extension CarouselCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return collections.count
         return collections.count == 0 ? 5 : collections.count
     }
     

@@ -87,7 +87,6 @@ final class CollectionCell: UICollectionViewCell {
                 collectionData: collectionData,
                 imageData: imageData
             )
-            
             return
         }
         Task {

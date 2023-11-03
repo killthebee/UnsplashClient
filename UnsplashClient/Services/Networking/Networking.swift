@@ -17,7 +17,10 @@ struct ResponseWithErrors: Decodable {
     let errors: [String]
 }
 
-struct Networking {
+class Networking: ObservableObject {
+    // TODO: gonna make it struct again after spliting networking and domain layers
+    
+    @Published var newImages: [photoModel] = []
     
     static let shared = Networking()
     
@@ -173,7 +176,7 @@ struct Networking {
                 await complitionHandler(collections)
             case let .failure(error):
                 if let error = error as? networkingErrors {
-                    handleError(error)
+                    self.handleError(error)
                 } else {
                     print("unsplash returned something else Oo")
                 }
@@ -191,7 +194,72 @@ struct Networking {
         }
     }
     
+    func getImage(
+        id: String,
+        title: String? = nil,
+        imageURL: String
+    ) async throws -> photoModel {
+        let imageUrl = URL(string: imageURL)!
+        let (data, response) = try await URLSession.shared.data(from: imageUrl)
+        
+        guard (response as? HTTPURLResponse)?.statusCode == 200
+        else {
+            throw networkingErrors.imageDownloadError
+        }
+        
+        return photoModel(id: id, title: title, image: data)
+    }
+    
+    func downloadImagesAsync(with response: [UnsplashPhoto]) async {
+        do {
+            try await withThrowingTaskGroup(of: photoModel.self) { taskGroup in
+                for unslpashPhotoData in response {
+                    taskGroup.addTask{
+                        try await self.getImage(
+                            id: unslpashPhotoData.id,
+                            imageURL: unslpashPhotoData.urls.thumb
+                        )
+                    }
+                }
+                
+                while let newPhotoModel = try await taskGroup.next() {
+                    newImages.append(newPhotoModel)
+                }
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
     func getNewImages(
+        _ accessToken: String,
+        page pageNum: Int,
+        _ complitionHandler: @escaping ([photoModel]) async -> ()
+    ) async {
+        // that's ugly xD
+        guard let url = makeUrl(String(pageNum), target: .newImages) else {
+            return
+        }
+        
+        let request = setupRequest(url, .get, accessToken)
+        await performRequest(
+            request
+        ) { (result: Result<[UnsplashPhoto], Error>) async in
+            switch result {
+            case let .success(PhotosData):
+                await self.downloadImagesAsync(with: PhotosData)
+                await complitionHandler(self.newImages)
+            case let .failure(error):
+                if let error = error as? networkingErrors {
+                    self.handleError(error)
+                } else {
+                    print("unsplash returned something else Oo")
+                }
+            }
+        }
+    }
+    
+    func getNewImages1(
         _ accessToken: String,
         page pageNum: Int,
         _ successHandler: @escaping (Data) throws -> ()
