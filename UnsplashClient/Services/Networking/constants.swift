@@ -8,6 +8,7 @@ enum Urls: String {
     case randomPhotoPath = "/photos/random"
     case collectionList = "/collections"
     case newPhotosPath = "/photos"
+    case loginPath = "/oauth/authorize"
 }
 
 enum HTTPMethod: String {

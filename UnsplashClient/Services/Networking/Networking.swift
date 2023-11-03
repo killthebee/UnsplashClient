@@ -11,6 +11,7 @@ enum urlTarget {
     case collectionList
     case newImages
     case collectionPhotos
+    case login
 }
 
 struct ResponseWithErrors: Decodable {
@@ -24,7 +25,7 @@ class Networking: ObservableObject {
     
     static let shared = Networking()
     
-    private func makeUrl(_ code: String = "", target: urlTarget) -> URL? {
+    func makeUrl(_ code: String = "", target: urlTarget) -> URL? {
         var urlComponents = URLComponents()
         let queryItems: [URLQueryItem]!
         switch target {
@@ -66,6 +67,15 @@ class Networking: ObservableObject {
             urlComponents.host = Urls.unslpashApiHost.rawValue
             urlComponents.path = (Urls.collectionList.rawValue +
                                   "/\(code)" + Urls.newPhotosPath.rawValue)
+        case .login:
+            queryItems = [
+              URLQueryItem(name: "client_id", value: clientId),
+              URLQueryItem(name: "redirect_uri", value: Urls.redirectUri.rawValue),
+              URLQueryItem(name: "response_type", value: "code"),
+              URLQueryItem(name: "scope", value: "public")
+            ]
+            urlComponents.host = Urls.unsplashHost.rawValue
+            urlComponents.path = Urls.loginPath.rawValue
         }
         urlComponents.scheme = HTTPScheme.secure.rawValue
         urlComponents.queryItems = queryItems
@@ -139,27 +149,52 @@ class Networking: ObservableObject {
     
     func exchangeCode(
         code: String,
-        _ successHandler: @escaping (Data) throws -> ()
-    ) {
+        _ complitionHandler: @escaping (TokenExchangeSuccessData) async -> Void
+    ) async {
         guard let url = makeUrl(code, target: .codeExchange) else {
             return
         }
         
         let request = setupRequest(url, .post)
-//        performRequest(request, successHandler)
+        await performRequest(
+            request
+        ) { (result: Result<TokenExchangeSuccessData, Error>) in
+            switch result {
+            case let .success(accessToken):
+                await complitionHandler(accessToken)
+            case let .failure(error):
+                self.handleError(error)
+            }
+        }
     }
     
     func getRandomPhoto(
         _ accessToken: String,
-        _ successHandler: @escaping (Data) throws -> ()
-    ) {
-        //Optional("{\"errors\":[\"OAuth error: The access token is invalid\"]}")
-        // TODO: make a faulire handler to hadle ^
+        _ complitionHandler: @escaping (photoModel) async -> Void
+    ) async {
         guard let url = makeUrl(target: .randomPhoto) else {
             return
         }
-        var request = setupRequest(url, .get, accessToken)
-//        performRequest(request, successHandler)
+        let request = setupRequest(url, .get, accessToken)
+        await performRequest(
+            request
+        ) { (result: Result<UnsplashPhoto, Error>) async in
+            switch result {
+            case let .success(PhotoData):
+                do {
+                    let image = try await self.getImage(
+                        id: "whatever",
+                        title: PhotoData.user.name,
+                        imageURL: PhotoData.urls.thumb
+                    )
+                    await complitionHandler(image)
+                } catch {
+                    self.handleError(error)
+                }
+            case let .failure(error):
+                self.handleError(error)
+            }
+        }
     }
     
     func getCollections(
@@ -175,23 +210,24 @@ class Networking: ObservableObject {
             case let .success(collections):
                 await complitionHandler(collections)
             case let .failure(error):
-                if let error = error as? networkingErrors {
-                    self.handleError(error)
-                } else {
-                    print("unsplash returned something else Oo")
-                }
+                self.handleError(error)
             }
         }
     }
     
-    func handleError(_ error: networkingErrors) {
+    func handleError(_ error: Error) {
 //         what a fucking epic syntaxis
-        if case let . customError(errodData) = error,
-           let responseWithError = try? JSONDecoder().decode(ResponseWithErrors.self, from: errodData) {
-            // TODO: Wire BS here!
-            print("gonna make a vsplivashka pop up!")
-            print("Unsplash errors: \(responseWithError.errors)")
+        if let error = error as? networkingErrors {
+            if case let . customError(errodData) = error,
+               let responseWithError = try? JSONDecoder().decode(ResponseWithErrors.self, from: errodData) {
+                // TODO: Wire BS here!
+                print("gonna make a vsplivashka pop up!")
+                print("Unsplash errors: \(responseWithError.errors)")
+            }
+        } else {
+            print("unsplash returned something else Oo")
         }
+        
     }
     
     func getImage(
@@ -250,11 +286,7 @@ class Networking: ObservableObject {
                 await self.downloadImagesAsync(with: PhotosData)
                 await complitionHandler(self.newImages)
             case let .failure(error):
-                if let error = error as? networkingErrors {
-                    self.handleError(error)
-                } else {
-                    print("unsplash returned something else Oo")
-                }
+                self.handleError(error)
             }
         }
     }

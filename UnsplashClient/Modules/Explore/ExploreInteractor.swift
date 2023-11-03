@@ -1,7 +1,5 @@
 import Foundation
 
-// NOTE: btw, i think my success closures making a strong link to interactor, mb i should use capture manager to mark this links as weak?
-
 class ExploreInteractor: ExploreInteractorProtocol {
     
     weak var presenter: ExplorePresenterProtocol?
@@ -24,28 +22,23 @@ class ExploreInteractor: ExploreInteractorProtocol {
             account: "unsplash"
         ) else { return }
         
-        let successHandler = { (data: Data) throws in
-            let responseObject = try JSONDecoder().decode(
-                UnsplashPhoto.self,
-                from: data
-            )
-            let imageDownloadUrl = URL(string: responseObject.urls.raw)!
-            let photographerName = responseObject.user.name
-            if let imageData = try? Data(contentsOf: imageDownloadUrl) {
-                DispatchQueue.main.async {
-                    self.presenter?.setNewHeaderImage(
-                        imageData: imageData,
-                        photographerName
-                    )
-                }
-            }
-        }
-        
+        // TODO: do something, this nesting's cray-cray
         headerImageTaskTimer = Timer.scheduledTimer(
             withTimeInterval: 20,
             repeats: true
         ) {_ in
-            Networking.shared.getRandomPhoto(accessToken, successHandler)
+            Task {
+                await Networking.shared.getRandomPhoto(
+                    accessToken
+                ) { [weak self] image in
+                    await MainActor.run { [weak self] in
+                        self?.presenter?.setNewHeaderImage(
+                            imageData: image.image,
+                            image.title ?? "unknown"
+                        )
+                    }
+                }
+            }
         }
         headerImageTaskTimer?.fire()
     }
@@ -93,26 +86,6 @@ class ExploreInteractor: ExploreInteractorProtocol {
                 }
             }
         }
-        
-//        let successHandler = { (data: Data) throws in
-//            let responseObject = try JSONDecoder().decode(
-//                [UnsplashPhoto].self,
-//                from: data
-//            )
-//            Task {
-//                let asyncNetworking = AsyncNetworking()
-//                await asyncNetworking.downloadImagesAsync(with: responseObject)
-//                await MainActor.run {
-//                    self.handlerNewImages(pageNum, asyncNetworking.newImages)
-//                }
-//            }
-//        }
-//        
-//        Networking.shared.getNewImages(
-//            accessToken,
-//            page: pageNum,
-//            successHandler
-//        )
     }
     
     func collectionSelected(id: String) {

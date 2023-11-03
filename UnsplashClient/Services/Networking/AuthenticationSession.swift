@@ -5,22 +5,12 @@ class LoginSession: NSObject {
     static let standard = LoginSession()
     
     func performLogin(interactor: IntroInteractorProtocol) {
-        let signInSuccessHandler = { (data: Data) throws in
-            let responseObject = try JSONDecoder().decode(
-                TokenExchangeSuccessData.self,
-                from: data
-            )
-            interactor.keychainService.save(
-                Data(responseObject.access_token.utf8),
-                service: "access-token",
-                account: "unsplash"
-            )
-            DispatchQueue.main.async {
-                interactor.showExploreScreen()
-            }
+        guard let authUrl = Networking.shared.makeUrl(target: .login) else {
+            return
         }
+        
         let authenticationSession = ASWebAuthenticationSession(
-            url: makeLoginUrlWithParams(),
+            url: authUrl,
             callbackURLScheme: collbackScheme
         ) { callbackURL, error in
             guard
@@ -34,7 +24,20 @@ class LoginSession: NSObject {
               print("An error occurred when attempting to sign in.")
               return
             }
-            Networking().exchangeCode(code: code, signInSuccessHandler)
+            Task {
+                await Networking.shared.exchangeCode(
+                    code: code
+                ) { [weak self] accessToken async in
+                    interactor.keychainService.save(
+                        Data(accessToken.access_token.utf8),
+                        service: "access-token",
+                        account: "unsplash"
+                    )
+                    await MainActor.run { [weak self] in
+                        interactor.showExploreScreen()
+                    }
+                }
+            }
             
         }
         

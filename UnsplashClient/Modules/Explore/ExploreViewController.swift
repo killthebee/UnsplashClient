@@ -129,9 +129,9 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         addSubviews()
         configureLayout()
         configureSubviews()
-        presenter?.getCollections()
-//        presenter?.startHeaderImageTask()
-        getImages()
+//        presenter?.getCollections()
+        presenter?.startHeaderImageTask()
+//        getImages()
         let tapOnProfileIconGesutre = UITapGestureRecognizer(
             target: self, action: #selector(presentInfo(sender:))
         )
