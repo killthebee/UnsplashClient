@@ -37,8 +37,4 @@ class ExplorePresenter: ExplorePresenterProtocol {
     func setNewImages(photos newImages: [photoModel]) {
         view?.setNewImages(photos: newImages)
     }
-    
-    func collectionSelected(id: String) {
-        interactor?.collectionSelected(id: id)
-    }
 }

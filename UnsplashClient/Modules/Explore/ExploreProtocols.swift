@@ -19,7 +19,6 @@ protocol ExplorePresenterProtocol: AnyObject {
     func getNewImages(page pageNum: Int)
     func addNewImages(photos newImages: [photoModel])
     func setNewImages(photos newImages: [photoModel])
-    func collectionSelected(id: String)
 }
 
 protocol ExploreRouterProtocol: AnyObject {
@@ -30,7 +29,6 @@ protocol ExploreInteractorProtocol: AnyObject {
     func startHeaderImageTask()
     func getCollections()
     func getNewImages(page pageNum: Int)
-    func collectionSelected(id: String)
     func invalidateHeaderTask()
 }
 
