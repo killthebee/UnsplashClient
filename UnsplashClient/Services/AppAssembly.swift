@@ -10,18 +10,6 @@ class AppAssembly {
 // MARK: - IntroScreen
 extension AppAssembly {
     
-    func makeFirstScreen() -> Presentable {
-//        return makeExifScreen()
-        if let accessToken = keychainService.readToken(
-            service: "access-token",
-            account: "unsplash"
-        ) {
-            return makeExploreScreen()
-        }
-        
-        return makeIntroScreen()
-    }
-    
     func makeIntroScreen() -> Presentable {
         let introVC = IntroViewController()
         let configurator = IntroConfigurator(assembly: self)

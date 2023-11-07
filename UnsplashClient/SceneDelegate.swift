@@ -3,14 +3,12 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    
-    var assembly = AppAssembly(keychainService: KeyChainManager())
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = assembly.makeFirstScreen().toVC()
+        window.rootViewController = AppRouter().makeFirstScreen().toVC()
         self.window = window
         window.makeKeyAndVisible()
     }
