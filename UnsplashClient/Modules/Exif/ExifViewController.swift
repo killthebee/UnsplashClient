@@ -7,6 +7,8 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     // MARK: - Data
     var presenter: ExifPresenterProtocol?
     
+    private let image = UIImage(named: "New1")
+    
     // MARK: - UI elements
     
     private let shareButton: UIButton = {
@@ -36,6 +38,27 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         
         return button
     }()
+    
+    private let infoButton: UIButton = {
+        let button = UIButton()
+        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
+        let boldSearch = UIImage(
+            systemName: "info.circle",
+            withConfiguration: boldConfig
+        )
+
+        button.setImage(boldSearch, for: .normal)
+        button.tintColor = .white
+        
+        return button
+    }()
+
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = image
+        
+        return imageView
+    }()
 
     // MARK: - VC setup
     override func viewDidLoad() {
@@ -53,17 +76,29 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     private func disableAutoresizing() {
         [topSafeAreaContainer, headerView, shareButton, dismissButton,
+         infoButton, imageView
         ].forEach{$0.translatesAutoresizingMaskIntoConstraints = false}
     }
     
     private func addSubviews() {
-        [topSafeAreaContainer, headerView
+        [topSafeAreaContainer, headerView, infoButton, imageView
         ].forEach{view.addSubview($0)}
         [shareButton, dismissButton
         ].forEach{headerView.addSubview($0)}
     }
     
     // MARK: - Layout
+    private func getimageViewHeight() -> CGFloat {
+        guard
+            let imageWidth = image?.size.width,
+            let imageHeight = image?.size.height
+        else {
+            return 1
+        }
+        let height = (view.frame.size.width /
+                      imageWidth * imageHeight)
+        return height
+    }
     private func configureLayout() {
         setCoversBackgroundColor()
         let headViewHeightMultiplier: CGFloat = 54 / 812
@@ -110,6 +145,22 @@ class ExifViewController: UIViewController, ExifViewProtocol {
             ),
             dismissButton.widthAnchor.constraint(equalToConstant: 24),
             
+            infoButton.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -24
+            ),
+            infoButton.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 16
+            ),
+            infoButton.widthAnchor.constraint(equalToConstant: 24),
+            
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            imageView.heightAnchor.constraint(
+                equalToConstant: getimageViewHeight()
+            )
         ]
         
         NSLayoutConstraint.activate(constraints)
