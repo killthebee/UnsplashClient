@@ -35,6 +35,8 @@
 		84A1D36B2AD4368900A66327 /* NewTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D36A2AD4368900A66327 /* NewTableCell.swift */; };
 		84A1D36D2AD4498F00A66327 /* UIImage + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A1D36C2AD4498F00A66327 /* UIImage + ext.swift */; };
 		84D200112AF39E2100516873 /* SpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200102AF39E2100516873 /* SpinnerViewController.swift */; };
+		84D200152AFA4C1400516873 /* UnsplashDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200142AFA4C1400516873 /* UnsplashDomain.swift */; };
+		84D200172AFA578E00516873 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200162AFA578E00516873 /* Errors.swift */; };
 		84D2FFC32AE7C1EF00516873 /* BSTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */; };
 		84D2FFC52AE7C2F900516873 /* BSPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */; };
 		84D2FFCB2AE92DAB00516873 /* BSTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFCA2AE92DAB00516873 /* BSTransition.swift */; };
@@ -105,6 +107,8 @@
 		84A1D36A2AD4368900A66327 /* NewTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTableCell.swift; sourceTree = "<group>"; };
 		84A1D36C2AD4498F00A66327 /* UIImage + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + ext.swift"; sourceTree = "<group>"; };
 		84D200102AF39E2100516873 /* SpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerViewController.swift; sourceTree = "<group>"; };
+		84D200142AFA4C1400516873 /* UnsplashDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashDomain.swift; sourceTree = "<group>"; };
+		84D200162AFA578E00516873 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransitioningDelegate.swift; sourceTree = "<group>"; };
 		84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSPresentationController.swift; sourceTree = "<group>"; };
 		84D2FFCA2AE92DAB00516873 /* BSTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransition.swift; sourceTree = "<group>"; };
@@ -231,6 +235,8 @@
 				845A866A2AA62F6800E97933 /* Constants.swift */,
 				845A866C2AA6302F00E97933 /* AuthenticationSession.swift */,
 				845A86782AAF846D00E97933 /* Networking.swift */,
+				84D200142AFA4C1400516873 /* UnsplashDomain.swift */,
+				84D200162AFA578E00516873 /* Errors.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -528,11 +534,13 @@
 				84D2FFDC2AEC13A000516873 /* UIColor + ext.swift in Sources */,
 				84A1D3692ACF0E5D00A66327 /* CollectionCell.swift in Sources */,
 				84D90CEA2AA1FA20001E9AE3 /* IntroViewController.swift in Sources */,
+				84D200172AFA578E00516873 /* Errors.swift in Sources */,
 				84A1D3672ACF0D9100A66327 /* CarouselCell.swift in Sources */,
 				84D2FFD82AEC053500516873 /* ExifViewController.swift in Sources */,
 				845A86512AA21EDB00E97933 /* BackgroundImageView.swift in Sources */,
 				845A86802AB4AE8200E97933 /* ExploreRouter.swift in Sources */,
 				84D90CB82AA10A5D001E9AE3 /* AppDelegate.swift in Sources */,
+				84D200152AFA4C1400516873 /* UnsplashDomain.swift in Sources */,
 				84D2FFC32AE7C1EF00516873 /* BSTransitioningDelegate.swift in Sources */,
 				84D2FFDA2AEC059400516873 /* ExifInteractor.swift in Sources */,
 				8470ABDF2AE6BEE700E09183 /* InfoView.swift in Sources */,

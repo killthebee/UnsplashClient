@@ -90,7 +90,7 @@ final class CollectionCell: UICollectionViewCell {
             return
         }
         Task {
-            await Networking.shared.getCollectionCoverPhoto(
+            await UnsplashApi.shared.getCollectionCoverPhoto(
                 collectionData.cover_photo.urls.thumb
             ) { [weak self] data in
                 await MainActor.run { [weak self] in

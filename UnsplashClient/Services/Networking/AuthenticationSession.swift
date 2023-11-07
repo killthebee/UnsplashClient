@@ -5,7 +5,7 @@ class LoginSession: NSObject {
     static let standard = LoginSession()
     
     func performLogin(interactor: IntroInteractorProtocol) {
-        guard let authUrl = Networking.shared.makeUrl(target: .login) else {
+        guard let authUrl = UnsplashApi.shared.makeUrl(target: .login) else {
             return
         }
         
@@ -25,7 +25,7 @@ class LoginSession: NSObject {
               return
             }
             Task {
-                await Networking.shared.exchangeCode(
+                await UnsplashApi.shared.exchangeCode(
                     code: code
                 ) { [weak self] accessToken async in
                     interactor.keychainService.save(
@@ -38,7 +38,6 @@ class LoginSession: NSObject {
                     }
                 }
             }
-            
         }
         
         authenticationSession.presentationContextProvider = self
@@ -47,19 +46,6 @@ class LoginSession: NSObject {
         if !authenticationSession.start() {
             print("Failed to start ASWebAuthenticationSession")
         }
-    }
-    
-    func makeLoginUrlWithParams() -> URL {
-        var urlComponents = URLComponents(string: Urls.login.rawValue)!
-        let queryItems = [
-          URLQueryItem(name: "client_id", value: clientId),
-          URLQueryItem(name: "redirect_uri", value: Urls.redirectUri.rawValue),
-          URLQueryItem(name: "response_type", value: "code"),
-          URLQueryItem(name: "scope", value: "public")
-        ]
-        urlComponents.queryItems = queryItems
-        
-        return urlComponents.url!
     }
 }
 
