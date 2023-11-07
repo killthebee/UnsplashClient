@@ -1,7 +1,7 @@
 class ExifInteractor: ExifInteractorProtocol {
     
     weak var presenter: ExifPresenterProtocol?
-    let keychainService: KeyChainManagerProtocol
+    let keychainService: KeyChainManagerProtocol?
     
     required init(
         presenter: ExifPresenterProtocol,
