@@ -39,4 +39,3 @@ extension AppAssembly {
         return exifVC
     }
 }
-
