@@ -37,4 +37,10 @@ class ExplorePresenter: ExplorePresenterProtocol {
     func setNewImages(photos newImages: [photoModel]) {
         view?.setNewImages(photos: newImages)
     }
+    
+    func presentExifScreen(photoId: String) {
+        // TODO: dont forget to check what'll happend after exif screen dismiss
+        interactor?.invalidateHeaderTask()
+        router?.presentExifDataScreen(photoId: photoId)
+    }
 }

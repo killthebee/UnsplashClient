@@ -7,6 +7,12 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     // MARK: - Data
     var presenter: ExifPresenterProtocol?
     
+    var photoId: String? { didSet {
+            // update image
+            print(photoId)
+        }
+    }
+    
     private let image = UIImage(named: "New1")
     
     // MARK: - UI elements
@@ -88,7 +94,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     }
     
     // MARK: - Layout
-    private func getimageViewHeight() -> CGFloat {
+    private func getImageViewHeight() -> CGFloat {
         guard
             let imageWidth = image?.size.width,
             let imageHeight = image?.size.height
@@ -159,7 +165,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             imageView.widthAnchor.constraint(equalTo: view.widthAnchor),
             imageView.heightAnchor.constraint(
-                equalToConstant: getimageViewHeight()
+                equalToConstant: getImageViewHeight()
             )
         ]
         

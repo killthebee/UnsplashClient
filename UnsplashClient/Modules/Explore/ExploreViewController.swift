@@ -123,15 +123,16 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     private func configureView() {
         view.backgroundColor = .white
+        newImageTableDelegateAndDataSource.presenter = presenter
         newTable.dataSource = newImageTableDelegateAndDataSource
         newTable.delegate = newImageTableDelegateAndDataSource
         disableAutoresizing()
         addSubviews()
         configureLayout()
         configureSubviews()
-        presenter?.getCollections()
+//        presenter?.getCollections()
 //        presenter?.startHeaderImageTask()
-//        getImages()
+        getImages()
         let tapOnProfileIconGesutre = UITapGestureRecognizer(
             target: self, action: #selector(presentInfo(sender:))
         )
@@ -338,6 +339,7 @@ class newTableDelegateAndDataSource: NSObject {
     
     var images: [photoModel] = []
     var pageCount = 1
+    var presenter: ExplorePresenterProtocol?
 }
 
 extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSource {
@@ -366,6 +368,7 @@ extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(images[indexPath.row].id)
+//        print(images[indexPath.row].id)
+        presenter?.presentExifScreen(photoId: images[indexPath.row].id)
     }
 }

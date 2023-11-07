@@ -32,8 +32,9 @@ extension AppAssembly {
 // MARK: - ExifScreen
 extension AppAssembly {
     
-    func makeExifScreen() -> Presentable {
+    func makeExifScreen(photoId: String) -> Presentable {
         let exifVC = ExifViewController()
+        exifVC.photoId = photoId
         let configurator = ExifConfigurator(assembly: self)
         configurator.configure(with: exifVC)
         return exifVC

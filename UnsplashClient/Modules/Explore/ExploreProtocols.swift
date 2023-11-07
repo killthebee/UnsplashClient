@@ -19,10 +19,11 @@ protocol ExplorePresenterProtocol: AnyObject {
     func getNewImages(page pageNum: Int)
     func addNewImages(photos newImages: [photoModel])
     func setNewImages(photos newImages: [photoModel])
+    func presentExifScreen(photoId: String)
 }
 
 protocol ExploreRouterProtocol: AnyObject {
-    func showExifDataScreen()
+    func presentExifDataScreen(photoId: String)
 }
 
 protocol ExploreInteractorProtocol: AnyObject {

@@ -8,9 +8,14 @@ class ExploreRouter: ExploreRouterProtocol {
         self.view = view
     }
     
-    func showExifDataScreen() {
-//        guard let view = view as? ExploreViewProtocol else { return }
-//        view.interactor?.invalidateHeaderTask()
+    func presentExifDataScreen(photoId: String) {
+        guard
+            let exifVC = assembly.makeExifScreen(photoId: photoId) as? ExifViewController
+        else {
+            return
+        }
         
+        exifVC.modalPresentationStyle = .fullScreen
+        view?.present(exifVC)
     }
 }
