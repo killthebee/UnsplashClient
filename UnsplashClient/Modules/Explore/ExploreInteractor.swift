@@ -54,7 +54,9 @@ class ExploreInteractor: ExploreInteractorProtocol {
         ) else { return }
         
         Task {
-            await UnsplashApi.shared.getCollections(accessToken) { [weak self] collections in
+            await UnsplashApi.shared.getCollections(
+                accessToken
+            ) { [weak self] collections in
                 await MainActor.run { [weak self] in
                     self?.presenter?.setColletions(with: collections)
                 }

@@ -7,15 +7,14 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     // MARK: - Data
     var presenter: ExifPresenterProtocol?
     
-    var photoId: String? { didSet {
-            // update image
-            print(photoId)
-        }
-    }
+    var photoId: String? = nil
     
-    private let image = UIImage(named: "New1")
+    private var image: UIImage?
+    
+    private var exif: exifMetadata? = nil
     
     // MARK: - UI elements
+    private let spinner = SpinnerViewController()
     
     private let shareButton: UIButton = {
         let button = UIButton()
@@ -61,7 +60,6 @@ class ExifViewController: UIViewController, ExifViewProtocol {
 
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = image
         
         return imageView
     }()
@@ -78,6 +76,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         disableAutoresizing()
         addSubviews()
         configureLayout()
+        downloadImage(photoId: photoId)
     }
     
     private func disableAutoresizing() {
@@ -93,6 +92,19 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         ].forEach{headerView.addSubview($0)}
     }
     
+    private func downloadImage(photoId: String?) {
+        guard let photoId = photoId else { return }
+        presenter?.getImage(photoId: photoId)
+    }
+    
+    func setImage(imageData: photoModel, exif exifData: exifMetadata) {
+        image = UIImage(data: imageData.image)
+        imageView.image = image
+        exif = exifData
+        
+        layoutImage()
+    }
+    
     // MARK: - Layout
     private func getImageViewHeight() -> CGFloat {
         guard
@@ -105,6 +117,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
                       imageWidth * imageHeight)
         return height
     }
+    
     private func configureLayout() {
         setCoversBackgroundColor()
         let headViewHeightMultiplier: CGFloat = 54 / 812
@@ -160,7 +173,13 @@ class ExifViewController: UIViewController, ExifViewProtocol {
                 constant: 16
             ),
             infoButton.widthAnchor.constraint(equalToConstant: 24),
-            
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    private func layoutImage() {
+        let constraints: [NSLayoutConstraint] = [
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             imageView.widthAnchor.constraint(equalTo: view.widthAnchor),

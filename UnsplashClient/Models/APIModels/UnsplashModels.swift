@@ -33,11 +33,11 @@ struct UnsplashColletion: Decodable {
 }
 
 struct exifMetadata: Decodable {
-    let make: String
-    let model: String
-    let focal_length: String
-    let aperture: String
-    let exposure_time: String
+    let make: String?
+    let model: String?
+    let focal_length: String?
+    let aperture: String?
+    let exposure_time: String?
 }
 
 struct photoData: Decodable {

@@ -239,8 +239,8 @@
 			children = (
 				845A866A2AA62F6800E97933 /* Constants.swift */,
 				845A866C2AA6302F00E97933 /* AuthenticationSession.swift */,
-				845A86782AAF846D00E97933 /* Networking.swift */,
 				84D200142AFA4C1400516873 /* UnsplashDomain.swift */,
+				845A86782AAF846D00E97933 /* Networking.swift */,
 				84D200162AFA578E00516873 /* Errors.swift */,
 			);
 			path = Networking;

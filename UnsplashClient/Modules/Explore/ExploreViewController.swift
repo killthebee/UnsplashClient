@@ -368,7 +368,6 @@ extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print(images[indexPath.row].id)
         presenter?.presentExifScreen(photoId: images[indexPath.row].id)
     }
 }

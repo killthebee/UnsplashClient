@@ -22,5 +22,6 @@ enum HTTPScheme: String {
 
 let collbackScheme = "tutututuclient"
 
+// TODO: i can use github to hide keys, not like i care, just wana make it look better
 let clientId = "lpjuJu1NvEkMVzV_X3pvAmkfWzeCcnOs2w59gdeyp1Q"
 let clientSecret = "tUic-Ay2vrcl6-_RcDETtFWbCoFrXowm2uGL8R4zyXo"

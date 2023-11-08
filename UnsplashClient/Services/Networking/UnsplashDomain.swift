@@ -9,6 +9,7 @@ class UnsplashApi: ObservableObject {
         case newImages
         case collectionPhotos
         case login
+        case getPhoto
     }
     
     static let shared = UnsplashApi()
@@ -66,6 +67,10 @@ class UnsplashApi: ObservableObject {
             ]
             urlComponents.host = Urls.unsplashHost.rawValue
             urlComponents.path = Urls.loginPath.rawValue
+        case .getPhoto:
+            queryItems = []
+            urlComponents.host = Urls.unslpashApiHost.rawValue
+            urlComponents.path = Urls.newPhotosPath.rawValue + "/\(code)"
         }
         urlComponents.scheme = HTTPScheme.secure.rawValue
         urlComponents.queryItems = queryItems
@@ -233,6 +238,37 @@ class UnsplashApi: ObservableObject {
         } catch {
             print("failed to download cover photo; \(error)")
         }
-        
+    }
+    
+    func getPhoto(
+        _ accessToken: String,
+        _ photoID: String,
+        _ complitionHandler: @escaping (photoModel, exifMetadata) async -> Void
+    ) async {
+        guard let url = makeUrl(photoID, target: .getPhoto) else {
+            return
+        }
+        print(url.absoluteString)
+        let request = setupRequest(url, .get, accessToken)
+        await Networking.shared.performRequest(
+            request
+        ) { (result: Result<photoData, Error>) async in
+            switch result {
+            case let .success(PhotosData):
+                do {
+                    print("????")
+                    let imageData = try await Networking.shared.getImage(
+                        id: "whatever",
+                        imageURL: PhotosData.urls.raw
+                    )
+                    await complitionHandler(imageData, PhotosData.exif)
+                } catch {
+                    self.handleError(error)
+                }
+                
+            case let .failure(error):
+                self.handleError(error)
+            }
+        }
     }
 }
