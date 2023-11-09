@@ -161,8 +161,7 @@ class UnsplashApi: ObservableObject {
         guard let url = makeUrl(target: .collectionList) else {
             return
         }
-//        let request = setupRequest(url, .get, accessToken)
-        let request = setupRequest(url, .get)
+        let request = setupRequest(url, .get, accessToken)
         await Networking.shared.performRequest(
             request
         ) { (result: Result<[UnsplashColletion], Error>) async in
@@ -210,7 +209,8 @@ class UnsplashApi: ObservableObject {
             return
         }
         
-        let request = setupRequest(url, .get, accessToken)
+//        let request = setupRequest(url, .get, accessToken)
+        let request = setupRequest(url, .get)
         await Networking.shared.performRequest(
             request
         ) { (result: Result<[UnsplashPhoto], Error>) async in

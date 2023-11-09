@@ -36,6 +36,13 @@ class InfoView: UIViewController {
                 action: #selector(tryAgainCollections),
                 for: .touchDown
             )
+        case .newImages:
+            helpTextLable.text = "failed to download new images, rly sry"
+            repeatButton.addTarget(
+                self,
+                action: #selector(tryAgainNewImagess),
+                for: .touchDown
+            )
         default:
             helpTextLable.text = "hmmmm"
         }
@@ -177,6 +184,21 @@ class InfoView: UIViewController {
         Task {
             try await Task.sleep(nanoseconds: 1000000000)
             exploreVC.presenter?.getCollections()
+        }
+        
+        dismiss(animated: true)
+    }
+    
+    @objc func tryAgainNewImagess(_ sender: UIButton) {
+        guard let exploreVC = getExploreVC(currentVC ?? nil) else {
+            dismiss(animated: true)
+            return
+        }
+        // TODO: Find a better solution
+        Task {
+            try await Task.sleep(nanoseconds: 1000000000)
+            let page = exploreVC.newImageTableDelegateAndDataSource.pageCount
+            exploreVC.presenter?.getNewImages(page: page)
         }
         
         dismiss(animated: true)

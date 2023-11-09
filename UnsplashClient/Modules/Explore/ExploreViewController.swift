@@ -18,7 +18,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     private var newImages: [photoModel] = []
     
-    private let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
+    let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
     
     // transitionDelegate property is weak, so, retain with a strong reference
     // TOOD: think about whether i can make this delegate global or smthng
@@ -131,9 +131,9 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         addSubviews()
         configureLayout()
         configureSubviews()
-        presenter?.getCollections()
+//        presenter?.getCollections()
 //        presenter?.startHeaderImageTask()
-//        getImages()
+        getImages()
         let tapOnProfileIconGesutre = UITapGestureRecognizer(
             target: self, action: #selector(presentInfo(sender:))
         )
