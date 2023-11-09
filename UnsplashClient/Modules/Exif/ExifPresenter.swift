@@ -8,7 +8,6 @@ class ExifPresenter: ExifPresenterProtocol {
     }
     
     func getImage(photoId: String) {
-        print("going dark ----")
         interactor?.getImage(photoId: photoId)
     }
     

@@ -9,6 +9,8 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     var photoId: String? = nil
     
+    //TODO: I really need to cache get photo request!
+    //TODO: add spiner while it's loading!
     private var image: UIImage?
     
     private var exif: exifMetadata? = nil
@@ -77,6 +79,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         addSubviews()
         configureLayout()
         downloadImage(photoId: photoId)
+        addTargetMethods()
     }
     
     private func disableAutoresizing() {
@@ -103,6 +106,14 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         exif = exifData
         
         layoutImage()
+    }
+    
+    private func addTargetMethods() {
+        dismissButton.addTarget(
+            self,
+            action: #selector(handleDismissButtonClicked),
+            for: .touchDown
+        )
     }
     
     // MARK: - Layout
@@ -198,4 +209,10 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     private let topSafeAreaContainer = UIView()
     private let headerView = UIView()
+    
+    // MARK: - logic
+    
+    @objc func handleDismissButtonClicked(_ sender: UIButton) {
+        dismiss(animated: true)
+    }
 }

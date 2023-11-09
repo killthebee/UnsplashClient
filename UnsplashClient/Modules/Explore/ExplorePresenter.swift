@@ -43,4 +43,8 @@ class ExplorePresenter: ExplorePresenterProtocol {
         interactor?.invalidateHeaderTask()
         router?.presentExifDataScreen(photoId: photoId)
     }
+    
+    func invalidateHeaderTask() {
+        interactor?.invalidateHeaderTask()
+    }
 }

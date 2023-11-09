@@ -92,20 +92,6 @@ class UnsplashApi: ObservableObject {
         return request
     }
     
-    func handleError(_ error: Error) {
-//         what a fucking epic syntaxis
-        if let error = error as? networkingErrors {
-            if case let . customError(errodData) = error,
-               let responseWithError = try? JSONDecoder().decode(ResponseWithErrors.self, from: errodData) {
-                // TODO: Wire BS here!
-                print("gonna make a vsplivashka pop up!")
-                print("Unsplash errors: \(responseWithError.errors)")
-            }
-        } else {
-            print("unsplash returned something else Oo")
-        }
-    }
-    
     func exchangeCode(
         code: String,
         _ complitionHandler: @escaping (TokenExchangeSuccessData) async -> Void
@@ -122,7 +108,11 @@ class UnsplashApi: ObservableObject {
             case let .success(accessToken):
                 await complitionHandler(accessToken)
             case let .failure(error):
-                self.handleError(error)
+                self.handleError(
+                    error,
+                    currentScreen: .intro,
+                    source: .codeExchange
+                )
             }
         }
     }
@@ -134,7 +124,8 @@ class UnsplashApi: ObservableObject {
         guard let url = makeUrl(target: .randomPhoto) else {
             return
         }
-        let request = setupRequest(url, .get, accessToken)
+//        let request = setupRequest(url, .get, accessToken)
+        let request = setupRequest(url, .get)
         await Networking.shared.performRequest(
             request
         ) { (result: Result<UnsplashPhoto, Error>) async in
@@ -148,10 +139,18 @@ class UnsplashApi: ObservableObject {
                     )
                     await complitionHandler(image)
                 } catch {
-                    self.handleError(error)
+                    self.handleError(
+                        error,
+                        currentScreen: .explore,
+                        source: .headerImage
+                    )
                 }
             case let .failure(error):
-                self.handleError(error)
+                self.handleError(
+                    error,
+                    currentScreen: .explore,
+                    source: .headerImage
+                )
             }
         }
     }
@@ -171,7 +170,11 @@ class UnsplashApi: ObservableObject {
             case let .success(collections):
                 await complitionHandler(collections)
             case let .failure(error):
-                self.handleError(error)
+                self.handleError(
+                    error,
+                    currentScreen: .explore,
+                    source: .collections
+                )
             }
         }
     }
@@ -216,7 +219,11 @@ class UnsplashApi: ObservableObject {
                 await self.downloadImagesAsync(with: PhotosData)
                 await complitionHandler(self.newImages)
             case let .failure(error):
-                self.handleError(error)
+                self.handleError(
+                    error,
+                    currentScreen: .explore,
+                    source: .newImages
+                )
             }
         }
     }
@@ -236,6 +243,7 @@ class UnsplashApi: ObservableObject {
             
              await complitionHandler(data)
         } catch {
+            // TODO: mb do something about collection cover photo?
             print("failed to download cover photo; \(error)")
         }
     }
@@ -248,7 +256,6 @@ class UnsplashApi: ObservableObject {
         guard let url = makeUrl(photoID, target: .getPhoto) else {
             return
         }
-        print(url.absoluteString)
         let request = setupRequest(url, .get, accessToken)
         await Networking.shared.performRequest(
             request
@@ -256,19 +263,99 @@ class UnsplashApi: ObservableObject {
             switch result {
             case let .success(PhotosData):
                 do {
-                    print("????")
                     let imageData = try await Networking.shared.getImage(
                         id: "whatever",
                         imageURL: PhotosData.urls.raw
                     )
                     await complitionHandler(imageData, PhotosData.exif)
                 } catch {
-                    self.handleError(error)
+                    self.handleError(
+                        error,
+                        currentScreen: .exif,
+                        source: .getPhoto
+                    )
                 }
                 
             case let .failure(error):
-                self.handleError(error)
+                self.handleError(
+                    error,
+                    currentScreen: .exif,
+                    source: .getPhoto
+                )
             }
+        }
+    }
+}
+
+// MARK: - error handling
+extension UnsplashApi {
+    
+    enum CurrentScreen {
+        case explore
+        case intro
+        case exif
+    }
+    
+    enum ErrorSource {
+        case codeExchange
+        case headerImage
+        case collections
+        case newImages
+        case getPhoto
+    }
+    
+    private func handleError(
+        _ error: Error,
+        currentScreen: CurrentScreen,
+        source: ErrorSource
+    ) {
+//         what a fucking epic syntaxis
+        if let error = error as? networkingErrors {
+            if case let . customError(errodData) = error,
+               let responseWithError = try? JSONDecoder().decode(ResponseWithErrors.self, from: errodData) {
+                // TODO: Wire BS here!
+                Task {
+                    await MainActor.run{
+                        showPopup(
+                            error,
+                            currentScreen: currentScreen,
+                            source: source
+                        )
+                    }
+                }
+                print("gonna make a vsplivashka pop up!")
+                print("Unsplash errors: \(responseWithError.errors)")
+            }
+        } else {
+            print("unsplash returned something else Oo")
+        }
+    }
+    
+    private func showPopup(
+        _ error: Error,
+        currentScreen: CurrentScreen,
+        source: ErrorSource
+    ) {
+        guard
+            let visibleVC = UIApplication.shared.keyWindow?.visibleViewController
+        else { return }
+        switch currentScreen {
+        case .intro:
+            print("into")
+        case .explore:
+            guard let exploreVC = visibleVC as? ExploreViewController else {
+                return
+            }
+            if source == .headerImage {
+                exploreVC.presenter?.invalidateHeaderTask()
+                let vc = InfoView(error, source: source, vc: exploreVC)
+                vc.transitioningDelegate = exploreVC.customTransitioningDelegate
+                vc.modalPresentationStyle = .custom
+                
+                exploreVC.present(vc, animated: true)
+            }
+        case .exif:
+            print("exif")
         }
     }
 }

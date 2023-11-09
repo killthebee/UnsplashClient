@@ -1,10 +1,12 @@
 import Foundation
 
 protocol ExploreViewProtocol: AnyObject {
+    var customTransitioningDelegate: BSTransitioningDelegate { get }
     func setNewHeaderImage(imageData: Data, _ photographerName: String)
     func setCollections(with collectionsData: [[UnsplashColletion]])
     func addNewImages(photos newImages: [photoModel])
     func setNewImages(photos newImages: [photoModel])
+    func invalidateHeaderTask()
 }
 
 protocol ExploreConfiguratorProtocol: AnyObject {
@@ -20,6 +22,7 @@ protocol ExplorePresenterProtocol: AnyObject {
     func addNewImages(photos newImages: [photoModel])
     func setNewImages(photos newImages: [photoModel])
     func presentExifScreen(photoId: String)
+    func invalidateHeaderTask()
 }
 
 protocol ExploreRouterProtocol: AnyObject {

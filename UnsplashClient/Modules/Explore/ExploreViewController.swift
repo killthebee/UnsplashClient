@@ -21,7 +21,8 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     private let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
     
     // transitionDelegate property is weak, so, retain with a strong reference
-    private let customTransitioningDelegate = BSTransitioningDelegate()
+    // TOOD: think about whether i can make this delegate global or smthng
+    let customTransitioningDelegate = BSTransitioningDelegate()
     
     // MARK: - UI Elements
     let headerImage: BackgroundImageView = {
@@ -131,8 +132,8 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         configureLayout()
         configureSubviews()
 //        presenter?.getCollections()
-//        presenter?.startHeaderImageTask()
-        getImages()
+        presenter?.startHeaderImageTask()
+//        getImages()
         let tapOnProfileIconGesutre = UITapGestureRecognizer(
             target: self, action: #selector(presentInfo(sender:))
         )
@@ -307,6 +308,10 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+    }
+    
+    func invalidateHeaderTask() {
+        presenter?.invalidateHeaderTask()
     }
 }
 

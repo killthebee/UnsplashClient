@@ -7,6 +7,41 @@ enum InfoViewTypes {
 
 class InfoView: UIViewController {
     
+    weak var currentVC: Presentable? = nil
+    
+    convenience init(exifMetadata: exifMetadata) {
+        self.init()
+    }
+    
+    convenience init(
+        _ error: Error,
+        source: UnsplashApi.ErrorSource,
+        vc: UIViewController
+    ) {
+        self.init()
+        currentVC = vc
+        
+        switch source {
+        case .headerImage:
+            helpTextLable.text = "failed to download header image, rly sry"
+            repeatButton.addTarget(
+                self,
+                action: #selector(tryAgainHeaderImage),
+                for: .touchDown
+            )
+        default:
+            helpTextLable.text = "hmmmm"
+        }
+    }
+    
+    convenience required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+    
     private let headerLable: UILabel = {
         let lable = UILabel()
         lable.text = "Sorry, there’s a problem."
@@ -19,7 +54,7 @@ class InfoView: UIViewController {
     
     private let helpTextLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Something went wrong and we’re not too sure what it is right now. While we figure it out, please try again."
+//        lable.text = "Something went wrong and we’re not too sure what it is right now. While we figure it out, please try again."
         lable.textAlignment = .center
         lable.textColor = .systemGray
         lable.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -104,5 +139,17 @@ class InfoView: UIViewController {
         ]
         
         NSLayoutConstraint.activate(constraints)
+    }
+    
+    @objc func tryAgainHeaderImage(_ sender: UIButton) {
+        guard
+            let exploreVC = currentVC as? ExploreViewController
+        else
+            {
+            dismiss(animated: true)
+            return
+        }
+        exploreVC.presenter?.startHeaderImageTask()
+        dismiss(animated: true)
     }
 }
