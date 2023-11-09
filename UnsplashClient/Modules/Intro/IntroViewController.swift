@@ -6,6 +6,7 @@ class IntroViewController: UIViewController, IntroViewProtocol {
     
     // MARK: Dependencies
     var presenter: IntroPresenterProtocol?
+    let customTransitioningDelegate = BSTransitioningDelegate()
     
     // MARK: UI Elements
     var backgroundImage: BackgroundImageView!

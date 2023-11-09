@@ -209,8 +209,8 @@ class UnsplashApi: ObservableObject {
             return
         }
         
-//        let request = setupRequest(url, .get, accessToken)
-        let request = setupRequest(url, .get)
+        let request = setupRequest(url, .get, accessToken)
+//        let request = setupRequest(url, .get)
         await Networking.shared.performRequest(
             request
         ) { (result: Result<[UnsplashPhoto], Error>) async in
@@ -305,7 +305,7 @@ extension UnsplashApi {
         if let error = error as? networkingErrors {
             if case let . customError(errodData) = error,
                let responseWithError = try? JSONDecoder().decode(ResponseWithErrors.self, from: errodData) {
-                // TODO: Wire BS here!
+                // TODO: try to make it async with @MainActor
                 Task {
                     await MainActor.run{
                         showPopup(
@@ -315,7 +315,6 @@ extension UnsplashApi {
                         )
                     }
                 }
-                print("gonna make a vsplivashka pop up!")
                 print("Unsplash errors: \(responseWithError.errors)")
             }
         } else {
@@ -335,7 +334,14 @@ extension UnsplashApi {
         else { return }
         switch currentScreen {
         case .intro:
-            print("into")
+            guard let introVC = visibleVC as? IntroViewController else {
+                return
+            }
+            let vc = InfoView(error, source: source, vc: introVC)
+            vc.transitioningDelegate = introVC.customTransitioningDelegate
+            vc.modalPresentationStyle = .custom
+                
+            introVC.present(vc, animated: true)
         case .explore:
             guard let exploreVC = visibleVC as? ExploreViewController else {
                 return

@@ -43,6 +43,13 @@ class InfoView: UIViewController {
                 action: #selector(tryAgainNewImagess),
                 for: .touchDown
             )
+        case .codeExchange:
+            helpTextLable.text = "failed to get auth code, rly sry"
+            repeatButton.addTarget(
+                self,
+                action: #selector(tryAgainCodeExchange),
+                for: .touchDown
+            )
         default:
             helpTextLable.text = "hmmmm"
         }
@@ -193,6 +200,11 @@ class InfoView: UIViewController {
         let page = exploreVC.newImageTableDelegateAndDataSource.pageCount
         exploreVC.presenter?.getNewImages(page: page)
         
+        dismiss(animated: true)
+    }
+    
+    @objc func tryAgainCodeExchange(_ sender: UIButton) {
+        // My guess is that authSession window will just disappear 
         dismiss(animated: true)
     }
 }
