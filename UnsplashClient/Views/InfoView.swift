@@ -15,7 +15,7 @@ class InfoView: UIViewController {
     
     convenience init(
         _ error: Error,
-        source: UnsplashApi.ErrorSource,
+        source: ErrorSource,
         vc: UIViewController
     ) {
         self.init()
@@ -27,6 +27,13 @@ class InfoView: UIViewController {
             repeatButton.addTarget(
                 self,
                 action: #selector(tryAgainHeaderImage),
+                for: .touchDown
+            )
+        case .collections:
+            helpTextLable.text = "failed to download collections, rly sry"
+            repeatButton.addTarget(
+                self,
+                action: #selector(tryAgainCollections),
                 for: .touchDown
             )
         default:
@@ -141,15 +148,37 @@ class InfoView: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
-    @objc func tryAgainHeaderImage(_ sender: UIButton) {
+    private func getExploreVC(_ vc: Presentable?) -> ExploreViewController? {
         guard
             let exploreVC = currentVC as? ExploreViewController
         else
             {
+            return nil
+        }
+        
+        return exploreVC
+    }
+    
+    @objc func tryAgainHeaderImage(_ sender: UIButton) {
+        guard let exploreVC = getExploreVC(currentVC ?? nil) else {
             dismiss(animated: true)
             return
         }
         exploreVC.presenter?.startHeaderImageTask()
+        dismiss(animated: true)
+    }
+    
+    @objc func tryAgainCollections(_ sender: UIButton) {
+        guard let exploreVC = getExploreVC(currentVC ?? nil) else {
+            dismiss(animated: true)
+            return
+        }
+        // TODO: Find a better solution
+        Task {
+            try await Task.sleep(nanoseconds: 1000000000)
+            exploreVC.presenter?.getCollections()
+        }
+        
         dismiss(animated: true)
     }
 }

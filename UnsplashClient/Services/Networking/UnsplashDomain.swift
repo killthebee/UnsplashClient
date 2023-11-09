@@ -124,8 +124,7 @@ class UnsplashApi: ObservableObject {
         guard let url = makeUrl(target: .randomPhoto) else {
             return
         }
-//        let request = setupRequest(url, .get, accessToken)
-        let request = setupRequest(url, .get)
+        let request = setupRequest(url, .get, accessToken)
         await Networking.shared.performRequest(
             request
         ) { (result: Result<UnsplashPhoto, Error>) async in
@@ -162,7 +161,8 @@ class UnsplashApi: ObservableObject {
         guard let url = makeUrl(target: .collectionList) else {
             return
         }
-        let request = setupRequest(url, .get, accessToken)
+//        let request = setupRequest(url, .get, accessToken)
+        let request = setupRequest(url, .get)
         await Networking.shared.performRequest(
             request
         ) { (result: Result<[UnsplashColletion], Error>) async in
@@ -296,14 +296,6 @@ extension UnsplashApi {
         case exif
     }
     
-    enum ErrorSource {
-        case codeExchange
-        case headerImage
-        case collections
-        case newImages
-        case getPhoto
-    }
-    
     private func handleError(
         _ error: Error,
         currentScreen: CurrentScreen,
@@ -348,12 +340,12 @@ extension UnsplashApi {
             }
             if source == .headerImage {
                 exploreVC.presenter?.invalidateHeaderTask()
-                let vc = InfoView(error, source: source, vc: exploreVC)
-                vc.transitioningDelegate = exploreVC.customTransitioningDelegate
-                vc.modalPresentationStyle = .custom
-                
-                exploreVC.present(vc, animated: true)
             }
+            let vc = InfoView(error, source: source, vc: exploreVC)
+            vc.transitioningDelegate = exploreVC.customTransitioningDelegate
+            vc.modalPresentationStyle = .custom
+                
+            exploreVC.present(vc, animated: true)
         case .exif:
             print("exif")
         }

@@ -8,3 +8,11 @@ enum networkingErrors: Error {
 struct ResponseWithErrors: Decodable {
     let errors: [String]
 }
+
+enum ErrorSource {
+    case codeExchange
+    case headerImage
+    case collections
+    case newImages
+    case getPhoto
+}
