@@ -180,11 +180,7 @@ class InfoView: UIViewController {
             dismiss(animated: true)
             return
         }
-        // TODO: Find a better solution
-        Task {
-            try await Task.sleep(nanoseconds: 1000000000)
-            exploreVC.presenter?.getCollections()
-        }
+        exploreVC.presenter?.getCollections()
         
         dismiss(animated: true)
     }
@@ -194,12 +190,8 @@ class InfoView: UIViewController {
             dismiss(animated: true)
             return
         }
-        // TODO: Find a better solution
-        Task {
-            try await Task.sleep(nanoseconds: 1000000000)
-            let page = exploreVC.newImageTableDelegateAndDataSource.pageCount
-            exploreVC.presenter?.getNewImages(page: page)
-        }
+        let page = exploreVC.newImageTableDelegateAndDataSource.pageCount
+        exploreVC.presenter?.getNewImages(page: page)
         
         dismiss(animated: true)
     }

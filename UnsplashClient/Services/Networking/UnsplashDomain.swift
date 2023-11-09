@@ -329,7 +329,9 @@ extension UnsplashApi {
         source: ErrorSource
     ) {
         guard
-            let visibleVC = UIApplication.shared.keyWindow?.visibleViewController
+            let visibleVC = UIApplication.shared.connectedScenes.compactMap(
+                { ($0 as? UIWindowScene)?.keyWindow }
+            ).last?.rootViewController
         else { return }
         switch currentScreen {
         case .intro:
