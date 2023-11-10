@@ -1,5 +1,7 @@
 import UIKit
 
+// NOTE: MVC IS GONNA FUCK YOU IN THE ASS
+
 enum InfoViewTypes {
     case errorInfo
     case exifData
@@ -11,11 +13,15 @@ class InfoView: UIViewController {
     weak var currentVC: Presentable? = nil
     
     private var type: InfoViewTypes = .errorInfo
+    private var exifData: exifMetadata? = nil
+    private var dimensions: String? = nil
     
     // MARK: - inits
-    convenience init(exifMetadata: exifMetadata) {
+    convenience init(exifMetadata: exifMetadata, dimensions imageDimensions: String) {
         self.init()
         type = .exifData
+        exifData = exifMetadata
+        dimensions = imageDimensions
     }
     
     convenience init(
@@ -111,20 +117,11 @@ class InfoView: UIViewController {
         return lable
     }()
     
+    // TODO: make new uilable
     private let makeLable: UILabel = {
         let lable = UILabel()
         lable.numberOfLines = 0
         lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        let attributedString = NSMutableAttributedString(
-            string: "make:\nCanon huenon"
-        )
-        attributedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 5)
-        )
-        lable.attributedText = attributedString
-        
         
         return lable
     }()
@@ -133,15 +130,6 @@ class InfoView: UIViewController {
         let lable = UILabel()
         lable.numberOfLines = 0
         lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        let attributedString = NSMutableAttributedString(
-            string: "Focal Length:\n50.0"
-        )
-        attributedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 14)
-        )
-        lable.attributedText = attributedString
         
         return lable
     }()
@@ -150,15 +138,6 @@ class InfoView: UIViewController {
         let lable = UILabel()
         lable.numberOfLines = 0
         lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        let attributedString = NSMutableAttributedString(
-            string: "Model:\nCanon EOS 6D"
-        )
-        attributedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 6)
-        )
-        lable.attributedText = attributedString
         
         return lable
     }()
@@ -167,15 +146,6 @@ class InfoView: UIViewController {
         let lable = UILabel()
         lable.numberOfLines = 0
         lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        let attributedString = NSMutableAttributedString(
-            string: "Shutter Speed:\n1/60s"
-        )
-        attributedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 14)
-        )
-        lable.attributedText = attributedString
         
         return lable
     }()
@@ -184,15 +154,6 @@ class InfoView: UIViewController {
         let lable = UILabel()
         lable.numberOfLines = 0
         lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        let attributedString = NSMutableAttributedString(
-            string: "ISO:\n800"
-        )
-        attributedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 4)
-        )
-        lable.attributedText = attributedString
         
         return lable
     }()
@@ -201,15 +162,6 @@ class InfoView: UIViewController {
         let lable = UILabel()
         lable.numberOfLines = 0
         lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        let attributedString = NSMutableAttributedString(
-            string: "Dimensions:\n3684 x 5472"
-        )
-        attributedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 11)
-        )
-        lable.attributedText = attributedString
         
         return lable
     }()
@@ -218,15 +170,6 @@ class InfoView: UIViewController {
         let lable = UILabel()
         lable.numberOfLines = 0
         lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        let attributedString = NSMutableAttributedString(
-            string: "Aperture:\n4.0"
-        )
-        attributedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 9)
-        )
-        lable.attributedText = attributedString
         
         return lable
     }()
@@ -234,7 +177,6 @@ class InfoView: UIViewController {
     //MARK: - view setup
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupView()
     }
     
@@ -243,6 +185,9 @@ class InfoView: UIViewController {
         disableAutoresizing()
         addSubviews()
         configureLayout()
+        if type == .exifData {
+            populateExifDataLables()
+        }
     }
     
     private func disableAutoresizing() {
@@ -263,6 +208,91 @@ class InfoView: UIViewController {
              shutterSpeedLable, DimensionsLable, ApertureLable
             ].forEach{view.addSubview($0)}
         }
+    }
+    
+    private func populateExifDataLables() {
+        guard let exifData = exifData else { return }
+        
+        let makeAttributedString = NSMutableAttributedString(
+            string: "make:\n\(exifData.make ?? "Unknown")"
+        )
+        makeAttributedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 5)
+        )
+        makeLable.attributedText = makeAttributedString
+        
+        let focalLenghtAttributedString = NSMutableAttributedString(
+            string: "Focal Length:\n\(exifData.focal_length ?? "Unknown")"
+        )
+        focalLenghtAttributedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 14)
+        )
+        focalLenghtLable.attributedText = focalLenghtAttributedString
+        
+        let modelAttributedString = NSMutableAttributedString(
+            string: "Model:\n\(exifData.model ?? "Unknown")"
+        )
+        modelAttributedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 6)
+        )
+        modelLable.attributedText = modelAttributedString
+        
+        
+//        let shutterSpeedFromExposureTime = getShutterSpeed(
+//            from: exifData.exposure_time
+//        )
+        let shutterSpeedString = NSMutableAttributedString(
+            string: "Shutter Speed:\n\(exifData.exposure_time ?? "unknown")"
+        )
+        shutterSpeedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 14)
+        )
+        shutterSpeedLable.attributedText = shutterSpeedString
+        
+        let ISOString: NSMutableAttributedString!
+        if let iso = exifData.iso {
+            ISOString = NSMutableAttributedString(
+                string: "ISO:\n\(iso)"
+            )
+        } else {
+            ISOString = NSMutableAttributedString(
+                string: "ISO:\n Unknown"
+            )
+        }
+        ISOString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 4)
+        )
+        ISOLable.attributedText = focalLenghtAttributedString
+        
+        let dimensionsString = NSMutableAttributedString(
+            string: "Dimensions:\n\(dimensions ?? "Unknown")"
+        )
+        dimensionsString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 11)
+        )
+        DimensionsLable.attributedText = dimensionsString
+        
+        let apertureString = NSMutableAttributedString(
+            string: "Aperture:\n\(exifData.aperture ?? "Unknown")"
+        )
+        apertureString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 9)
+        )
+        ApertureLable.attributedText = apertureString
     }
     
     //MARK: - Layout
@@ -471,5 +501,18 @@ class InfoView: UIViewController {
             exifVC.downloadImage(photoId: photoId)
         }
         dismiss(animated: true)
+    }
+    
+    private func getShutterSpeed(from exposure_time: String?) -> Int {
+        // by api doc, and logic api should reutrn exposure time, but in reallity
+        // it returning shutter speed, dunno
+        let exposureTime: Float!
+        if let exposureTimeFloat = Float(exposure_time ?? "0.0166 ") {
+            exposureTime = exposureTimeFloat
+        } else {
+            exposureTime = 0.0166
+        }
+        let shutterSpeed: Float = 1 / exposureTime
+        return Int(shutterSpeed)
     }
 }

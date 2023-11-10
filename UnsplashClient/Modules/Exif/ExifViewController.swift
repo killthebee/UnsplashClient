@@ -254,7 +254,9 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     }
     
     func presentExifInfo(exif: exifMetadata) {
-        let vc = InfoView(exifMetadata: exif)
+        let dimensions = "\(Int(image?.size.width ?? 0)) x \(Int(image?.size.height ?? 0))"
+        
+        let vc = InfoView(exifMetadata: exif, dimensions: dimensions)
         vc.transitioningDelegate = customTransitioningDelegate
         vc.modalPresentationStyle = .custom
             
