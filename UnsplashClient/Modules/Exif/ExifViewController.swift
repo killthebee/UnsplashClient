@@ -10,7 +10,6 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     var photoId: String? = nil
     
     //TODO: I really need to cache get photo request!
-    //TODO: add spiner while it's loading!
     private var image: UIImage?
     
     private var exif: exifMetadata? = nil
@@ -57,6 +56,8 @@ class ExifViewController: UIViewController, ExifViewProtocol {
 
         button.setImage(boldSearch, for: .normal)
         button.tintColor = .white
+        
+        button.addTarget(self, action: #selector(infoButtonTouched), for: .touchDown)
         
         return button
     }()
@@ -246,5 +247,17 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     @objc func handleDismissButtonClicked(_ sender: UIButton) {
         dismiss(animated: true)
+    }
+    
+    @objc func infoButtonTouched(_ sender: UIButton) {
+        presenter?.infoButtonTouched(exif: exif)
+    }
+    
+    func presentExifInfo(exif: exifMetadata) {
+        let vc = InfoView(exifMetadata: exif)
+        vc.transitioningDelegate = customTransitioningDelegate
+        vc.modalPresentationStyle = .custom
+            
+        present(vc, animated: true)
     }
 }

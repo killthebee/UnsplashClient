@@ -7,10 +7,15 @@ enum InfoViewTypes {
 
 class InfoView: UIViewController {
     
+    // MARK: - Data
     weak var currentVC: Presentable? = nil
     
+    private var type: InfoViewTypes = .errorInfo
+    
+    // MARK: - inits
     convenience init(exifMetadata: exifMetadata) {
         self.init()
+        type = .exifData
     }
     
     convenience init(
@@ -64,6 +69,8 @@ class InfoView: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - UI elements
+    // MARK: error elements
     private let headerLable: UILabel = {
         let lable = UILabel()
         lable.text = "Sorry, there’s a problem."
@@ -95,6 +102,136 @@ class InfoView: UIViewController {
         return button
     }()
     
+    //MARK: Exif data elements
+    private let cameraHeader: UILabel = {
+        let lable = UILabel()
+        lable.text = "Camera"
+        lable.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        
+        return lable
+    }()
+    
+    private let makeLable: UILabel = {
+        let lable = UILabel()
+        lable.numberOfLines = 0
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        let attributedString = NSMutableAttributedString(
+            string: "make:\nCanon huenon"
+        )
+        attributedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 5)
+        )
+        lable.attributedText = attributedString
+        
+        
+        return lable
+    }()
+    
+    private let focalLenghtLable: UILabel = {
+        let lable = UILabel()
+        lable.numberOfLines = 0
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        let attributedString = NSMutableAttributedString(
+            string: "Focal Length:\n50.0"
+        )
+        attributedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 14)
+        )
+        lable.attributedText = attributedString
+        
+        return lable
+    }()
+    
+    private let modelLable: UILabel = {
+        let lable = UILabel()
+        lable.numberOfLines = 0
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        let attributedString = NSMutableAttributedString(
+            string: "Model:\nCanon EOS 6D"
+        )
+        attributedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 6)
+        )
+        lable.attributedText = attributedString
+        
+        return lable
+    }()
+    
+    private let shutterSpeedLable: UILabel = {
+        let lable = UILabel()
+        lable.numberOfLines = 0
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        let attributedString = NSMutableAttributedString(
+            string: "Shutter Speed:\n1/60s"
+        )
+        attributedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 14)
+        )
+        lable.attributedText = attributedString
+        
+        return lable
+    }()
+    
+    private let ISOLable: UILabel = {
+        let lable = UILabel()
+        lable.numberOfLines = 0
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        let attributedString = NSMutableAttributedString(
+            string: "ISO:\n800"
+        )
+        attributedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 4)
+        )
+        lable.attributedText = attributedString
+        
+        return lable
+    }()
+    
+    private let DimensionsLable: UILabel = {
+        let lable = UILabel()
+        lable.numberOfLines = 0
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        let attributedString = NSMutableAttributedString(
+            string: "Dimensions:\n3684 x 5472"
+        )
+        attributedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 11)
+        )
+        lable.attributedText = attributedString
+        
+        return lable
+    }()
+    
+    private let ApertureLable: UILabel = {
+        let lable = UILabel()
+        lable.numberOfLines = 0
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        let attributedString = NSMutableAttributedString(
+            string: "Aperture:\n4.0"
+        )
+        attributedString.setAttributes([
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+            NSAttributedString.Key.foregroundColor: UIColor.gray],
+            range: NSMakeRange(0, 9)
+        )
+        lable.attributedText = attributedString
+        
+        return lable
+    }()
+    
+    //MARK: - view setup
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -109,20 +246,30 @@ class InfoView: UIViewController {
     }
     
     private func disableAutoresizing() {
-        [headerLable, repeatButtonContainer, repeatButton, helpTextLable
+        [headerLable, repeatButtonContainer, repeatButton, helpTextLable,
+         cameraHeader, makeLable, focalLenghtLable, modelLable, ISOLable,
+         shutterSpeedLable, DimensionsLable, ApertureLable
         ].forEach{$0.translatesAutoresizingMaskIntoConstraints = false}
     }
     
     private func addSubviews() {
-        [headerLable, repeatButtonContainer, helpTextLable
-        ].forEach{view.addSubview($0)}
-        repeatButtonContainer.addSubview(repeatButton)
+        switch type {
+        case .errorInfo:
+            [headerLable, repeatButtonContainer, helpTextLable
+            ].forEach{view.addSubview($0)}
+            repeatButtonContainer.addSubview(repeatButton)
+        case .exifData:
+            [cameraHeader, makeLable, focalLenghtLable, modelLable, ISOLable,
+             shutterSpeedLable, DimensionsLable, ApertureLable
+            ].forEach{view.addSubview($0)}
+        }
     }
     
+    //MARK: - Layout
     private let repeatButtonContainer = UIView()
     
     private func configureLayout() {
-        let constraints: [NSLayoutConstraint] = [
+        let errorConstraints: [NSLayoutConstraint] = [
             headerLable.topAnchor.constraint(
                 equalTo: view.topAnchor, constant: 20
             ),
@@ -157,10 +304,110 @@ class InfoView: UIViewController {
                 equalTo: repeatButtonContainer.topAnchor
             ),
             helpTextLable.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            helpTextLable.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            helpTextLable.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            )
         ]
         
-        NSLayoutConstraint.activate(constraints)
+        let infoConstraints = [
+            cameraHeader.topAnchor.constraint(
+                equalTo: view.topAnchor,
+                constant: 20
+            ),
+            cameraHeader.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 16
+            ),
+            cameraHeader.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            ),
+            cameraHeader.heightAnchor.constraint(equalToConstant: 22),
+            
+            makeLable.topAnchor.constraint(equalTo: cameraHeader.bottomAnchor),
+            makeLable.leadingAnchor.constraint(
+                equalTo: cameraHeader.leadingAnchor
+            ),
+            makeLable.widthAnchor.constraint(
+                equalTo: view.widthAnchor,
+                multiplier: 0.3
+            ),
+            makeLable.heightAnchor.constraint(equalToConstant: 40),
+            
+            focalLenghtLable.topAnchor.constraint(
+                equalTo: cameraHeader.bottomAnchor
+            ),
+            focalLenghtLable.leadingAnchor.constraint(equalTo: makeLable.trailingAnchor, constant: 10),
+            focalLenghtLable.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            ),
+            focalLenghtLable.heightAnchor.constraint(equalToConstant: 40),
+            
+            modelLable.topAnchor.constraint(equalTo: makeLable.bottomAnchor),
+            modelLable.leadingAnchor.constraint(
+                equalTo: cameraHeader.leadingAnchor
+            ),
+            modelLable.widthAnchor.constraint(
+                equalTo: view.widthAnchor,
+                multiplier: 0.3
+            ),
+            modelLable.heightAnchor.constraint(equalToConstant: 40),
+            
+            ISOLable.topAnchor.constraint(
+                equalTo: focalLenghtLable.bottomAnchor
+            ),
+            ISOLable.leadingAnchor.constraint(
+                equalTo: modelLable.trailingAnchor,
+                constant: 10
+            ),
+            ISOLable.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            ),
+            ISOLable.heightAnchor.constraint(equalToConstant: 40),
+            
+            shutterSpeedLable.topAnchor.constraint(
+                equalTo: modelLable.bottomAnchor
+            ),
+            shutterSpeedLable.leadingAnchor.constraint(
+                equalTo: cameraHeader.leadingAnchor
+            ),
+            shutterSpeedLable.widthAnchor.constraint(
+                equalTo: view.widthAnchor,
+                multiplier: 0.3
+            ),
+            shutterSpeedLable.heightAnchor.constraint(equalToConstant: 40),
+            
+            DimensionsLable.topAnchor.constraint(
+                equalTo: ISOLable.bottomAnchor
+            ),
+            DimensionsLable.leadingAnchor.constraint(
+                equalTo: shutterSpeedLable.trailingAnchor,
+                constant: 10
+            ),
+            DimensionsLable.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            ),
+            DimensionsLable.heightAnchor.constraint(equalToConstant: 40),
+            
+            ApertureLable.topAnchor.constraint(
+                equalTo: shutterSpeedLable.bottomAnchor
+            ),
+            ApertureLable.leadingAnchor.constraint(
+                equalTo: cameraHeader.leadingAnchor
+            ),
+            ApertureLable.widthAnchor.constraint(
+                equalTo: view.widthAnchor,
+                multiplier: 0.3
+            ),
+            ApertureLable.heightAnchor.constraint(equalToConstant: 40),
+        ]
+        switch type {
+        case .errorInfo:
+            NSLayoutConstraint.activate(errorConstraints)
+        case .exifData:
+            NSLayoutConstraint.activate(infoConstraints)
+        }
+        
+        
     }
     
     private func getExploreVC(_ vc: Presentable?) -> ExploreViewController? {
@@ -174,6 +421,7 @@ class InfoView: UIViewController {
         return exploreVC
     }
     
+    // MARK: - action methods / logic
     @objc func tryAgainHeaderImage(_ sender: UIButton) {
         guard let exploreVC = getExploreVC(currentVC ?? nil) else {
             dismiss(animated: true)

@@ -14,4 +14,9 @@ class ExifPresenter: ExifPresenterProtocol {
     func setImage(imageData: photoModel, exif: exifMetadata) {
         view?.setImage(imageData: imageData, exif: exif)
     }
+    
+    func infoButtonTouched(exif: exifMetadata?) {
+        guard let exif = exif else { return }
+        view?.presentExifInfo(exif: exif)
+    }
 }

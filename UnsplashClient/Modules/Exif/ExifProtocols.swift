@@ -1,5 +1,6 @@
 protocol ExifViewProtocol: AnyObject {
     func setImage(imageData: photoModel, exif exifData: exifMetadata)
+    func presentExifInfo(exif: exifMetadata)
 }
 
 protocol ExifConfiguratorProtocol: AnyObject {
@@ -9,6 +10,7 @@ protocol ExifConfiguratorProtocol: AnyObject {
 protocol ExifPresenterProtocol: AnyObject {
     func getImage(photoId: String)
     func setImage(imageData: photoModel, exif: exifMetadata)
+    func infoButtonTouched(exif: exifMetadata?)
 }
 
 protocol ExifInteractorProtocol: AnyObject {
