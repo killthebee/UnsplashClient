@@ -50,18 +50,19 @@ class InfoView: UIViewController {
                 action: #selector(tryAgainCodeExchange),
                 for: .touchDown
             )
-        default:
-            helpTextLable.text = "hmmmm"
+        case .getPhoto:
+            helpTextLable.text = "failed to get the photo, rly sry"
+            repeatButton.addTarget(
+                self,
+                action: #selector(tryAgainGetPhoto),
+                for: .touchDown
+            )
         }
     }
     
     convenience required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
     
     private let headerLable: UILabel = {
         let lable = UILabel()
@@ -205,6 +206,22 @@ class InfoView: UIViewController {
     
     @objc func tryAgainCodeExchange(_ sender: UIButton) {
         // My guess is that authSession window will just disappear 
+        dismiss(animated: true)
+    }
+    
+    @objc func tryAgainGetPhoto(_ sender: UIButton) {
+        guard
+            let exifVC = currentVC as? ExifViewController
+        else
+            {
+            return
+        }
+        // NOTE: aiming at visible vc, so i need time before BS'll disappear
+        Task {
+            try await Task.sleep(nanoseconds: 1000000000)
+            let photoId = exifVC.photoId
+            exifVC.downloadImage(photoId: photoId)
+        }
         dismiss(animated: true)
     }
 }

@@ -15,8 +15,9 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     private var exif: exifMetadata? = nil
     
+    let customTransitioningDelegate = BSTransitioningDelegate()
+    
     // MARK: - UI elements
-    private let spinner = SpinnerViewController()
     
     private let shareButton: UIButton = {
         let button = UIButton()
@@ -65,6 +66,8 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         
         return imageView
     }()
+    
+    private let imagePlaceholderView = ImagePlaceholder()
 
     // MARK: - VC setup
     override func viewDidLoad() {
@@ -84,18 +87,19 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     private func disableAutoresizing() {
         [topSafeAreaContainer, headerView, shareButton, dismissButton,
-         infoButton, imageView
+         infoButton, imageView, imagePlaceholderView
         ].forEach{$0.translatesAutoresizingMaskIntoConstraints = false}
     }
     
     private func addSubviews() {
-        [topSafeAreaContainer, headerView, infoButton, imageView
+        [topSafeAreaContainer, headerView, infoButton, imageView,
+         imagePlaceholderView
         ].forEach{view.addSubview($0)}
         [shareButton, dismissButton
         ].forEach{headerView.addSubview($0)}
     }
     
-    private func downloadImage(photoId: String?) {
+    func downloadImage(photoId: String?) {
         guard let photoId = photoId else { return }
         presenter?.getImage(photoId: photoId)
     }
@@ -105,6 +109,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         imageView.image = image
         exif = exifData
         
+        removeImagePlaceholder()
         layoutImage()
     }
     
@@ -187,6 +192,8 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         ]
         
         NSLayoutConstraint.activate(constraints)
+        // NOTE: mb there is better place to activate this?
+        layoutImagePlaceHolder()
     }
     
     private func layoutImage() {
@@ -202,8 +209,33 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         NSLayoutConstraint.activate(constraints)
     }
     
+    private func layoutImagePlaceHolder() {
+        let constraints: [NSLayoutConstraint] = [
+            imagePlaceholderView.centerXAnchor.constraint(
+                equalTo: view.centerXAnchor
+            ),
+            imagePlaceholderView.centerYAnchor.constraint(
+                equalTo: view.centerYAnchor
+            ),
+            imagePlaceholderView.widthAnchor.constraint(
+                equalTo: view.widthAnchor
+            ),
+            imagePlaceholderView.heightAnchor.constraint(
+                equalTo: view.widthAnchor, multiplier: 0.65
+            )
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    
+    
+    private func removeImagePlaceholder() {
+        imagePlaceholderView.removeFromSuperview()
+    }
+    
     private func setCoversBackgroundColor() {
-        [topSafeAreaContainer, headerView
+        [topSafeAreaContainer, headerView, imagePlaceholderView
         ].forEach{$0.backgroundColor = UIColor(hexString: "#54545C")}
     }
     

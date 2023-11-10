@@ -256,6 +256,7 @@ class UnsplashApi: ObservableObject {
         guard let url = makeUrl(photoID, target: .getPhoto) else {
             return
         }
+//        let request = setupRequest(url, .get)
         let request = setupRequest(url, .get, accessToken)
         await Networking.shared.performRequest(
             request
@@ -327,35 +328,52 @@ extension UnsplashApi {
         currentScreen: CurrentScreen,
         source: ErrorSource
     ) {
+        // NOTE: So, the thing is, after intro, expolre is The rootView,
+        // but exif, after explore, is not!
         guard
-            let visibleVC = UIApplication.shared.connectedScenes.compactMap(
+            var rootVC = UIApplication.shared.connectedScenes.compactMap(
                 { ($0 as? UIWindowScene)?.keyWindow }
             ).last?.rootViewController
-        else { return }
+        else {
+            return
+        }
+        
+        let vc: InfoView!
         switch currentScreen {
         case .intro:
-            guard let introVC = visibleVC as? IntroViewController else {
+            guard let introVC = rootVC as? IntroViewController else {
                 return
             }
-            let vc = InfoView(error, source: source, vc: introVC)
+            vc = InfoView(error, source: source, vc: introVC)
             vc.transitioningDelegate = introVC.customTransitioningDelegate
             vc.modalPresentationStyle = .custom
                 
             introVC.present(vc, animated: true)
         case .explore:
-            guard let exploreVC = visibleVC as? ExploreViewController else {
+            guard let exploreVC = rootVC as? ExploreViewController else {
                 return
             }
             if source == .headerImage {
                 exploreVC.presenter?.invalidateHeaderTask()
             }
-            let vc = InfoView(error, source: source, vc: exploreVC)
+            vc = InfoView(error, source: source, vc: exploreVC)
             vc.transitioningDelegate = exploreVC.customTransitioningDelegate
             vc.modalPresentationStyle = .custom
                 
             exploreVC.present(vc, animated: true)
         case .exif:
-            print("exif")
+            guard let visibleVC = UIApplication.shared.connectedScenes.compactMap(
+                { ($0 as? UIWindowScene)?.keyWindow }
+            ).last?.visibleViewController else { return }
+            guard let exifVC = visibleVC as? ExifViewController else {
+                return
+            }
+            
+            vc = InfoView(error, source: source, vc: exifVC)
+            vc.transitioningDelegate = exifVC.customTransitioningDelegate
+            vc.modalPresentationStyle = .custom
+                
+            exifVC.present(vc, animated: true)
         }
     }
 }
