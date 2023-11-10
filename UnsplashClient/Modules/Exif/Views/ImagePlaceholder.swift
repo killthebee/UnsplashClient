@@ -1,10 +1,3 @@
-//
-//  ImagePlaceholder.swift
-//  UnsplashClient
-//
-//  Created by admin on 10.11.2023.
-//
-
 import UIKit
 
 class ImagePlaceholder: UIView {
@@ -26,11 +19,6 @@ class ImagePlaceholder: UIView {
     
     private func addSpinner() {
         spinner.view.frame = bounds
-        print(bounds.width)
-//        spinner.view.frame.origin = CGPoint(
-//            x: imagePlaceholderView.frame.width / 2,
-//            y: imagePlaceholderView.frame.height / 2
-//        )
         addSubview(spinner.view)
     }
 }
