@@ -11,6 +11,7 @@ protocol ExifPresenterProtocol: AnyObject {
     func getImage(photoId: String)
     func setImage(imageData: photoModel, exif: exifMetadata)
     func infoButtonTouched(exif: exifMetadata?)
+    func dismissRequested()
 }
 
 protocol ExifInteractorProtocol: AnyObject {
@@ -18,5 +19,5 @@ protocol ExifInteractorProtocol: AnyObject {
 }
 
 protocol ExifRouterProtocol: AnyObject {
-    
+    func dismissRequested()
 }

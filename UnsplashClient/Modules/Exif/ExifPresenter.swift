@@ -19,4 +19,8 @@ class ExifPresenter: ExifPresenterProtocol {
         guard let exif = exif else { return }
         view?.presentExifInfo(exif: exif)
     }
+    
+    func dismissRequested() {
+        router?.dismissRequested()
+    }
 }

@@ -10,6 +10,7 @@ class UnsplashApi: ObservableObject {
         case collectionPhotos
         case login
         case getPhoto
+        case sharePhoto
     }
     
     static let shared = UnsplashApi()
@@ -70,6 +71,10 @@ class UnsplashApi: ObservableObject {
         case .getPhoto:
             queryItems = []
             urlComponents.host = Urls.unslpashApiHost.rawValue
+            urlComponents.path = Urls.newPhotosPath.rawValue + "/\(code)"
+        case .sharePhoto:
+            queryItems = []
+            urlComponents.host = Urls.unsplashHost.rawValue
             urlComponents.path = Urls.newPhotosPath.rawValue + "/\(code)"
         }
         urlComponents.scheme = HTTPScheme.secure.rawValue

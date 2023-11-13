@@ -7,4 +7,8 @@ class ExifRouter: ExifRouterProtocol {
         self.assembly = assembly
         self.view = view
     }
+    
+    func dismissRequested() {
+        view?.dismiss()
+    }
 }

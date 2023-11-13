@@ -43,6 +43,8 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         button.setImage(boldSearch, for: .normal)
         button.tintColor = .white
         
+        
+        
         return button
     }()
     
@@ -56,8 +58,6 @@ class ExifViewController: UIViewController, ExifViewProtocol {
 
         button.setImage(boldSearch, for: .normal)
         button.tintColor = .white
-        
-        button.addTarget(self, action: #selector(infoButtonTouched), for: .touchDown)
         
         return button
     }()
@@ -118,6 +118,18 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         dismissButton.addTarget(
             self,
             action: #selector(handleDismissButtonClicked),
+            for: .touchDown
+        )
+        
+        infoButton.addTarget(
+            self,
+            action: #selector(infoButtonTouched),
+            for: .touchDown
+        )
+        
+        shareButton.addTarget(
+            self,
+            action: #selector(shareButtonTouched),
             for: .touchDown
         )
     }
@@ -246,11 +258,48 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     // MARK: - logic
     
     @objc func handleDismissButtonClicked(_ sender: UIButton) {
-        dismiss(animated: true)
+        presenter?.dismissRequested()
     }
     
     @objc func infoButtonTouched(_ sender: UIButton) {
         presenter?.infoButtonTouched(exif: exif)
+    }
+    
+    @objc func shareButtonTouched(_ sender: UIButton) {
+        guard
+            let photoId = photoId,
+            let url = UnsplashApi.shared.makeUrl(photoId, target: .sharePhoto),
+            let imageUrl = NSURL(string: url.absoluteString)
+        else {
+            return
+        }
+        
+        let activityViewController : UIActivityViewController = UIActivityViewController(
+            activityItems: [imageUrl], applicationActivities: nil)
+        
+        activityViewController.popoverPresentationController?.sourceView = sender
+        
+        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
+        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+        
+        activityViewController.activityItemsConfiguration = [
+        UIActivity.ActivityType.message
+        ] as? UIActivityItemsConfigurationReading
+        
+        activityViewController.excludedActivityTypes = [
+            UIActivity.ActivityType.postToWeibo,
+            UIActivity.ActivityType.print,
+            UIActivity.ActivityType.assignToContact,
+            UIActivity.ActivityType.saveToCameraRoll,
+            UIActivity.ActivityType.addToReadingList,
+            UIActivity.ActivityType.postToFlickr,
+            UIActivity.ActivityType.postToVimeo,
+            UIActivity.ActivityType.postToTencentWeibo,
+            UIActivity.ActivityType.postToFacebook
+        ]
+        
+        activityViewController.isModalInPresentation = true
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     func presentExifInfo(exif: exifMetadata) {
