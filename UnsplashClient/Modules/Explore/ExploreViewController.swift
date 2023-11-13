@@ -1,5 +1,4 @@
 import UIKit
-// Photo downloading(even async) taking quite some time tbh, mb move it into assembly or something?
 
 // NOTE: this whole "download image for each cell seperatly" is a complite disaster :D
 
@@ -21,7 +20,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
     
     // transitionDelegate property is weak, so, retain with a strong reference
-    // TOOD: think about whether i can make this delegate global or smthng
+    // TODO: think about whether i can make this delegate global or smthng
     let customTransitioningDelegate = BSTransitioningDelegate()
     
     // MARK: - UI Elements

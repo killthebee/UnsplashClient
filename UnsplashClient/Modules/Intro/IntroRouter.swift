@@ -12,7 +12,6 @@ class IntroRouter:  IntroRouterProtocol {
         guard let exploreVC = assembly.makeExploreScreen() as? ExploreViewController
         else { return }
         exploreVC.modalPresentationStyle = .fullScreen
-//        ExplorePresenter.modalTransitionStyle = .
         view?.present(exploreVC)
     }
 }

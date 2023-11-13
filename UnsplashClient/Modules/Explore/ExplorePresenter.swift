@@ -39,7 +39,6 @@ class ExplorePresenter: ExplorePresenterProtocol {
     }
     
     func presentExifScreen(photoId: String) {
-        // TODO: dont forget to check what'll happend after exif screen dismiss
         interactor?.invalidateHeaderTask()
         router?.presentExifDataScreen(photoId: photoId)
     }

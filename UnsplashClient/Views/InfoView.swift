@@ -1,6 +1,6 @@
 import UIKit
 
-// NOTE: MVC IS GONNA FUCK YOU IN THE ASS
+// i mean this whole massive view controller thing is giving me ptsd
 
 enum InfoViewTypes {
     case errorInfo
@@ -89,7 +89,6 @@ class InfoView: UIViewController {
     
     private let helpTextLable: UILabel = {
         let lable = UILabel()
-//        lable.text = "Something went wrong and we’re not too sure what it is right now. While we figure it out, please try again."
         lable.textAlignment = .center
         lable.textColor = .systemGray
         lable.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -243,10 +242,6 @@ class InfoView: UIViewController {
         )
         modelLable.attributedText = modelAttributedString
         
-        
-//        let shutterSpeedFromExposureTime = getShutterSpeed(
-//            from: exifData.exposure_time
-//        )
         let shutterSpeedString = NSMutableAttributedString(
             string: "Shutter Speed:\n\(exifData.exposure_time ?? "unknown")"
         )
@@ -505,7 +500,8 @@ class InfoView: UIViewController {
     
     private func getShutterSpeed(from exposure_time: String?) -> Int {
         // by api doc, and logic api should reutrn exposure time, but in reallity
-        // it returning shutter speed, dunno
+        // it returning shutter speed, dunno, i think i'll keep this method for
+        // some time
         let exposureTime: Float!
         if let exposureTimeFloat = Float(exposure_time ?? "0.0166 ") {
             exposureTime = exposureTimeFloat

@@ -117,8 +117,6 @@ extension BSTransition: UIViewControllerAnimatedTransitioning {
 //                !transitionContext.transitionWasCancelled
                 true
             )
-            // NOTE: the one place I register transition cancel() is here, in the closure. I dunno how to use to make transition inturrabtile...
-            // also, !transitionContext.transitionWasCancelled basiclly is keeping transition view container ( whats the right termin? ) in view heirarchy and blocks ui 
         }
         
         return animator

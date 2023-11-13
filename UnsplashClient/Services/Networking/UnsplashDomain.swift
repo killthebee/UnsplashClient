@@ -255,8 +255,10 @@ class UnsplashApi: ObservableObject {
     
     private let cachePhotoData = Cache<String, photoModel>()
     private let cachePhotoMetadata = Cache<String, exifMetadata>()
-
-    
+    // NOTE: keep photoModel and exifMetadat at same cell seems moronic to me
+    // NOTE: hash for photoID stays the same, but, hash for url from photoData
+    // does not despite url string is really the same combination of letters,
+    // it's boggles me
     func getPhoto(
         _ accessToken: String,
         _ photoID: String,

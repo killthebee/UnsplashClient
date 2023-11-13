@@ -2,14 +2,11 @@ import UIKit
 
 class ExifViewController: UIViewController, ExifViewProtocol {
     
-    //56 px
-    
     // MARK: - Data
     var presenter: ExifPresenterProtocol?
     
     var photoId: String? = nil
     
-    //TODO: I really need to cache get photo request!
     private var image: UIImage?
     
     private var exif: exifMetadata? = nil
@@ -17,7 +14,6 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     let customTransitioningDelegate = BSTransitioningDelegate()
     
     // MARK: - UI elements
-    
     private let shareButton: UIButton = {
         let button = UIButton()
         let boldConfig = UIImage.SymbolConfiguration(weight: .bold)

@@ -30,7 +30,6 @@ final class BSPresentationController: UIPresentationController {
     private lazy var dimmView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
-//        view.addGestureRecognizer(tapRecognizer)
         let tapGR = UITapGestureRecognizer(
             target: self,
             action: #selector(didTapDimmView)
@@ -40,35 +39,6 @@ final class BSPresentationController: UIPresentationController {
     }()
     
     // MARK: - PresentationController
-//    override var frameOfPresentedViewInContainerView: CGRect {
-//        guard
-//            let containerView = containerView,
-//            let presentedView = presentedView
-//        else {
-//            return super.frameOfPresentedViewInContainerView
-//        }
-//        
-//        let maximumHeight = containerView.frame.height - containerView.safeAreaInsets.top - containerView.safeAreaInsets.bottom
-//        
-//        
-//        let fittingSize = CGSize(width: containerView.bounds.width,
-//                                 height: UIView.layoutFittingCompressedSize.height)
-//        
-//        let presentedViewHeight: CGFloat = 200
-//        // TODO: i better fine tune the height)
-//        
-//        let targetSize = CGSize(
-//            width: containerView.frame.width,
-//            height: presentedViewHeight
-//        )
-//        let targetOrigin = CGPoint(
-//            x: .zero,
-//            y: containerView.frame.maxY - targetSize.height
-//        )
-//        
-//        return CGRect(origin: targetOrigin, size: targetSize)
-//    }
-    
     override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
         
