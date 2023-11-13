@@ -41,6 +41,7 @@
 		84D2001B2AFA870400516873 /* UIImageView + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2001A2AFA870400516873 /* UIImageView + ext.swift */; };
 		84D2001D2AFCE99900516873 /* UIWindow + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2001C2AFCE99900516873 /* UIWindow + ext.swift */; };
 		84D200212AFE38E800516873 /* ImagePlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200202AFE38E800516873 /* ImagePlaceholder.swift */; };
+		84D200232B0247F400516873 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200222B0247F400516873 /* Cache.swift */; };
 		84D2FFC32AE7C1EF00516873 /* BSTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */; };
 		84D2FFC52AE7C2F900516873 /* BSPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */; };
 		84D2FFCB2AE92DAB00516873 /* BSTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFCA2AE92DAB00516873 /* BSTransition.swift */; };
@@ -117,6 +118,7 @@
 		84D2001A2AFA870400516873 /* UIImageView + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView + ext.swift"; sourceTree = "<group>"; };
 		84D2001C2AFCE99900516873 /* UIWindow + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow + ext.swift"; sourceTree = "<group>"; };
 		84D200202AFE38E800516873 /* ImagePlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePlaceholder.swift; sourceTree = "<group>"; };
+		84D200222B0247F400516873 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransitioningDelegate.swift; sourceTree = "<group>"; };
 		84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSPresentationController.swift; sourceTree = "<group>"; };
 		84D2FFCA2AE92DAB00516873 /* BSTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransition.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				845A86692AA62F5600E97933 /* Networking */,
 				845A86672AA5F9FF00E97933 /* KeyChainManager.swift */,
 				845A86742AAF587600E97933 /* AppAssembly.swift */,
+				84D200222B0247F400516873 /* Cache.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				845A86622AA4FBA300E97933 /* GenericActionButton.swift in Sources */,
 				845A867D2AB4519700E97933 /* UnsplashModels.swift in Sources */,
 				84D90CEC2AA1FA60001E9AE3 /* IntroProtocols.swift in Sources */,
+				84D200232B0247F400516873 /* Cache.swift in Sources */,
 				845A86772AAF5A2400E97933 /* UIViewController + ext.swift in Sources */,
 				84D2001D2AFCE99900516873 /* UIWindow + ext.swift in Sources */,
 				84D2FFC52AE7C2F900516873 /* BSPresentationController.swift in Sources */,

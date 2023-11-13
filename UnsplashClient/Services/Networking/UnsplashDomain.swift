@@ -253,6 +253,10 @@ class UnsplashApi: ObservableObject {
         }
     }
     
+    private let cachePhotoData = Cache<String, photoModel>()
+    private let cachePhotoMetadata = Cache<String, exifMetadata>()
+
+    
     func getPhoto(
         _ accessToken: String,
         _ photoID: String,
@@ -263,6 +267,12 @@ class UnsplashApi: ObservableObject {
         }
 //        let request = setupRequest(url, .get)
         let request = setupRequest(url, .get, accessToken)
+        if let imageData = self.cachePhotoData[photoID] {
+            if let metadata = cachePhotoMetadata[photoID] {
+                await complitionHandler(imageData, metadata)
+                return
+            }
+        }
         await Networking.shared.performRequest(
             request
         ) { (result: Result<photoData, Error>) async in
@@ -273,6 +283,8 @@ class UnsplashApi: ObservableObject {
                         id: "whatever",
                         imageURL: PhotosData.urls.raw
                     )
+                    self.cachePhotoData[photoID] = imageData
+                    self.cachePhotoMetadata[photoID] = PhotosData.exif
                     await complitionHandler(imageData, PhotosData.exif)
                 } catch {
                     self.handleError(
