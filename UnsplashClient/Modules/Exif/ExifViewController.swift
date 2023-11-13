@@ -256,7 +256,6 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     private let headerView = UIView()
     
     // MARK: - logic
-    
     @objc func handleDismissButtonClicked(_ sender: UIButton) {
         presenter?.dismissRequested()
     }
@@ -266,6 +265,21 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     }
     
     @objc func shareButtonTouched(_ sender: UIButton) {
+        presenter?.presentShareVC()
+        
+    }
+    
+    func presentExifInfo(exif: exifMetadata) {
+        let dimensions = "\(Int(image?.size.width ?? 0)) x \(Int(image?.size.height ?? 0))"
+        
+        let vc = InfoView(exifMetadata: exif, dimensions: dimensions)
+        vc.transitioningDelegate = customTransitioningDelegate
+        vc.modalPresentationStyle = .custom
+            
+        present(vc, animated: true)
+    }
+    
+    func presentShareVC() {
         guard
             let photoId = photoId,
             let url = UnsplashApi.shared.makeUrl(photoId, target: .sharePhoto),
@@ -277,7 +291,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         let activityViewController : UIActivityViewController = UIActivityViewController(
             activityItems: [imageUrl], applicationActivities: nil)
         
-        activityViewController.popoverPresentationController?.sourceView = sender
+        activityViewController.popoverPresentationController?.sourceView = shareButton
         
         activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
         activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
@@ -300,15 +314,5 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         
         activityViewController.isModalInPresentation = true
         self.present(activityViewController, animated: true, completion: nil)
-    }
-    
-    func presentExifInfo(exif: exifMetadata) {
-        let dimensions = "\(Int(image?.size.width ?? 0)) x \(Int(image?.size.height ?? 0))"
-        
-        let vc = InfoView(exifMetadata: exif, dimensions: dimensions)
-        vc.transitioningDelegate = customTransitioningDelegate
-        vc.modalPresentationStyle = .custom
-            
-        present(vc, animated: true)
     }
 }

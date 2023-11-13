@@ -23,4 +23,8 @@ class ExifPresenter: ExifPresenterProtocol {
     func dismissRequested() {
         router?.dismissRequested()
     }
+    
+    func presentShareVC() {
+        view?.presentShareVC()
+    }
 }
