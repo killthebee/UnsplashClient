@@ -1,6 +1,4 @@
 import UIKit
-// TODO: animate buttons https://www.roryba.in/programming/swift/2018/03/24/animating-uibutton.html
-// TODO: Explore w0 authintecation button
 
 class IntroViewController: UIViewController, IntroViewProtocol {
     
@@ -91,7 +89,9 @@ class IntroViewController: UIViewController, IntroViewProtocol {
         
         let constraints: [NSLayoutConstraint] = [
             firstContainer.topAnchor.constraint(equalTo: view.topAnchor),
-            firstContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            firstContainer.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor
+            ),
             firstContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             firstContainer.heightAnchor.constraint(
                 equalTo: view.heightAnchor, multiplier: 0.25
@@ -167,8 +167,12 @@ class IntroViewController: UIViewController, IntroViewProtocol {
             ),
             exploreButton.heightAnchor.constraint(equalToConstant: 56),
             
-            backgroundImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            backgroundImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            backgroundImage.centerXAnchor.constraint(
+                equalTo: view.centerXAnchor
+            ),
+            backgroundImage.centerYAnchor.constraint(
+                equalTo: view.centerYAnchor
+            ),
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -176,6 +180,5 @@ class IntroViewController: UIViewController, IntroViewProtocol {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
     }
 }

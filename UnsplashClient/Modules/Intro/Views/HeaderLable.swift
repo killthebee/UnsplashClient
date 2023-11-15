@@ -9,7 +9,6 @@ class HeaderLable: UILabel {
         textColor = .white
         numberOfLines = 0
         font = UIFont(name: "Inter-Regular_Bold", size: 48)
-        // duno how to achive exactly mathcing line spacing with figma
         setLineHeight(lineHeight: 12)
     }
 
