@@ -4,17 +4,18 @@ import UIKit
 
 class IntroViewController: UIViewController, IntroViewProtocol {
     
-    // MARK: Dependencies
+    // MARK:- Dependencies
     var presenter: IntroPresenterProtocol?
     let customTransitioningDelegate = BSTransitioningDelegate()
     
-    // MARK: UI Elements
+    // MARK:- UI Elements
     var backgroundImage: BackgroundImageView!
     var headerLable = HeaderLable()
     var subHeaderLable = SubHeaderLable()
     var loginButton = GenericActionButton(text: "Log in", .whiteBlack)
     var exploreButton = GenericActionButton(text: "Explore photos")
 
+    // MARK: - setup VC
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,7 +30,7 @@ class IntroViewController: UIViewController, IntroViewProtocol {
         configureLayout()
     }
     
-    // MARK: Action methods
+    // MARK:- Action methods
     private func addTargetsToButtons() {
         loginButton.addTarget(
             self,
@@ -44,15 +45,16 @@ class IntroViewController: UIViewController, IntroViewProtocol {
     }
     
     @objc func handleLoginClicked(_ sender: UIButton) {
-        print("login")
+        sender.startAnimatingPressActions()
         presenter?.loginIsTapped()
     }
     
     @objc func handleExploreClicked(_ sender: UIButton) {
+        sender.startAnimatingPressActions()
         print("explore")
     }
     
-    // MARK: Layout
+    // MARK:- Layout
     let firstContainer = UIView()
     let secondContainer = UIView()
     let thirdContainer = UIView()

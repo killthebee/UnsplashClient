@@ -42,6 +42,7 @@
 		84D2001D2AFCE99900516873 /* UIWindow + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2001C2AFCE99900516873 /* UIWindow + ext.swift */; };
 		84D200212AFE38E800516873 /* ImagePlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200202AFE38E800516873 /* ImagePlaceholder.swift */; };
 		84D200232B0247F400516873 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200222B0247F400516873 /* Cache.swift */; };
+		84D200252B04D66000516873 /* UIButton + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200242B04D66000516873 /* UIButton + ext.swift */; };
 		84D2FFC32AE7C1EF00516873 /* BSTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */; };
 		84D2FFC52AE7C2F900516873 /* BSPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */; };
 		84D2FFCB2AE92DAB00516873 /* BSTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFCA2AE92DAB00516873 /* BSTransition.swift */; };
@@ -119,6 +120,7 @@
 		84D2001C2AFCE99900516873 /* UIWindow + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow + ext.swift"; sourceTree = "<group>"; };
 		84D200202AFE38E800516873 /* ImagePlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePlaceholder.swift; sourceTree = "<group>"; };
 		84D200222B0247F400516873 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		84D200242B04D66000516873 /* UIButton + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + ext.swift"; sourceTree = "<group>"; };
 		84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransitioningDelegate.swift; sourceTree = "<group>"; };
 		84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSPresentationController.swift; sourceTree = "<group>"; };
 		84D2FFCA2AE92DAB00516873 /* BSTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransition.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				84D2FFDB2AEC13A000516873 /* UIColor + ext.swift */,
 				84D2001A2AFA870400516873 /* UIImageView + ext.swift */,
 				84D2001C2AFCE99900516873 /* UIWindow + ext.swift */,
+				84D200242B04D66000516873 /* UIButton + ext.swift */,
 			);
 			path = Extetions;
 			sourceTree = "<group>";
@@ -588,6 +591,7 @@
 				84D200192AFA5B9200516873 /* AppRouter.swift in Sources */,
 				845A86652AA5EE3300E97933 /* ExploreViewController.swift in Sources */,
 				84D200212AFE38E800516873 /* ImagePlaceholder.swift in Sources */,
+				84D200252B04D66000516873 /* UIButton + ext.swift in Sources */,
 				84D2FFD02AEC01B100516873 /* ExifConfigurator.swift in Sources */,
 				84D90CF22AA1FA9A001E9AE3 /* IntroInteractor.swift in Sources */,
 			);

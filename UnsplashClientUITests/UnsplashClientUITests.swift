@@ -1,10 +1,3 @@
-//
-//  UnsplashClientUITests.swift
-//  UnsplashClientUITests
-//
-//  Created by admin on 31.08.2023.
-//
-
 import XCTest
 
 final class UnsplashClientUITests: XCTestCase {
@@ -27,15 +20,36 @@ final class UnsplashClientUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        XCTAssertTrue(app.staticTexts["Photos for everyone"].exists)
     }
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
-    }
+//    func testLaunchPerformance() throws {
+//        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
+//            // This measures how long it takes to launch your application.
+//            measure(metrics: [XCTApplicationLaunchMetric()]) {
+//                XCUIApplication().launch()
+//            }
+//        }
+//    }
+    
+    //    func testWelcomeMessage() {
+    //        XCTAssertTrue(app.staticTexts["Photos for everyone"].exists)
+    //    }
 }
+
+//import XCTest
+//
+//final class UITests: XCTestCase {
+//    var app: XCUIApplication!
+//
+//    override func setUp() {
+//        continueAfterFailure = false
+//        app = XCUIApplication()
+//        app.launchArguments = ["testing"]
+//        app.launch()
+//    }
+//
+//    func testWelcomeMessage() {
+//        XCTAssertTrue(app.staticTexts["Photos for everyone"].exists)
+//    }
+//}

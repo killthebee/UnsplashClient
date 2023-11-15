@@ -1,6 +1,6 @@
 import Foundation
 
-// NOTE: limit cache lifetime is odd, because system will wipe all cache anyway, but
+// NOTE: limit cache lifetime is odd,   cause system will wipe all cache anyway, but
 // TODO: I need to think wehter i want to switch from memory to file
 
 final class Cache<Key: Hashable, Value> {
