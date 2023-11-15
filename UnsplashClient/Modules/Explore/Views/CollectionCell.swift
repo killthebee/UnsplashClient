@@ -13,8 +13,6 @@ final class CollectionCell: UICollectionViewCell {
             ofSize: 22,
             weight: UIFont.Weight(rawValue: 500)
         )
-        // thinking about satting line height to see if it'll affect height of
-        // the view
         lable.textColor = .white
         lable.textAlignment = .center
         
@@ -91,16 +89,15 @@ final class CollectionCell: UICollectionViewCell {
         }
         Task {
             await UnsplashApi.shared.getCollectionCoverPhoto(
-                collectionData.cover_photo.urls.thumb
-            ) { [weak self] data in
+                collectionData
+            ) { [weak self] photoData in
                 await MainActor.run { [weak self] in
                     self?.setupCellWithData(
                         collectionData: collectionData,
-                        imageData: data
+                        imageData: photoData.image
                     )
-                    self?.carouselDelegate?.dataMap[index] = data
+                    self?.carouselDelegate?.dataMap[index] =  photoData.image
                 }
-                
             }
         }
     }

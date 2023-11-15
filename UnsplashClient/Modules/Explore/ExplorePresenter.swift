@@ -46,4 +46,8 @@ class ExplorePresenter: ExplorePresenterProtocol {
     func invalidateHeaderTask() {
         interactor?.invalidateHeaderTask()
     }
+    
+    func wipeBadCollections() {
+        view?.wipeBadCollections()
+    }
 }

@@ -1,13 +1,5 @@
 import UIKit
 
-// NOTE: this whole "download image for each cell seperatly" is a complite disaster :D
-
-struct photoModel {
-    let id: String
-    let title: String?
-    let image: Data
-}
-
 class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     // MARK: - Data
@@ -20,7 +12,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
     
     // transitionDelegate property is weak, so, retain with a strong reference
-    // TODO: think about whether i can make this delegate global or smthng
     let customTransitioningDelegate = BSTransitioningDelegate()
     
     // MARK: - UI Elements
@@ -55,7 +46,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     let exploreLable: UILabel = {
         let lable = UILabel()
         lable.text = "Explore"
-        lable.textColor = .black
         lable.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         
         return lable
@@ -76,11 +66,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     private let newLable: UILabel = {
         let lable = UILabel()
         lable.text = "New"
-        lable.textColor = .black
-        lable.font = UIFont.systemFont(
-            ofSize: 22,
-            weight: .bold
-        )
+        lable.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         
         return lable
     }()
@@ -113,14 +99,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         configureView()
     }
     
-    @objc func presentInfo(sender: UITapGestureRecognizer) {
-        let vc = InfoView()
-        vc.transitioningDelegate = customTransitioningDelegate
-        vc.modalPresentationStyle = .custom
-
-        present(vc, animated: true)
-    }
-    
     private func configureView() {
         view.backgroundColor = .white
         newImageTableDelegateAndDataSource.presenter = presenter
@@ -130,28 +108,20 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         addSubviews()
         configureLayout()
         configureSubviews()
-//        presenter?.getCollections()
-//        presenter?.startHeaderImageTask()
+        presenter?.getCollections()
+        presenter?.startHeaderImageTask()
         getImages()
-        let tapOnProfileIconGesutre = UITapGestureRecognizer(
-            target: self, action: #selector(presentInfo(sender:))
-        )
-        headerImage.addGestureRecognizer(tapOnProfileIconGesutre)
     }
     
-    // MARK: - Layout
     private func configureSubviews() {
-        setUpFirstContainer()
         collectionsCarouselTableView.delegate = self
         collectionsCarouselTableView.dataSource = self
     }
     
+    // MARK: - Layout
     private var headerContainer = UIView()
     private var exploreContainer = UIView()
     private var newContainer = UIView()
-    
-    private func setUpFirstContainer() {
-    }
     
     private func addSubviews() {
         [headerContainer, exploreContainer, newContainer
@@ -172,29 +142,48 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     }
     
     private func configureLayout() {
+        // constant justifyed cuz i would never want to shrink cells hight
         let roughlyCaroseulHeightPlusLableHightPlusGaps: CGFloat = 188
         let constraints: [NSLayoutConstraint] = [
             headerContainer.topAnchor.constraint(equalTo: view.topAnchor),
             headerContainer.heightAnchor.constraint(
-                equalTo: view.heightAnchor, multiplier: 0.3
+                equalTo: view.heightAnchor,
+                multiplier: 0.3
             ),
             headerContainer.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor
             ),
-            headerContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            headerContainer.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            ),
             
-            headerImage.topAnchor.constraint(equalTo: headerContainer.topAnchor),
-            headerImage.bottomAnchor.constraint(equalTo: headerContainer.bottomAnchor),
-            headerImage.leadingAnchor.constraint(equalTo: headerContainer.leadingAnchor),
-            headerImage.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor),
+            headerImage.topAnchor.constraint(
+                equalTo: headerContainer.topAnchor
+            ),
+            headerImage.bottomAnchor.constraint(
+                equalTo: headerContainer.bottomAnchor
+            ),
+            headerImage.leadingAnchor.constraint(
+                equalTo: headerContainer.leadingAnchor
+            ),
+            headerImage.trailingAnchor.constraint(
+                equalTo: headerContainer.trailingAnchor
+            ),
             
-            headerLable.centerXAnchor.constraint(equalTo: headerContainer.centerXAnchor),
-            headerLable.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+            headerLable.centerXAnchor.constraint(
+                equalTo: headerContainer.centerXAnchor
+            ),
+            headerLable.centerYAnchor.constraint(
+                equalTo: headerContainer.centerYAnchor
+            ),
             
             credsHeaderLable.bottomAnchor.constraint(
-                equalTo: headerContainer.bottomAnchor, constant: -14
+                equalTo: headerContainer.bottomAnchor,
+                constant: -14
             ),
-            credsHeaderLable.centerXAnchor.constraint(equalTo: headerContainer.centerXAnchor),
+            credsHeaderLable.centerXAnchor.constraint(
+                equalTo: headerContainer.centerXAnchor
+            ),
             credsHeaderLable.heightAnchor.constraint(equalToConstant: 14),
             
             exploreContainer.topAnchor.constraint(
@@ -241,17 +230,20 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             newContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             newLable.topAnchor.constraint(
-                equalTo: newContainer.topAnchor, constant: 16
+                equalTo: newContainer.topAnchor,
+                constant: 16
             ),
             newLable.leadingAnchor.constraint(
-                equalTo: newContainer.leadingAnchor, constant: 16
+                equalTo: newContainer.leadingAnchor,
+                constant: 16
             ),
             newLable.trailingAnchor.constraint(
                 equalTo: newContainer.trailingAnchor
             ),
             
             newTable.topAnchor.constraint(
-                equalTo: newLable.bottomAnchor, constant: 16
+                equalTo: newLable.bottomAnchor,
+                constant: 16
             ),
             newTable.leadingAnchor.constraint(
                 equalTo: newContainer.leadingAnchor
@@ -267,9 +259,9 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // MARK: - logic
     func setNewHeaderImage(imageData: Data, _ photographerName: String) {
         let newImage = UIImage(data: imageData)
-        // TODO: check for memory leaks
         headerImage.image = newImage
         credsHeaderLable.text = "photo by \(photographerName)"
     }
@@ -283,20 +275,22 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         presenter?.getNewImages(page: 1)
     }
     
-    @objc func getNextImages(_ sender: Any) {
-        presenter?.getNewImages(page: newImageTableDelegateAndDataSource.pageCount)
+    @objc private func getNextImages(_ sender: Any) {
+        presenter?.getNewImages(
+            page: newImageTableDelegateAndDataSource.pageCount
+        )
     }
     
     func addNewImages(photos newImages: [photoModel]) {
         newImageTableDelegateAndDataSource.images.append(contentsOf: newImages)
-        newImageTableDelegateAndDataSource.pageCount += 1
+        newImageTableDelegateAndDataSource.incrementPageCount()
         newTable.reloadData()
         newTable.refreshControl?.endRefreshing()
     }
     
     func setNewImages(photos newImages: [photoModel]) {
         newImageTableDelegateAndDataSource.images = newImages
-        newImageTableDelegateAndDataSource.pageCount += 1
+        newImageTableDelegateAndDataSource.incrementPageCount()
         newTable.reloadData()
         newTable.refreshControl?.endRefreshing()
     }
@@ -305,12 +299,12 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         newTable.isScrollEnabled = newTable.contentSize.height > newTable.frame.size.height
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
-    
     func invalidateHeaderTask() {
         presenter?.invalidateHeaderTask()
+    }
+    
+    func wipeBadCollections() {
+        collections = []
     }
 }
 
@@ -344,6 +338,10 @@ class newTableDelegateAndDataSource: NSObject {
     var images: [photoModel] = []
     var pageCount = 1
     var presenter: ExplorePresenterProtocol?
+    
+    func incrementPageCount() {
+        pageCount += 1
+    }
 }
 
 extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSource {

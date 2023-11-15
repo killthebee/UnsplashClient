@@ -461,6 +461,7 @@ class InfoView: UIViewController {
             dismiss(animated: true)
             return
         }
+        exploreVC.presenter?.wipeBadCollections()
         exploreVC.presenter?.getCollections()
         
         dismiss(animated: true)

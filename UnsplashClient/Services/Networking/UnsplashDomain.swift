@@ -234,22 +234,22 @@ class UnsplashApi: ObservableObject {
     }
     
     func getCollectionCoverPhoto(
-        _ imageURL: String,
-        _ complitionHandler: @escaping (Data) async -> Void
+        _ collectionData: UnsplashColletion,
+        _ complitionHandler: @escaping (photoModel) async -> Void
     ) async {
-        let imageUrl = URL(string: imageURL)!
         do {
-            let (data, response) = try await URLSession.shared.data(from: imageUrl)
-            
-            guard (response as? HTTPURLResponse)?.statusCode == 200
-            else {
-                throw networkingErrors.imageDownloadError
-            }
-            
-             await complitionHandler(data)
+            let photoData = try await Networking.shared.getImage(
+                id: collectionData.id,
+                title: collectionData.title,
+                imageURL: collectionData.cover_photo.urls.thumb
+            )
+            await complitionHandler(photoData)
         } catch {
-            // TODO: mb do something about collection cover photo?
-            print("failed to download cover photo; \(error)")
+            self.handleError(
+                error,
+                currentScreen: .explore,
+                source: .collections
+            )
         }
     }
     
