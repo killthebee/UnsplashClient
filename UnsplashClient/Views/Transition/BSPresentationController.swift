@@ -120,12 +120,24 @@ final class BSPresentationController: UIPresentationController {
         NSLayoutConstraint.activate(
             [
                 dimmView.topAnchor.constraint(equalTo: containerView.topAnchor),
-                dimmView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-                dimmView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-                dimmView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-                presentedView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-                presentedView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-                presentedView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+                dimmView.leadingAnchor.constraint(
+                    equalTo: containerView.leadingAnchor
+                ),
+                dimmView.trailingAnchor.constraint(
+                    equalTo: containerView.trailingAnchor
+                ),
+                dimmView.bottomAnchor.constraint(
+                    equalTo: containerView.bottomAnchor
+                ),
+                presentedView.bottomAnchor.constraint(
+                    equalTo: containerView.bottomAnchor
+                ),
+                presentedView.leadingAnchor.constraint(
+                    equalTo: containerView.leadingAnchor
+                ),
+                presentedView.trailingAnchor.constraint(
+                    equalTo: containerView.trailingAnchor
+                ),
                 presentedView.heightAnchor.constraint(
                     equalToConstant: 250),
             ]

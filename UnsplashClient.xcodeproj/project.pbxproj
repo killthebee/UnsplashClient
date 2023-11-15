@@ -44,6 +44,7 @@
 		84D200232B0247F400516873 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200222B0247F400516873 /* Cache.swift */; };
 		84D200252B04D66000516873 /* UIButton + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200242B04D66000516873 /* UIButton + ext.swift */; };
 		84D200272B05011100516873 /* UISystemImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200262B05011100516873 /* UISystemImageButton.swift */; };
+		84D200292B05193400516873 /* ExifDataLable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200282B05193400516873 /* ExifDataLable.swift */; };
 		84D2FFC32AE7C1EF00516873 /* BSTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */; };
 		84D2FFC52AE7C2F900516873 /* BSPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */; };
 		84D2FFCB2AE92DAB00516873 /* BSTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFCA2AE92DAB00516873 /* BSTransition.swift */; };
@@ -123,6 +124,7 @@
 		84D200222B0247F400516873 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		84D200242B04D66000516873 /* UIButton + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + ext.swift"; sourceTree = "<group>"; };
 		84D200262B05011100516873 /* UISystemImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISystemImageButton.swift; sourceTree = "<group>"; };
+		84D200282B05193400516873 /* ExifDataLable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifDataLable.swift; sourceTree = "<group>"; };
 		84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransitioningDelegate.swift; sourceTree = "<group>"; };
 		84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSPresentationController.swift; sourceTree = "<group>"; };
 		84D2FFCA2AE92DAB00516873 /* BSTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransition.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 				845A86612AA4FBA300E97933 /* GenericActionButton.swift */,
 				8470ABDE2AE6BEE700E09183 /* InfoView.swift */,
 				84D200102AF39E2100516873 /* SpinnerViewController.swift */,
+				84D200282B05193400516873 /* ExifDataLable.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -575,6 +578,7 @@
 				84D200152AFA4C1400516873 /* UnsplashDomain.swift in Sources */,
 				84D2FFC32AE7C1EF00516873 /* BSTransitioningDelegate.swift in Sources */,
 				84D2001B2AFA870400516873 /* UIImageView + ext.swift in Sources */,
+				84D200292B05193400516873 /* ExifDataLable.swift in Sources */,
 				84D2FFDA2AEC059400516873 /* ExifInteractor.swift in Sources */,
 				8470ABDF2AE6BEE700E09183 /* InfoView.swift in Sources */,
 				84D2FFD42AEC039B00516873 /* ExifPresenter.swift in Sources */,

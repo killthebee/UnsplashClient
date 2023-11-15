@@ -116,62 +116,19 @@ class InfoView: UIViewController {
         return lable
     }()
     
-    // TODO: make new uilable
-    private let makeLable: UILabel = {
-        let lable = UILabel()
-        lable.numberOfLines = 0
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        
-        return lable
-    }()
+    private let makeLable = ExifDataLable()
     
-    private let focalLenghtLable: UILabel = {
-        let lable = UILabel()
-        lable.numberOfLines = 0
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        
-        return lable
-    }()
+    private let focalLenghtLable = ExifDataLable()
     
-    private let modelLable: UILabel = {
-        let lable = UILabel()
-        lable.numberOfLines = 0
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        
-        return lable
-    }()
+    private let modelLable = ExifDataLable()
     
-    private let shutterSpeedLable: UILabel = {
-        let lable = UILabel()
-        lable.numberOfLines = 0
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        
-        return lable
-    }()
+    private let shutterSpeedLable = ExifDataLable()
     
-    private let ISOLable: UILabel = {
-        let lable = UILabel()
-        lable.numberOfLines = 0
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        
-        return lable
-    }()
+    private let ISOLable = ExifDataLable()
     
-    private let DimensionsLable: UILabel = {
-        let lable = UILabel()
-        lable.numberOfLines = 0
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        
-        return lable
-    }()
+    private let DimensionsLable = ExifDataLable()
     
-    private let ApertureLable: UILabel = {
-        let lable = UILabel()
-        lable.numberOfLines = 0
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .light)
-        
-        return lable
-    }()
+    private let ApertureLable = ExifDataLable()
     
     //MARK: - view setup
     override func viewDidLoad() {
@@ -209,9 +166,7 @@ class InfoView: UIViewController {
         }
     }
     
-    private func populateExifDataLables() {
-        guard let exifData = exifData else { return }
-        
+    private func populateMakeLable(_ exifData: exifMetadata) {
         let makeAttributedString = NSMutableAttributedString(
             string: "make:\n\(exifData.make ?? "Unknown")"
         )
@@ -221,7 +176,9 @@ class InfoView: UIViewController {
             range: NSMakeRange(0, 5)
         )
         makeLable.attributedText = makeAttributedString
-        
+    }
+    
+    private func populateFocalLenghtLable(_ exifData: exifMetadata) {
         let focalLenghtAttributedString = NSMutableAttributedString(
             string: "Focal Length:\n\(exifData.focal_length ?? "Unknown")"
         )
@@ -231,7 +188,9 @@ class InfoView: UIViewController {
             range: NSMakeRange(0, 14)
         )
         focalLenghtLable.attributedText = focalLenghtAttributedString
-        
+    }
+    
+    private func populateModelLable(_ exifData: exifMetadata) {
         let modelAttributedString = NSMutableAttributedString(
             string: "Model:\n\(exifData.model ?? "Unknown")"
         )
@@ -241,7 +200,9 @@ class InfoView: UIViewController {
             range: NSMakeRange(0, 6)
         )
         modelLable.attributedText = modelAttributedString
-        
+    }
+    
+    private func populateShutterSpeedLable(_ exifData: exifMetadata) {
         let shutterSpeedString = NSMutableAttributedString(
             string: "Shutter Speed:\n\(exifData.exposure_time ?? "unknown")"
         )
@@ -251,7 +212,9 @@ class InfoView: UIViewController {
             range: NSMakeRange(0, 14)
         )
         shutterSpeedLable.attributedText = shutterSpeedString
-        
+    }
+    
+    private func populateISOLable(_ exifData: exifMetadata) {
         let ISOString: NSMutableAttributedString!
         if let iso = exifData.iso {
             ISOString = NSMutableAttributedString(
@@ -259,7 +222,7 @@ class InfoView: UIViewController {
             )
         } else {
             ISOString = NSMutableAttributedString(
-                string: "ISO:\n Unknown"
+                string: "ISO:\nUnknown"
             )
         }
         ISOString.setAttributes([
@@ -267,8 +230,10 @@ class InfoView: UIViewController {
             NSAttributedString.Key.foregroundColor: UIColor.gray],
             range: NSMakeRange(0, 4)
         )
-        ISOLable.attributedText = focalLenghtAttributedString
-        
+        ISOLable.attributedText = ISOString
+    }
+    
+    private func populateDimensionsLable(_ exifData: exifMetadata) {
         let dimensionsString = NSMutableAttributedString(
             string: "Dimensions:\n\(dimensions ?? "Unknown")"
         )
@@ -278,7 +243,9 @@ class InfoView: UIViewController {
             range: NSMakeRange(0, 11)
         )
         DimensionsLable.attributedText = dimensionsString
-        
+    }
+    
+    private func populateApertureLable(_ exifData: exifMetadata) {
         let apertureString = NSMutableAttributedString(
             string: "Aperture:\n\(exifData.aperture ?? "Unknown")"
         )
@@ -288,6 +255,18 @@ class InfoView: UIViewController {
             range: NSMakeRange(0, 9)
         )
         ApertureLable.attributedText = apertureString
+    }
+    
+    private func populateExifDataLables() {
+        guard let exifData = exifData else { return }
+        
+        populateMakeLable(exifData)
+        populateFocalLenghtLable(exifData)
+        populateModelLable(exifData)
+        populateShutterSpeedLable(exifData)
+        populateISOLable(exifData)
+        populateDimensionsLable(exifData)
+        populateApertureLable(exifData)
     }
     
     //MARK: - Layout
@@ -431,8 +410,6 @@ class InfoView: UIViewController {
         case .exifData:
             NSLayoutConstraint.activate(infoConstraints)
         }
-        
-        
     }
     
     private func getExploreVC(_ vc: Presentable?) -> ExploreViewController? {
