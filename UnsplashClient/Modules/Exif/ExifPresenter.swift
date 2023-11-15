@@ -21,6 +21,7 @@ class ExifPresenter: ExifPresenterProtocol {
     }
     
     func dismissRequested() {
+        view?.reStartHeaderTask()
         router?.dismissRequested()
     }
     

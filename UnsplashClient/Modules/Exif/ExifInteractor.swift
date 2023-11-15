@@ -19,8 +19,8 @@ class ExifInteractor: ExifInteractorProtocol {
         
         Task {
             await UnsplashApi.shared.getPhoto(
-            accessToken,
-            photoId
+                accessToken,
+                photoId
             ) { [weak self] imageData, exif in
                 await MainActor.run { [weak self] in
                     self?.presenter?.setImage(

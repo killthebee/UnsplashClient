@@ -2,6 +2,7 @@ protocol ExifViewProtocol: AnyObject {
     func setImage(imageData: photoModel, exif exifData: exifMetadata)
     func presentExifInfo(exif: exifMetadata)
     func presentShareVC()
+    func reStartHeaderTask()
 }
 
 protocol ExifConfiguratorProtocol: AnyObject {

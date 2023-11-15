@@ -2,8 +2,12 @@ import UIKit
 
 class ExifViewController: UIViewController, ExifViewProtocol {
     
-    // MARK: - Data
+    // MARK: - Dependencies
     var presenter: ExifPresenterProtocol?
+    weak var exploreVCDelegate: ExploreViewProtocol?
+    let customTransitioningDelegate = BSTransitioningDelegate()
+    
+    // MARK: - Data
     
     var photoId: String? = nil
     
@@ -11,52 +15,18 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     private var exif: exifMetadata? = nil
     
-    let customTransitioningDelegate = BSTransitioningDelegate()
-    
     // MARK: - UI elements
-    private let shareButton: UIButton = {
-        let button = UIButton()
-        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
-        let boldSearch = UIImage(
-            systemName: "square.and.arrow.up",
-            withConfiguration: boldConfig
-        )
-
-        button.setImage(boldSearch, for: .normal)
-        button.tintColor = .white
-        
-        return button
-    }()
+    private let shareButton = UISystemImageButton(
+        imageName: "square.and.arrow.up"
+    )
     
-    private let dismissButton: UIButton = {
-        let button = UIButton()
-        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
-        let boldSearch = UIImage(
-            systemName: "xmark",
-            withConfiguration: boldConfig
-        )
-
-        button.setImage(boldSearch, for: .normal)
-        button.tintColor = .white
-        
-        
-        
-        return button
-    }()
+    private let dismissButton = UISystemImageButton(
+        imageName: "xmark"
+    )
     
-    private let infoButton: UIButton = {
-        let button = UIButton()
-        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
-        let boldSearch = UIImage(
-            systemName: "info.circle",
-            withConfiguration: boldConfig
-        )
-
-        button.setImage(boldSearch, for: .normal)
-        button.tintColor = .white
-        
-        return button
-    }()
+    private let infoButton: UIButton = UISystemImageButton(
+        imageName: "info.circle"
+    )
 
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -69,7 +39,6 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     // MARK: - VC setup
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureView()
     }
     
@@ -145,7 +114,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     private func configureLayout() {
         setCoversBackgroundColor()
-        let headViewHeightMultiplier: CGFloat = 54 / 812
+        let headViewHeightMultiplier: CGFloat = 54 / view.frame.height
         
         let constraints: [NSLayoutConstraint] = [
             topSafeAreaContainer.topAnchor.constraint(equalTo: view.topAnchor),
@@ -201,7 +170,6 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         ]
         
         NSLayoutConstraint.activate(constraints)
-        // NOTE: mb there is better place to activate this?
         layoutImagePlaceHolder()
     }
     
@@ -252,6 +220,11 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     private let headerView = UIView()
     
     // MARK: - logic
+    
+    func reStartHeaderTask() {
+        exploreVCDelegate?.presenter?.startHeaderImageTask()
+    }
+    
     @objc func handleDismissButtonClicked(_ sender: UIButton) {
         presenter?.dismissRequested()
     }
@@ -290,10 +263,15 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         activityViewController.popoverPresentationController?.sourceView = shareButton
         
         activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
-        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+        activityViewController.popoverPresentationController?.sourceRect = CGRect(
+            x: 150,
+            y: 150,
+            width: 0,
+            height: 0
+        )
         
         activityViewController.activityItemsConfiguration = [
-        UIActivity.ActivityType.message
+            UIActivity.ActivityType.message
         ] as? UIActivityItemsConfigurationReading
         
         activityViewController.excludedActivityTypes = [
