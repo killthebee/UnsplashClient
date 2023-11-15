@@ -1,8 +1,5 @@
 import Foundation
 
-// NOTE: limit cache lifetime is odd,   cause system will wipe all cache anyway, but
-// TODO: I need to think wehter i want to switch from memory to file
-
 final class Cache<Key: Hashable, Value> {
     
     private let wrapped = NSCache<WrappedKey, Entry>()

@@ -17,7 +17,7 @@ class UnsplashApi: ObservableObject {
     
     @Published var newImages: [photoModel] = []
     
-    func makeUrl(_ code: String = "", target: urlTarget) -> URL? {
+    func makeUrl(_ urlArg: String = "", target: urlTarget) -> URL? {
         var urlComponents = URLComponents()
         let queryItems: [URLQueryItem]!
         switch target {
@@ -26,7 +26,7 @@ class UnsplashApi: ObservableObject {
               URLQueryItem(name: "client_id", value: clientId),
               URLQueryItem(name: "client_secret", value: clientSecret),
               URLQueryItem(name: "redirect_uri", value: Urls.redirectUri.rawValue),
-              URLQueryItem(name: "code", value: code),
+              URLQueryItem(name: "code", value: urlArg),
               URLQueryItem(name: "grant_type", value: "authorization_code")
             ]
             urlComponents.host = Urls.unsplashHost.rawValue
@@ -46,7 +46,7 @@ class UnsplashApi: ObservableObject {
         case .newImages:
             queryItems = [
               URLQueryItem(name: "per_page", value: "5"),
-              URLQueryItem(name: "page", value: code),
+              URLQueryItem(name: "page", value: urlArg),
             ]
             urlComponents.host = Urls.unslpashApiHost.rawValue
             urlComponents.path = Urls.newPhotosPath.rawValue
@@ -58,7 +58,7 @@ class UnsplashApi: ObservableObject {
             ]
             urlComponents.host = Urls.unslpashApiHost.rawValue
             urlComponents.path = (Urls.collectionList.rawValue +
-                                  "/\(code)" + Urls.newPhotosPath.rawValue)
+                                  "/\(urlArg)" + Urls.newPhotosPath.rawValue)
         case .login:
             queryItems = [
               URLQueryItem(name: "client_id", value: clientId),
@@ -71,11 +71,11 @@ class UnsplashApi: ObservableObject {
         case .getPhoto:
             queryItems = []
             urlComponents.host = Urls.unslpashApiHost.rawValue
-            urlComponents.path = Urls.newPhotosPath.rawValue + "/\(code)"
+            urlComponents.path = Urls.newPhotosPath.rawValue + "/\(urlArg)"
         case .sharePhoto:
             queryItems = []
             urlComponents.host = Urls.unsplashHost.rawValue
-            urlComponents.path = Urls.newPhotosPath.rawValue + "/\(code)"
+            urlComponents.path = Urls.newPhotosPath.rawValue + "/\(urlArg)"
         }
         urlComponents.scheme = HTTPScheme.secure.rawValue
         urlComponents.queryItems = queryItems
@@ -91,7 +91,9 @@ class UnsplashApi: ObservableObject {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         if let accessToken = accessToken {
-            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.setValue(
+                "Bearer \(accessToken)", forHTTPHeaderField: "Authorization"
+            )
         }
         
         return request
@@ -209,13 +211,11 @@ class UnsplashApi: ObservableObject {
         page pageNum: Int,
         _ complitionHandler: @escaping ([photoModel]) async -> ()
     ) async {
-        // that's ugly xD
         guard let url = makeUrl(String(pageNum), target: .newImages) else {
             return
         }
         
         let request = setupRequest(url, .get, accessToken)
-//        let request = setupRequest(url, .get)
         await Networking.shared.performRequest(
             request
         ) { (result: Result<[UnsplashPhoto], Error>) async in
@@ -267,7 +267,6 @@ class UnsplashApi: ObservableObject {
         guard let url = makeUrl(photoID, target: .getPhoto) else {
             return
         }
-//        let request = setupRequest(url, .get)
         let request = setupRequest(url, .get, accessToken)
         if let imageData = self.cachePhotoData[photoID] {
             if let metadata = cachePhotoMetadata[photoID] {
@@ -321,19 +320,18 @@ extension UnsplashApi {
         currentScreen: CurrentScreen,
         source: ErrorSource
     ) {
-//         what a fucking epic syntaxis
+//         what an epic syntaxis
         if let error = error as? networkingErrors {
             if case let . customError(errodData) = error,
-               let responseWithError = try? JSONDecoder().decode(ResponseWithErrors.self, from: errodData) {
-                // TODO: try to make it async with @MainActor
+               let responseWithError = try? JSONDecoder().decode(
+                ResponseWithErrors.self, from: errodData
+               ) {
                 Task {
-                    await MainActor.run{
-                        showPopup(
-                            error,
-                            currentScreen: currentScreen,
-                            source: source
-                        )
-                    }
+                    await showPopup(
+                        error,
+                        currentScreen: currentScreen,
+                        source: source
+                    )
                 }
                 print("Unsplash errors: \(responseWithError.errors)")
             }
@@ -342,6 +340,7 @@ extension UnsplashApi {
         }
     }
     
+    @MainActor
     private func showPopup(
         _ error: Error,
         currentScreen: CurrentScreen,
