@@ -2,17 +2,17 @@ import UIKit
 
 class ExploreViewController: UIViewController, ExploreViewProtocol {
     
-    // MARK: - Data
+    // MARK: - Dependencies
     var presenter: ExplorePresenterProtocol?
+    let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
+    // transitionDelegate property is weak, so, retain with a strong reference
+    let customTransitioningDelegate = BSTransitioningDelegate()
+    
+    // MARK: - Data
     // this [[]] is for  carousel porpuses
     private var collections: [[UnsplashColletion]] = []
     
     private var newImages: [photoModel] = []
-    
-    let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
-    
-    // transitionDelegate property is weak, so, retain with a strong reference
-    let customTransitioningDelegate = BSTransitioningDelegate()
     
     // MARK: - UI Elements
     let headerImage: BackgroundImageView = {
@@ -296,25 +296,29 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     }
     
     private func forbidScrollNewTableIfNeeded() {
-        newTable.isScrollEnabled = newTable.contentSize.height > newTable.frame.size.height
+        newTable.isScrollEnabled = (
+            newTable.contentSize.height > newTable.frame.size.height
+        )
     }
     
     func invalidateHeaderTask() {
         presenter?.invalidateHeaderTask()
     }
-    
-    func wipeBadCollections() {
-        collections = []
-    }
 }
 
 extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         return collections.count == 0 ? 5 : collections.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: CarouselCell.identifier,
             for: indexPath
@@ -328,7 +332,10 @@ extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
         return tableView.frame.size.height
     }
 }
@@ -346,11 +353,17 @@ class newTableDelegateAndDataSource: NSObject {
 
 extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         return images.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         let photo = images[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: NewTableCell.identifier,
@@ -363,13 +376,19 @@ extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSou
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
         let currentImage = images[indexPath.row]
         let imageCrop = UIImage(data: currentImage.image)!.getCropRation()
         return tableView.frame.width / imageCrop
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
         presenter?.presentExifScreen(photoId: images[indexPath.row].id)
     }
 }

@@ -22,24 +22,27 @@ class ExploreInteractor: ExploreInteractorProtocol {
             account: "unsplash"
         ) else { return }
         
-        // TODO: do something, this nesting's cray-cray
+        let complitionHandler = { [weak self] (image: photoModel) async -> Void in
+            await MainActor.run { [weak self] in
+                self?.presenter?.setNewHeaderImage(
+                    imageData: image.image,
+                    image.title ?? "unknown"
+                )
+            }
+        }
+        
         headerImageTaskTimer = Timer.scheduledTimer(
             withTimeInterval: 20,
             repeats: true
         ) { _ in
             Task {
                 await UnsplashApi.shared.getRandomPhoto(
-                    accessToken
-                ) { [weak self] image in
-                    await MainActor.run { [weak self] in
-                        self?.presenter?.setNewHeaderImage(
-                            imageData: image.image,
-                            image.title ?? "unknown"
-                        )
-                    }
-                }
+                    accessToken,
+                    complitionHandler
+                )
             }
         }
+        
         headerImageTaskTimer?.fire()
     }
     

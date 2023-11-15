@@ -1,13 +1,13 @@
 import Foundation
 
 protocol ExploreViewProtocol: AnyObject {
+    var presenter: ExplorePresenterProtocol? { get set }
     var customTransitioningDelegate: BSTransitioningDelegate { get }
     func setNewHeaderImage(imageData: Data, _ photographerName: String)
     func setCollections(with collectionsData: [[UnsplashColletion]])
     func addNewImages(photos newImages: [photoModel])
     func setNewImages(photos newImages: [photoModel])
     func invalidateHeaderTask()
-    func wipeBadCollections()
 }
 
 protocol ExploreConfiguratorProtocol: AnyObject {
@@ -17,7 +17,6 @@ protocol ExploreConfiguratorProtocol: AnyObject {
 protocol ExplorePresenterProtocol: AnyObject {
     func startHeaderImageTask()
     func setNewHeaderImage(imageData: Data, _ photographerName: String)
-    func wipeBadCollections()
     func getCollections()
     func setColletions(with collectionsData: [UnsplashColletion])
     func getNewImages(page pageNum: Int)

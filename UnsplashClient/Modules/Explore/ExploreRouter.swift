@@ -10,11 +10,13 @@ class ExploreRouter: ExploreRouterProtocol {
     
     func presentExifDataScreen(photoId: String) {
         guard
-            let exifVC = assembly.makeExifScreen(photoId: photoId) as? ExifViewController
+            let exifVC = assembly.makeExifScreen(photoId: photoId) as? ExifViewController,
+            let exploreVCDelegate = view as? ExploreViewProtocol
         else {
             return
         }
         
+        exifVC.exploreVCDelegate = exploreVCDelegate
         exifVC.modalPresentationStyle = .fullScreen
         view?.present(exifVC)
     }
