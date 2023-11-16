@@ -247,7 +247,6 @@
 			children = (
 				845A86692AA62F5600E97933 /* Networking */,
 				845A86672AA5F9FF00E97933 /* KeyChainManager.swift */,
-				845A86742AAF587600E97933 /* AppAssembly.swift */,
 				84D200222B0247F400516873 /* Cache.swift */,
 			);
 			path = Services;
@@ -364,6 +363,7 @@
 				845A86542AA23BD600E97933 /* fonts */,
 				84D90CE72AA1F888001E9AE3 /* Modules */,
 				84D90CB72AA10A5D001E9AE3 /* AppDelegate.swift */,
+				845A86742AAF587600E97933 /* AppAssembly.swift */,
 				84D90CB92AA10A5D001E9AE3 /* SceneDelegate.swift */,
 				84D90CC02AA10A5D001E9AE3 /* Assets.xcassets */,
 				84D90CC52AA10A5D001E9AE3 /* Info.plist */,
