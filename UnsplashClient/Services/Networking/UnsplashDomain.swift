@@ -117,7 +117,6 @@ class UnsplashApi: ObservableObject {
             case let .failure(error):
                 self.handleError(
                     error,
-                    currentScreen: .intro,
                     source: .codeExchange
                 )
             }
@@ -147,14 +146,12 @@ class UnsplashApi: ObservableObject {
                 } catch {
                     self.handleError(
                         error,
-                        currentScreen: .explore,
                         source: .headerImage
                     )
                 }
             case let .failure(error):
                 self.handleError(
                     error,
-                    currentScreen: .explore,
                     source: .headerImage
                 )
             }
@@ -178,7 +175,6 @@ class UnsplashApi: ObservableObject {
             case let .failure(error):
                 self.handleError(
                     error,
-                    currentScreen: .explore,
                     source: .collections
                 )
             }
@@ -226,7 +222,6 @@ class UnsplashApi: ObservableObject {
             case let .failure(error):
                 self.handleError(
                     error,
-                    currentScreen: .explore,
                     source: .newImages
                 )
             }
@@ -247,7 +242,6 @@ class UnsplashApi: ObservableObject {
         } catch {
             self.handleError(
                 error,
-                currentScreen: .explore,
                 source: .collections
             )
         }
@@ -290,7 +284,6 @@ class UnsplashApi: ObservableObject {
                 } catch {
                     self.handleError(
                         error,
-                        currentScreen: .exif,
                         source: .getPhoto
                     )
                 }
@@ -298,7 +291,6 @@ class UnsplashApi: ObservableObject {
             case let .failure(error):
                 self.handleError(
                     error,
-                    currentScreen: .exif,
                     source: .getPhoto
                 )
             }
@@ -309,15 +301,8 @@ class UnsplashApi: ObservableObject {
 // MARK: - error handling
 extension UnsplashApi {
     
-    enum CurrentScreen {
-        case explore
-        case intro
-        case exif
-    }
-    
     private func handleError(
         _ error: Error,
-        currentScreen: CurrentScreen,
         source: ErrorSource
     ) {
 //         what an epic syntaxis
@@ -329,7 +314,6 @@ extension UnsplashApi {
                 Task {
                     await showPopup(
                         error,
-                        currentScreen: currentScreen,
                         source: source
                     )
                 }
@@ -343,7 +327,6 @@ extension UnsplashApi {
     @MainActor
     private func showPopup(
         _ error: Error,
-        currentScreen: CurrentScreen,
         source: ErrorSource
     ) {
         // NOTE: So, the thing is, after intro, expolre is The rootView,
@@ -357,8 +340,8 @@ extension UnsplashApi {
         }
         
         let vc: InfoView!
-        switch currentScreen {
-        case .intro:
+        switch source {
+        case .codeExchange:
             guard let introVC = rootVC as? IntroViewController else {
                 return
             }
@@ -367,7 +350,7 @@ extension UnsplashApi {
             vc.modalPresentationStyle = .custom
                 
             introVC.present(vc, animated: true)
-        case .explore:
+        case .headerImage, .collections, .newImages:
             guard let exploreVC = rootVC as? ExploreViewController else {
                 return
             }
@@ -379,7 +362,7 @@ extension UnsplashApi {
             vc.modalPresentationStyle = .custom
                 
             exploreVC.present(vc, animated: true)
-        case .exif:
+        case .getPhoto:
             guard let visibleVC = UIApplication.shared.connectedScenes.compactMap(
                 { ($0 as? UIWindowScene)?.keyWindow }
             ).last?.visibleViewController else { return }
