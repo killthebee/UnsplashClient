@@ -13,7 +13,8 @@ class ExplorePresenter: ExplorePresenterProtocol {
         interactor?.startHeaderImageTask()
     }
     
-    func setNewHeaderImage(imageData: Data, _ photographerName: String) {
+    @MainActor
+    func setNewHeaderImage(imageData: Data, _ photographerName: String) async {
         view?.setNewHeaderImage(imageData: imageData, photographerName)
     }
     
@@ -21,8 +22,8 @@ class ExplorePresenter: ExplorePresenterProtocol {
         interactor?.getCollections()
     }
     
-    //@MainActor // hmmmmm its not working
-    func setColletions(with collectionsData: [UnsplashColletion]) {
+    @MainActor
+    func setColletions(with collectionsData: [UnsplashColletion]) async {
         view?.setCollections(with: [collectionsData])
     }
     

@@ -22,13 +22,11 @@ class ExploreInteractor: ExploreInteractorProtocol {
             account: "unsplash"
         ) else { return }
         
-        let complitionHandler = { [weak self] (image: photoModel) async -> Void in
-            await MainActor.run { [weak self] in
-                self?.presenter?.setNewHeaderImage(
-                    imageData: image.image,
-                    image.title ?? "unknown"
-                )
-            }
+        let complition = { [weak self] (image: photoModel) async -> Void in
+            await self?.presenter?.setNewHeaderImage(
+                imageData: image.image,
+                image.title ?? "unknown"
+            )
         }
         
         headerImageTaskTimer = Timer.scheduledTimer(
@@ -36,10 +34,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
             repeats: true
         ) { _ in
             Task {
-                await UnsplashApi.shared.getRandomPhoto(
-                    accessToken,
-                    complitionHandler
-                )
+                await UnsplashApi.shared.getRandomPhoto(accessToken, complition)
             }
         }
         
@@ -56,18 +51,18 @@ class ExploreInteractor: ExploreInteractorProtocol {
             account: "unsplash"
         ) else { return }
         
+        let compition = {
+            [weak self] (collections: [UnsplashColletion]) async -> Void in
+            await self?.presenter?.setColletions(with: collections)
+        }
+        
         Task {
-            await UnsplashApi.shared.getCollections(
-                accessToken
-            ) { [weak self] collections in
-                await MainActor.run { [weak self] in
-                    self?.presenter?.setColletions(with: collections)
-                }
-            }
+            await UnsplashApi.shared.getCollections(accessToken,compition)
         }
     }
     
-    func handlerNewImages(_ pageNum: Int, _ images: [photoModel]) {
+    @MainActor
+    func handlerNewImages(_ pageNum: Int, _ images: [photoModel]) async {
         if pageNum != 1 {
             self.presenter?.addNewImages(photos: images)
             return
@@ -81,15 +76,16 @@ class ExploreInteractor: ExploreInteractorProtocol {
             account: "unsplash"
         ) else { return }
         
+        let complition = { [weak self] (photoModels: [photoModel]) async -> Void in
+            await self?.handlerNewImages(pageNum, photoModels)
+        }
+        
         Task {
             await UnsplashApi.shared.getNewImages(
                 accessToken,
-                page: pageNum
-            ) { [weak self] photoModels in
-                await MainActor.run { [weak self] in
-                    self?.handlerNewImages(pageNum, photoModels)
-                }
-            }
+                page: pageNum,
+                complition
+            )
         }
     }
     

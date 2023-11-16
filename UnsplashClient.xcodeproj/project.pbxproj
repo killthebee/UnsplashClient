@@ -45,6 +45,7 @@
 		84D200252B04D66000516873 /* UIButton + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200242B04D66000516873 /* UIButton + ext.swift */; };
 		84D200272B05011100516873 /* UISystemImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200262B05011100516873 /* UISystemImageButton.swift */; };
 		84D200292B05193400516873 /* ExifDataLable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D200282B05193400516873 /* ExifDataLable.swift */; };
+		84D2002B2B06236D00516873 /* docs_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 84D2002A2B06236D00516873 /* docs_notes.md */; };
 		84D2FFC32AE7C1EF00516873 /* BSTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */; };
 		84D2FFC52AE7C2F900516873 /* BSPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */; };
 		84D2FFCB2AE92DAB00516873 /* BSTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFCA2AE92DAB00516873 /* BSTransition.swift */; };
@@ -125,6 +126,7 @@
 		84D200242B04D66000516873 /* UIButton + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + ext.swift"; sourceTree = "<group>"; };
 		84D200262B05011100516873 /* UISystemImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISystemImageButton.swift; sourceTree = "<group>"; };
 		84D200282B05193400516873 /* ExifDataLable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExifDataLable.swift; sourceTree = "<group>"; };
+		84D2002A2B06236D00516873 /* docs_notes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = docs_notes.md; sourceTree = "<group>"; };
 		84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransitioningDelegate.swift; sourceTree = "<group>"; };
 		84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSPresentationController.swift; sourceTree = "<group>"; };
 		84D2FFCA2AE92DAB00516873 /* BSTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransition.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				845A86722AAA139100E97933 /* ExplorePresenter.swift */,
 				845A867F2AB4AE8200E97933 /* ExploreRouter.swift */,
 				845A86812AB4AEA900E97933 /* ExploreInteractor.swift */,
+				84D2002A2B06236D00516873 /* docs_notes.md */,
 			);
 			path = Explore;
 			sourceTree = "<group>";
@@ -522,6 +525,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				845A86582AA23C3E00E97933 /* Inter-VariableFont_slnt,wght.ttf in Resources */,
+				84D2002B2B06236D00516873 /* docs_notes.md in Resources */,
 				845A865A2AA23EBE00E97933 /* .gitignore in Resources */,
 				84D90CC12AA10A5D001E9AE3 /* Assets.xcassets in Resources */,
 			);

@@ -16,9 +16,9 @@ protocol ExploreConfiguratorProtocol: AnyObject {
 
 protocol ExplorePresenterProtocol: AnyObject {
     func startHeaderImageTask()
-    func setNewHeaderImage(imageData: Data, _ photographerName: String)
+    func setNewHeaderImage(imageData: Data, _ photographerName: String) async
     func getCollections()
-    func setColletions(with collectionsData: [UnsplashColletion])
+    func setColletions(with collectionsData: [UnsplashColletion]) async
     func getNewImages(page pageNum: Int)
     func addNewImages(photos newImages: [photoModel])
     func setNewImages(photos newImages: [photoModel])
