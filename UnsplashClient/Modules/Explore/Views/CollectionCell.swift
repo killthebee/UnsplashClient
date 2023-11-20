@@ -65,14 +65,27 @@ final class CollectionCell: UICollectionViewCell {
     
     private func setupCellWithData(
         collectionData: UnsplashColletion,
-        imageData: Data
+        photoData: Data
     ) {
         spinner.view.removeFromSuperview()
         contentView.alpha = 1
         contentView.isOpaque = true
         collectionNameLable.text = collectionData.title
         contentView.backgroundColor = .clear
-        collectionCoverPhoto.image = UIImage(data: imageData)
+        collectionCoverPhoto.image = UIImage(data: photoData)
+    }
+    
+    @MainActor
+    private func setupCellWithNewData(
+        index: Int,
+        collectionData: UnsplashColletion,
+        photoData: Data
+    ) async {
+        setupCellWithData(
+            collectionData: collectionData,
+            photoData: photoData
+        )
+        carouselDelegate?.dataMap[index] = photoData
     }
     
     func configure(
@@ -83,22 +96,22 @@ final class CollectionCell: UICollectionViewCell {
         if let imageData = imageData {
             setupCellWithData(
                 collectionData: collectionData,
-                imageData: imageData
+                photoData: imageData
             )
             return
         }
-        Task {
-            await UnsplashApi.shared.getCollectionCoverPhoto(
-                collectionData
-            ) { [weak self] photoData in
-                await MainActor.run { [weak self] in
-                    self?.setupCellWithData(
-                        collectionData: collectionData,
-                        imageData: photoData.image
-                    )
-                    self?.carouselDelegate?.dataMap[index] =  photoData.image
-                }
-            }
+        
+        let compition = { [weak self] photoData async -> Void in
+            await self?.setupCellWithNewData(
+                index: index,
+                collectionData: collectionData,
+                photoData: photoData
+            )
         }
+        
+        collectionCoverPhoto.setImage(
+            with: collectionData,
+            completion: compition
+        )
     }
 }
