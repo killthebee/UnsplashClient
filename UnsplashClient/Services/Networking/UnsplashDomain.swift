@@ -19,6 +19,8 @@ class UnsplashApi: ObservableObject {
         _ source: ErrorSource
     ) async -> Void = { _ in }
     
+    var tokenStorage: TokenStorageProtocol?
+    
     @Published var newImages: [photoModel] = []
     
     func makeUrl(_ urlArg: String = "", target: urlTarget) -> URL? {
@@ -128,10 +130,12 @@ class UnsplashApi: ObservableObject {
     }
     
     func getRandomPhoto(
-        _ accessToken: String,
         _ complitionHandler: @escaping (photoModel) async -> Void
     ) async {
-        guard let url = makeUrl(target: .randomPhoto) else {
+        guard
+            let url = makeUrl(target: .randomPhoto),
+            let accessToken = tokenStorage?.getToken()
+        else {
             return
         }
         let request = setupRequest(url, .get, accessToken)
@@ -163,10 +167,12 @@ class UnsplashApi: ObservableObject {
     }
     
     func getCollections(
-        _ accessToken: String,
         _ complitionHandler: @escaping ([UnsplashColletion]) async -> Void
     ) async {
-        guard let url = makeUrl(target: .collectionList) else {
+        guard
+            let url = makeUrl(target: .collectionList),
+            let accessToken = tokenStorage?.getToken()
+        else {
             return
         }
         let request = setupRequest(url, .get, accessToken)
@@ -209,11 +215,13 @@ class UnsplashApi: ObservableObject {
     var counter  = 0
     
     func getNewImages(
-        _ accessToken: String,
         page pageNum: Int,
         _ complitionHandler: @escaping ([photoModel]) async -> ()
     ) async {
-        guard let url = makeUrl(String(pageNum), target: .newImages) else {
+        guard
+            let url = makeUrl(String(pageNum), target: .newImages),
+            let accessToken = tokenStorage?.getToken()
+        else {
             return
         }
         let request = setupRequest(url, .get, accessToken)
@@ -259,11 +267,13 @@ class UnsplashApi: ObservableObject {
     // does not despite url string is really the same combination of letters,
     // it's boggles me
     func getPhoto(
-        _ accessToken: String,
         _ photoID: String,
         _ complitionHandler: @escaping (photoModel, exifMetadata) async -> Void
     ) async {
-        guard let url = makeUrl(photoID, target: .getPhoto) else {
+        guard
+            let url = makeUrl(photoID, target: .getPhoto),
+            let accessToken = tokenStorage?.getToken()
+        else {
             return
         }
         let request = setupRequest(url, .get, accessToken)

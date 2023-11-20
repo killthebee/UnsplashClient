@@ -11,7 +11,7 @@ class IntroConfigurator: IntroConfiguratorProtocol {
         let router = IntroRouter(assembly: assembly, view: viewController)
         let interactor = IntroInteractor(
             presenter: presenter,
-            keychainService: assembly.keychainService
+            keychainService: assembly.keychainService as! KeyChainManagerProtocol
         )
         
         viewController.presenter = presenter

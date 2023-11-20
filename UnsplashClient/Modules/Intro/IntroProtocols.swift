@@ -19,6 +19,6 @@ protocol IntroRouterProtocol: AnyObject {
 
 protocol IntroInteractorProtocol: AnyObject {
     func handleUserLogin()
-    var keychainService: KeyChainManagerProtocol { get }
     func showExploreScreen()
+    var keychainService: KeyChainManagerProtocol { get }
 }

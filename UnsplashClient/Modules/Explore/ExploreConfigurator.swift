@@ -10,8 +10,7 @@ class ExploreConfigurator: ExploreConfiguratorProtocol {
         let presenter = ExplorePresenter(view: viewController)
         let router = ExploreRouter(assembly: assembly, view: viewController)
         let interactor = ExploreInteractor(
-            presenter: presenter,
-            keychainService: assembly.keychainService
+            presenter: presenter
         )
         
         viewController.presenter = presenter

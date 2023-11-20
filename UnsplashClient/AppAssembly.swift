@@ -2,9 +2,9 @@ import UIKit
 
 class AppAssembly {
     
-    let keychainService: KeyChainManagerProtocol!
+    let keychainService: TokenStorageProtocol!
     
-    init (keychainService: KeyChainManagerProtocol) {
+    init (keychainService: TokenStorageProtocol) {
         self.keychainService = keychainService
     }
 }

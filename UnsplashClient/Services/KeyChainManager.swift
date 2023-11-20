@@ -5,6 +5,10 @@ protocol KeyChainManagerProtocol: AnyObject {
     func save(_ data: Data, service: String, account: String)
 }
 
+protocol TokenStorageProtocol {
+    func getToken() -> String?
+}
+
 final class KeyChainManager: KeyChainManagerProtocol {
     
     private func read(service: String, account: String) -> Data? {
@@ -68,5 +72,18 @@ final class KeyChainManager: KeyChainManagerProtocol {
         if status != errSecSuccess {
             print("Error: \(status)")
         }
+    }
+}
+
+
+extension KeyChainManager: TokenStorageProtocol {
+    
+    func getToken() -> String? {
+        guard let accessToken = readToken(
+            service: "access-token",
+            account: "unsplash"
+        ) else { return nil }
+        
+        return accessToken
     }
 }

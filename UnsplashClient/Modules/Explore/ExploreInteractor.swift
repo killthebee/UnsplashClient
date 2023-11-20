@@ -6,22 +6,13 @@ class ExploreInteractor: ExploreInteractorProtocol {
     
     var headerImageTaskTimer: Timer?
     
-    let keychainService: KeyChainManagerProtocol
-    
     required init(
-        presenter: ExplorePresenterProtocol,
-        keychainService: KeyChainManagerProtocol
+        presenter: ExplorePresenterProtocol
     ) {
         self.presenter = presenter
-        self.keychainService = keychainService
     }
     
     func startHeaderImageTask() {
-        guard let accessToken = self.keychainService.readToken(
-            service: "access-token",
-            account: "unsplash"
-        ) else { return }
-        
         let complition = { [weak self] (image: photoModel) async -> Void in
             await self?.presenter?.setNewHeaderImage(
                 imageData: image.image,
@@ -34,7 +25,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
             repeats: true
         ) { _ in
             Task {
-                await UnsplashApi.shared.getRandomPhoto(accessToken, complition)
+                await UnsplashApi.shared.getRandomPhoto(complition)
             }
         }
         
@@ -46,18 +37,13 @@ class ExploreInteractor: ExploreInteractorProtocol {
     }
     
     func getCollections() {
-        guard let accessToken = self.keychainService.readToken(
-            service: "access-token",
-            account: "unsplash"
-        ) else { return }
-        
         let compition = {
             [weak self] (collections: [UnsplashColletion]) async -> Void in
             await self?.presenter?.setColletions(with: collections)
         }
         
         Task {
-            await UnsplashApi.shared.getCollections(accessToken,compition)
+            await UnsplashApi.shared.getCollections(compition)
         }
     }
     
@@ -71,21 +57,12 @@ class ExploreInteractor: ExploreInteractorProtocol {
     }
     
     func getNewImages(page pageNum: Int) {
-        guard let accessToken = self.keychainService.readToken(
-            service: "access-token",
-            account: "unsplash"
-        ) else { return }
-        
         let complition = { [weak self] (photoModels: [photoModel]) async -> Void in
             await self?.handlerNewImages(pageNum, photoModels)
         }
         
         Task {
-            await UnsplashApi.shared.getNewImages(
-                accessToken,
-                page: pageNum,
-                complition
-            )
+            await UnsplashApi.shared.getNewImages(page: pageNum, complition)
         }
     }
     

@@ -9,8 +9,7 @@ class ExifConfigurator: ExifConfiguratorProtocol {
         let presenter = ExifPresenter(view: viewController)
         let router = ExifRouter(assembly: assembly, view: viewController)
         let interactor = ExifInteractor(
-            presenter: presenter,
-            keychainService: assembly.keychainService
+            presenter: presenter
         )
         
         viewController.presenter = presenter

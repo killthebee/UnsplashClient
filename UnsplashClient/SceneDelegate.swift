@@ -9,6 +9,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         bindErrorHandler()
+        bindTokenStorage()
         
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = appRouter.makeFirstScreen().toVC()
@@ -20,6 +21,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UnsplashApi.shared.errorPresentationHandler = { [weak self] source in
             await self?.appRouter.presentErrorBottomSheet(source)
         }
+    }
+    
+    func bindTokenStorage() {
+        UnsplashApi.shared.tokenStorage = appRouter.assembly.keychainService
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
