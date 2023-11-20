@@ -105,6 +105,14 @@ class UnsplashApi: ObservableObject {
         return request
     }
     
+    private func makePhotoModel(
+        id: String,
+        title: String,
+        imageData: Data
+    ) -> photoModel {
+        return photoModel(id: id, title: title, image: imageData)
+    }
+    
     func exchangeCode(
         code: String,
         _ complitionHandler: @escaping (TokenExchangeSuccessData) async -> Void
@@ -146,11 +154,14 @@ class UnsplashApi: ObservableObject {
             case let .success(PhotoData):
                 do {
                     let image = try await Networking.shared.getImage(
+                        PhotoData.urls.thumb
+                    )
+                    let imageDataModel = photoModel(
                         id: "whatever",
                         title: PhotoData.user.name,
-                        imageURL: PhotoData.urls.thumb
+                        image: image
                     )
-                    await complitionHandler(image)
+                    await complitionHandler(imageDataModel)
                 } catch {
                     self.handleError(
                         error,
@@ -196,9 +207,12 @@ class UnsplashApi: ObservableObject {
             try await withThrowingTaskGroup(of: photoModel.self) { taskGroup in
                 for unslpashPhotoData in response {
                     taskGroup.addTask{
-                        try await Networking.shared.getImage(
+                        self.makePhotoModel(
                             id: unslpashPhotoData.id,
-                            imageURL: unslpashPhotoData.urls.thumb
+                            title: "replace with nil",
+                            imageData: try await Networking.shared.getImage(
+                                unslpashPhotoData.urls.thumb
+                            )
                         )
                     }
                 }
@@ -247,11 +261,13 @@ class UnsplashApi: ObservableObject {
     ) async {
         do {
             let photoData = try await Networking.shared.getImage(
+                collectionData.cover_photo.urls.thumb
+            )
+            let imageDataModel = makePhotoModel(
                 id: collectionData.id,
                 title: collectionData.title,
-                imageURL: collectionData.cover_photo.urls.thumb
-            )
-            await complitionHandler(photoData)
+                imageData: photoData)
+            await complitionHandler(imageDataModel)
         } catch {
             self.handleError(
                 error,
@@ -290,12 +306,16 @@ class UnsplashApi: ObservableObject {
             case let .success(PhotosData):
                 do {
                     let imageData = try await Networking.shared.getImage(
-                        id: "whatever",
-                        imageURL: PhotosData.urls.raw
+                        PhotosData.urls.raw
                     )
-                    self.cachePhotoData[photoID] = imageData
+                    let imageDataModel = self.makePhotoModel(
+                        id: "whatever",
+                        title: "whatever",
+                        imageData: imageData
+                    )
+                    self.cachePhotoData[photoID] = imageDataModel
                     self.cachePhotoMetadata[photoID] = PhotosData.exif
-                    await complitionHandler(imageData, PhotosData.exif)
+                    await complitionHandler(imageDataModel, PhotosData.exif)
                 } catch {
                     self.handleError(
                         error,

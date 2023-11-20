@@ -58,11 +58,7 @@ struct Networking {
         }
     }
     
-    func getImage(
-        id: String,
-        title: String? = nil,
-        imageURL: String
-    ) async throws -> photoModel {
+    func getImage(_ imageURL: String) async throws -> Data {
         let imageUrl = URL(string: imageURL)!
         let (data, response) = try await URLSession.shared.data(from: imageUrl)
         
@@ -71,6 +67,6 @@ struct Networking {
             throw networkingErrors.imageDownloadError
         }
         
-        return photoModel(id: id, title: title, image: data)
+        return data
     }
 }
