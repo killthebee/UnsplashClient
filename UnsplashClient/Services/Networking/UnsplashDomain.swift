@@ -15,6 +15,10 @@ class UnsplashApi: ObservableObject {
     
     static let shared = UnsplashApi()
     
+    public var errorPresentationHandler: (
+        _ source: ErrorSource
+    ) async -> Void = { _ in }
+    
     @Published var newImages: [photoModel] = []
     
     func makeUrl(_ urlArg: String = "", target: urlTarget) -> URL? {
@@ -202,6 +206,8 @@ class UnsplashApi: ObservableObject {
         }
     }
     
+    var counter  = 0
+    
     func getNewImages(
         _ accessToken: String,
         page pageNum: Int,
@@ -210,7 +216,6 @@ class UnsplashApi: ObservableObject {
         guard let url = makeUrl(String(pageNum), target: .newImages) else {
             return
         }
-        
         let request = setupRequest(url, .get, accessToken)
         await Networking.shared.performRequest(
             request
@@ -312,10 +317,7 @@ extension UnsplashApi {
                 ResponseWithErrors.self, from: errodData
                ) {
                 Task {
-                    await showPopup(
-                        error,
-                        source: source
-                    )
+                    await errorPresentationHandler(source)
                 }
                 print("Unsplash errors: \(responseWithError.errors)")
             }
@@ -323,58 +325,5 @@ extension UnsplashApi {
             print("unsplash returned something else Oo")
         }
     }
-    
-    @MainActor
-    private func showPopup(
-        _ error: Error,
-        source: ErrorSource
-    ) {
-        // NOTE: So, the thing is, after intro, expolre is The rootView,
-        // but exif, after explore, is not!
-        guard
-            var rootVC = UIApplication.shared.connectedScenes.compactMap(
-                { ($0 as? UIWindowScene)?.keyWindow }
-            ).last?.rootViewController
-        else {
-            return
-        }
         
-        let vc: InfoView!
-        switch source {
-        case .codeExchange:
-            guard let introVC = rootVC as? IntroViewController else {
-                return
-            }
-            vc = InfoView(error, source: source, vc: introVC)
-            vc.transitioningDelegate = introVC.customTransitioningDelegate
-            vc.modalPresentationStyle = .custom
-                
-            introVC.present(vc, animated: true)
-        case .headerImage, .collections, .newImages:
-            guard let exploreVC = rootVC as? ExploreViewController else {
-                return
-            }
-            if source == .headerImage {
-                exploreVC.presenter?.invalidateHeaderTask()
-            }
-            vc = InfoView(error, source: source, vc: exploreVC)
-            vc.transitioningDelegate = exploreVC.customTransitioningDelegate
-            vc.modalPresentationStyle = .custom
-                
-            exploreVC.present(vc, animated: true)
-        case .getPhoto:
-            guard let visibleVC = UIApplication.shared.connectedScenes.compactMap(
-                { ($0 as? UIWindowScene)?.keyWindow }
-            ).last?.visibleViewController else { return }
-            guard let exifVC = visibleVC as? ExifViewController else {
-                return
-            }
-            
-            vc = InfoView(error, source: source, vc: exifVC)
-            vc.transitioningDelegate = exifVC.customTransitioningDelegate
-            vc.modalPresentationStyle = .custom
-                
-            exifVC.present(vc, animated: true)
-        }
-    }
 }

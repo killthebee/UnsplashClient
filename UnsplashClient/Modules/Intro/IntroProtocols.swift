@@ -1,4 +1,5 @@
 protocol IntroViewProtocol: AnyObject {
+    var presenter: IntroPresenterProtocol? { get }
 }
 
 protocol IntroConfiguratorProtocol: AnyObject {
@@ -6,12 +7,14 @@ protocol IntroConfiguratorProtocol: AnyObject {
 }
 
 protocol IntroPresenterProtocol: AnyObject {
+    var router: IntroRouterProtocol? { get }
     func loginIsTapped()
     func presentExploreScreen()
 }
 
 protocol IntroRouterProtocol: AnyObject {
     func showExploreScreen()
+    var customTransitioningDelegate: BSTransitioningDelegate { get }
 }
 
 protocol IntroInteractorProtocol: AnyObject {

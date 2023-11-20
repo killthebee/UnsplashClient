@@ -2,10 +2,10 @@ import UIKit
 
 class ExifViewController: UIViewController, ExifViewProtocol {
     
+    
     // MARK: - Dependencies
     var presenter: ExifPresenterProtocol?
     weak var exploreVCDelegate: ExploreViewProtocol?
-    let customTransitioningDelegate = BSTransitioningDelegate()
     
     // MARK: - Data
     
@@ -242,7 +242,13 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         let dimensions = "\(Int(image?.size.width ?? 0)) x \(Int(image?.size.height ?? 0))"
         
         let vc = InfoView(exifMetadata: exif, dimensions: dimensions)
-        vc.transitioningDelegate = customTransitioningDelegate
+        guard
+            let transitioningDelegate = presenter?.router?.customTransitioningDelegate
+        else {
+            return
+        }
+        
+        vc.transitioningDelegate = transitioningDelegate
         vc.modalPresentationStyle = .custom
             
         present(vc, animated: true)

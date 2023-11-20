@@ -25,7 +25,7 @@ class InfoView: UIViewController {
     }
     
     convenience init(
-        _ error: Error,
+//        _ error: Error,
         source: ErrorSource,
         vc: UIViewController
     ) {

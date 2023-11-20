@@ -1,5 +1,6 @@
 class IntroRouter:  IntroRouterProtocol {
     
+    let customTransitioningDelegate = BSTransitioningDelegate()
     weak var view: Presentable?
     private let assembly: AppAssembly
     

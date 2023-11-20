@@ -5,8 +5,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     // MARK: - Dependencies
     var presenter: ExplorePresenterProtocol?
     let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
-    // transitionDelegate property is weak, so, retain with a strong reference
-    let customTransitioningDelegate = BSTransitioningDelegate()
     
     // MARK: - Data
     // this [[]] is for  carousel porpuses
