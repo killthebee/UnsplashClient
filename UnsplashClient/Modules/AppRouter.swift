@@ -4,7 +4,7 @@ class AppRouter {
     
     func makeFirstScreen() -> Presentable {
 //        return assembly.makeExifScreen()
-        if let accessToken = assembly.keychainService.getToken() {
+        if let _ = assembly.keychainService.getToken() {
             return assembly.makeExploreScreen()
         }
         

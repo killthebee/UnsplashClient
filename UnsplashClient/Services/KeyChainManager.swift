@@ -79,11 +79,6 @@ final class KeyChainManager: KeyChainManagerProtocol {
 extension KeyChainManager: TokenStorageProtocol {
     
     func getToken() -> String? {
-        guard let accessToken = readToken(
-            service: "access-token",
-            account: "unsplash"
-        ) else { return nil }
-        
-        return accessToken
+        readToken(service: "access-token", account: "unsplash")
     }
 }
