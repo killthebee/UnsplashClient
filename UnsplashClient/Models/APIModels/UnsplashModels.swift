@@ -39,7 +39,7 @@ struct exifMetadata: Codable {
     let focal_length: String?
     let aperture: String?
     let exposure_time: String?
-    let iso: Int? = nil
+    var iso: Int? = nil
 }
 //"exif":{"make":"SONY","model":"ILCE-7M4","name":"SONY, ILCE-7M4","exposure_time":"1/500","aperture":"1.8","focal_length":"35.0","iso":640}
 //"exif":{"make":null,"model":null,"name":null,"exposure_time":null,"aperture":null,"focal_length":null,"iso":null}
