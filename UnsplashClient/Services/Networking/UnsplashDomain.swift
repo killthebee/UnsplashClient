@@ -226,8 +226,6 @@ class UnsplashApi: ObservableObject {
         }
     }
     
-    var counter  = 0
-    
     func getNewImages(
         page pageNum: Int,
         _ complitionHandler: @escaping ([photoModel]) async -> ()
@@ -276,12 +274,8 @@ class UnsplashApi: ObservableObject {
         }
     }
     
-    private let cachePhotoData = Cache<String, photoModel>()
-    private let cachePhotoMetadata = Cache<String, exifMetadata>()
-    // NOTE: keep photoModel and exifMetadat at same cell seems moronic to me
-    // NOTE: hash for photoID stays the same, but, hash for url from photoData
-    // does not despite url string is really the same combination of letters,
-    // it's boggles me
+    private let cachePhotoData = Cache<String, photoAndExifModel>()
+    
     func getPhoto(
         _ photoID: String,
         _ complitionHandler: @escaping (photoModel, exifMetadata) async -> Void
@@ -293,11 +287,9 @@ class UnsplashApi: ObservableObject {
             return
         }
         let request = setupRequest(url, .get, accessToken)
-        if let imageData = self.cachePhotoData[photoID] {
-            if let metadata = cachePhotoMetadata[photoID] {
-                await complitionHandler(imageData, metadata)
-                return
-            }
+        if let photoData = self.cachePhotoData[photoID] {
+            await complitionHandler(photoData.photoModel, photoData.exifData)
+            return
         }
         await Networking.shared.performRequest(
             request
@@ -313,8 +305,10 @@ class UnsplashApi: ObservableObject {
                         title: "whatever",
                         imageData: imageData
                     )
-                    self.cachePhotoData[photoID] = imageDataModel
-                    self.cachePhotoMetadata[photoID] = PhotosData.exif
+                    self.cachePhotoData[photoID] = photoAndExifModel(
+                        photoModel: imageDataModel,
+                        exifData: PhotosData.exif
+                    )
                     await complitionHandler(imageDataModel, PhotosData.exif)
                 } catch {
                     self.handleError(
