@@ -280,14 +280,14 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     }
     
     func addNewImages(photos newImages: [photoModel]) {
-        newImageTableDelegateAndDataSource.images.append(contentsOf: newImages)
+        newImageTableDelegateAndDataSource.images = newImages
         newImageTableDelegateAndDataSource.incrementPageCount()
         newTable.reloadData()
         newTable.refreshControl?.endRefreshing()
     }
     
     func setNewImages(photos newImages: [photoModel]) {
-        newImageTableDelegateAndDataSource.images = newImages
+        newImageTableDelegateAndDataSource.images.append(contentsOf: newImages)
         newImageTableDelegateAndDataSource.incrementPageCount()
         newTable.reloadData()
         newTable.refreshControl?.endRefreshing()
