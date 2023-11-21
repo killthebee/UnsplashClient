@@ -15,6 +15,7 @@ class UnsplashApi: ObservableObject {
     
     static let shared = UnsplashApi()
     
+    // check app router
     public var errorPresentationHandler: (
         _ source: ErrorSource
     ) async -> Void = { _ in }
@@ -107,7 +108,7 @@ class UnsplashApi: ObservableObject {
     
     private func makePhotoModel(
         id: String,
-        title: String,
+        title: String? = nil,
         imageData: Data
     ) -> photoModel {
         return photoModel(id: id, title: title, image: imageData)
@@ -209,7 +210,6 @@ class UnsplashApi: ObservableObject {
                     taskGroup.addTask{
                         self.makePhotoModel(
                             id: unslpashPhotoData.id,
-                            title: "replace with nil",
                             imageData: try await Networking.shared.getImage(
                                 unslpashPhotoData.urls.thumb
                             )
@@ -302,7 +302,6 @@ class UnsplashApi: ObservableObject {
                     )
                     let imageDataModel = self.makePhotoModel(
                         id: "whatever",
-                        title: "whatever",
                         imageData: imageData
                     )
                     self.cachePhotoData[photoID] = photoAndExifModel(
