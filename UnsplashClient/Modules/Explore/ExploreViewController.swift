@@ -7,7 +7,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     let newImageTableDelegateAndDataSource = newTableDelegateAndDataSource()
     
     // MARK: - Data
-    // this [[]] is for  carousel porpuses
     private var collections: [[UnsplashColletion]] = []
     
     private var newImages: [photoModel] = []
@@ -16,7 +15,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     let headerImage: BackgroundImageView = {
         let image = BackgroundImageView(frame: .zero, "ExploreHeader")
         image.contentMode = .scaleAspectFill
-        image.isUserInteractionEnabled = true
+        image.clipsToBounds = true
 
         return image
     }()
@@ -106,9 +105,12 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         addSubviews()
         configureLayout()
         configureSubviews()
-        presenter?.getCollections()
-        presenter?.startHeaderImageTask()
-        getImages()
+//        presenter?.getCollections()
+//        presenter?.startHeaderImageTask()
+//        getImages()
+        
+        scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.delegate = self
     }
     
     private func configureSubviews() {
@@ -120,10 +122,21 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     private var headerContainer = UIView()
     private var exploreContainer = UIView()
     private var newContainer = UIView()
+    private let scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.alwaysBounceVertical = true
+        view.isDirectionalLockEnabled = true
+        
+        return view
+    }()
+    private let contentView = UIView()
+    private let newImagesBacking = UIView()
     
     private func addSubviews() {
-        [headerContainer, exploreContainer, newContainer
-        ].forEach{view.addSubview($0)}
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        [headerContainer, exploreContainer, newContainer,
+        ].forEach{contentView.addSubview($0)}
         [headerImage, headerLable, credsHeaderLable
         ].forEach{headerContainer.addSubview($0)}
         [exploreLable, collectionsCarouselTableView
@@ -135,29 +148,44 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     private func disableAutoresizing() {
         [headerContainer, headerImage, headerLable, credsHeaderLable,
          exploreContainer, exploreLable, collectionsCarouselTableView,
-         newContainer, newLable, newTable
+         newContainer, newLable, newTable, scrollView, contentView
         ].forEach{$0.translatesAutoresizingMaskIntoConstraints = false}
     }
     
     private func configureLayout() {
-        // constant justifyed cuz i would never want to shrink cells hight
         let roughlyCaroseulHeightPlusLableHightPlusGaps: CGFloat = 188
+        
         let constraints: [NSLayoutConstraint] = [
-            headerContainer.topAnchor.constraint(equalTo: view.topAnchor),
-            headerContainer.heightAnchor.constraint(
-                equalTo: view.heightAnchor,
-                multiplier: 0.3
-            ),
-            headerContainer.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor
-            ),
-            headerContainer.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: 1
             ),
             
-            headerImage.topAnchor.constraint(
-                equalTo: headerContainer.topAnchor
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.heightAnchor.constraint(
+                equalTo: scrollView.heightAnchor,
+                multiplier: 1.1
             ),
+            contentView.widthAnchor.constraint(
+                equalTo: scrollView.widthAnchor,
+                multiplier: 1,
+                constant: -1
+            ),
+            contentView.leadingAnchor.constraint(
+                equalTo: scrollView.leadingAnchor
+            ),
+            
+            headerContainer.topAnchor.constraint(equalTo: view.topAnchor),
+            headerContainer.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor
+            ),
+            headerContainer.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor
+            ),
+            
             headerImage.bottomAnchor.constraint(
                 equalTo: headerContainer.bottomAnchor
             ),
@@ -188,10 +216,10 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
                 equalTo: headerContainer.bottomAnchor
             ),
             exploreContainer.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor
+                equalTo: contentView.leadingAnchor
             ),
             exploreContainer.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor
+                equalTo: contentView.trailingAnchor
             ),
             exploreContainer.heightAnchor.constraint(
                 equalToConstant: roughlyCaroseulHeightPlusLableHightPlusGaps
@@ -200,8 +228,9 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             collectionsCarouselTableView.heightAnchor.constraint(
                 equalToConstant: 130
             ),
+            
             collectionsCarouselTableView.leadingAnchor.constraint(
-                equalTo: exploreContainer.leadingAnchor, constant: 16
+                equalTo: exploreContainer.leadingAnchor
             ),
             collectionsCarouselTableView.trailingAnchor.constraint(
                 equalTo: exploreContainer.trailingAnchor
@@ -211,10 +240,12 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             ),
             
             exploreLable.bottomAnchor.constraint(
-                equalTo: collectionsCarouselTableView.topAnchor, constant: -16
+                equalTo: collectionsCarouselTableView.topAnchor,
+                constant: -16
             ),
             exploreLable.leadingAnchor.constraint(
-                equalTo: exploreContainer.leadingAnchor, constant: 16
+                equalTo: exploreContainer.leadingAnchor,
+                constant: 16
             ),
             exploreLable.trailingAnchor.constraint(
                 equalTo: exploreContainer.trailingAnchor
@@ -223,9 +254,15 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             newContainer.topAnchor.constraint(
                 equalTo: exploreContainer.bottomAnchor
             ),
-            newContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            newContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            newContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            newContainer.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor
+            ),
+            newContainer.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor
+            ),
+            newContainer.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor
+            ),
             
             newLable.topAnchor.constraint(
                 equalTo: newContainer.topAnchor,
@@ -254,8 +291,28 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
             ),
         ]
         
+        let headerContainerViewBottomAnchor = headerContainer.bottomAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: 200
+        )
+        headerContainerViewBottomAnchor.isActive = true
+        headerContainerViewBottomAnchor.priority = UILayoutPriority(900)
+        
+        let imageTopAnchor = headerImage.topAnchor.constraint(
+            equalTo: view.topAnchor)
+        imageTopAnchor.isActive = true
+        imageTopAnchor.priority = UILayoutPriority(900)
+        
+        let imageHeightAnchor = headerImage.heightAnchor.constraint(
+            greaterThanOrEqualToConstant: 200
+        )
+        imageHeightAnchor.isActive = true
+        imageHeightAnchor.priority = UILayoutPriority(900)
+        
         NSLayoutConstraint.activate(constraints)
     }
+    
+    
     
     // MARK: - logic
     func setNewHeaderImage(imageData: Data, _ photographerName: String) {
@@ -310,7 +367,7 @@ extension ExploreViewController: UITableViewDelegate, UITableViewDataSource {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        return collections.count == 0 ? 5 : collections.count
+        return 1
     }
     
     func tableView(
@@ -388,5 +445,18 @@ extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSou
         didSelectRowAt indexPath: IndexPath
     ) {
         presenter?.presentExifScreen(photoId: images[indexPath.row].id)
+    }
+}
+
+extension ExploreViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentOffsetheight = scrollView.contentOffset.y
+        
+        if contentOffsetheight > 0 {
+            scrollView.isScrollEnabled = false
+            scrollView.isScrollEnabled = true
+            newTable.isScrollEnabled = true
+        }
     }
 }
