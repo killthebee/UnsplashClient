@@ -106,7 +106,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         configureLayout()
         configureSubviews()
 //        presenter?.getCollections()
-//        presenter?.startHeaderImageTask()
+        presenter?.startHeaderImageTask()
 //        getImages()
         
         scrollView.contentInsetAdjustmentBehavior = .never
@@ -317,7 +317,14 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     // MARK: - logic
     func setNewHeaderImage(imageData: Data, _ photographerName: String) {
         let newImage = UIImage(data: imageData)
-        headerImage.image = newImage
+        UIView.transition(
+            with: self.headerImage,
+            duration: 0.3,
+            options: .transitionCrossDissolve,
+            animations: { self.headerImage.image = newImage },
+            completion: nil
+        )
+        
         credsHeaderLable.text = "photo by \(photographerName)"
     }
     
