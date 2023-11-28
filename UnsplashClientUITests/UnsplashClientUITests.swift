@@ -1,14 +1,23 @@
 import XCTest
-// TODO: dont forget to make github actions cicd with tests
+@testable import UnsplashClient
 
 final class UnsplashClientUITests: XCTestCase {
+    
+//    var tokenManager: KeyChainManagerProtocol!
+    var app: XCUIApplication!
+    
+    let testToken = "u79URgKP7fzNj3dhCvvbjDa7u_Zr2UjpFpa6651z9l8"
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
+        app = XCUIApplication()
+        app.launch()
+//        let tokenManager = KeyChainManager()
         continueAfterFailure = false
-
+//        tokenManager.save(
+//            testToken.data(using: .utf8)!,
+//            service: "access-token",
+//            account: "unsplash"
+//        )
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
@@ -16,13 +25,28 @@ final class UnsplashClientUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        XCTAssertTrue(app.staticTexts["Photos for everyone"].exists)
+    func testLables() throws {
+        let newTableLable = app.staticTexts["New"]
+        let exploreLable = app.staticTexts["Explore"]
+        let headerLable = app.staticTexts["Photos for everyone"]
+        let lables = [
+            newTableLable, exploreLable, headerLable
+        ].forEach{XCTAssertTrue($0.exists)}
     }
+    
+    func testTables() throws {
+        app.tables.matching(identifier: "newTable")
+        app.tables.matching(identifier: "CollectionsTable")
+    }
+//
+//    func testNewTableCells() throws {
+//        let cell = app.cells.element(matching: .cell, identifier: "Cell_0")
+////        cell.waitForExistence(timeout: 10)
+//        while !cell.exists {
+//            sleep(1)
+//        }
+//        XCTAssertTrue(cell.exists)
+//    }
 
 //    func testLaunchPerformance() throws {
 //        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
@@ -32,25 +56,4 @@ final class UnsplashClientUITests: XCTestCase {
 //            }
 //        }
 //    }
-    
-    //    func testWelcomeMessage() {
-    //        XCTAssertTrue(app.staticTexts["Photos for everyone"].exists)
-    //    }
 }
-
-//import XCTest
-//
-//final class UITests: XCTestCase {
-//    var app: XCUIApplication!
-//
-//    override func setUp() {
-//        continueAfterFailure = false
-//        app = XCUIApplication()
-//        app.launchArguments = ["testing"]
-//        app.launch()
-//    }
-//
-//    func testWelcomeMessage() {
-//        XCTAssertTrue(app.staticTexts["Photos for everyone"].exists)
-//    }
-//}

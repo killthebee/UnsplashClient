@@ -3,6 +3,7 @@ import Foundation
 protocol KeyChainManagerProtocol: AnyObject {
     func readToken(service: String, account: String) -> String?
     func save(_ data: Data, service: String, account: String)
+    func delete(service: String, account: String)
 }
 
 protocol TokenStorageProtocol {
@@ -72,6 +73,17 @@ final class KeyChainManager: KeyChainManagerProtocol {
         if status != errSecSuccess {
             print("Error: \(status)")
         }
+    }
+    
+    func delete(service: String, account: String) {
+        
+        let query = [
+            kSecAttrService: service,
+            kSecAttrAccount: account,
+            kSecClass: kSecClassGenericPassword,
+            ] as CFDictionary
+        
+        SecItemDelete(query)
     }
 }
 

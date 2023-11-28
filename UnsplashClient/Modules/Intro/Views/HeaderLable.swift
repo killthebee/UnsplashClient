@@ -10,6 +10,7 @@ class HeaderLable: UILabel {
         numberOfLines = 0
         font = UIFont(name: "Inter-Regular_Bold", size: 48)
         setLineHeight(lineHeight: 12)
+        accessibilityLabel = "Explore\nUnsplash\nphotos"
     }
 
     public required init?(coder: NSCoder) {

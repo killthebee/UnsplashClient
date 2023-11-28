@@ -56,6 +56,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         )
         table.separatorStyle = .none
         table.alwaysBounceVertical = false
+        table.accessibilityLabel = "CollectionsTable"
         
         return table
     }()
@@ -86,6 +87,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         )
         table.refreshControl = refreshControl
         table.addSubview(refreshControl)
+        table.accessibilityLabel = "newTable"
         
         return table
     }()
@@ -106,8 +108,8 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         configureLayout()
         configureSubviews()
 //        presenter?.getCollections()
-        presenter?.startHeaderImageTask()
-//        getImages()
+//        presenter?.startHeaderImageTask()
+        getImages()
         
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.delegate = self
@@ -312,8 +314,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         NSLayoutConstraint.activate(constraints)
     }
     
-    
-    
     // MARK: - logic
     func setNewHeaderImage(imageData: Data, _ photographerName: String) {
         let newImage = UIImage(data: imageData)
@@ -434,6 +434,8 @@ extension newTableDelegateAndDataSource: UITableViewDelegate, UITableViewDataSou
             fatalError()
         }
         cell.configure(with: photo)
+        cell.accessibilityLabel = "Cell_\(indexPath.row)"
+//        cell.accessibilityLabel = "Cell_0x"
         
         return cell
     }

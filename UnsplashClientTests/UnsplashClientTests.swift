@@ -1,36 +1,57 @@
-//
-//  UnsplashClientTests.swift
-//  UnsplashClientTests
-//
-//  Created by admin on 31.08.2023.
-//
-
 import XCTest
 @testable import UnsplashClient
 
 final class UnsplashClientTests: XCTestCase {
+    
+    var unsplashAPI: UnsplashApi!
+    var tokenManager: KeyChainManagerProtocol!
+    let randomC0de = "2323232"
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        try super.setUpWithError()
+        unsplashAPI = UnsplashApi()
+        tokenManager = KeyChainManager()
+        tokenManager.save(
+            randomC0de.data(using: .utf8)!,
+            service: "test-token",
+            account: "tests"
+        )
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        unsplashAPI = nil
+        
+        try super.tearDownWithError()
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testMakeURL() throws {
+        
+        let getRandomPhotoUrl = unsplashAPI.makeUrl(target: .randomPhoto)
+        
+        let getCollectionsUrl = unsplashAPI.makeUrl(target: .collectionList)
+        
+        let asserations = [
+            getRandomPhotoUrl!.absoluteString ==
+            "https://api.unsplash.com/photos/random?orientation=landscape",
+            getCollectionsUrl!.absoluteString ==
+            "https://api.unsplash.com/collections?per_page=5"
+        ]
+        
+        XCTAssertTrue(
+            getRandomPhotoUrl!.absoluteString ==
+            "https://api.unsplash.com/photos/random?orientation=landscape"
+        )
+//    https://unsplash.com/oauth/token?client_id=lpjuJu1NvEkMVzV_X3pvAmkfWzeCcnOs2w59gdeyp1Q&client_secret=tUic-Ay2vrcl6-_RcDETtFWbCoFrXowm2uGL8R4zyXo&redirect_uri=tutututuclient://&code=9&grant_type=authorization_code
+//    https://api.unsplash.com/photos/random?orientation=landscape
+        //https://api.unsplash.com/collections?per_page=5
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testTokenManager() throws {
+        let token = tokenManager.readToken(
+            service: "test-token",
+            account: "tests"
+        )!
+        
+        XCTAssertTrue(token == randomC0de)
     }
-
 }
