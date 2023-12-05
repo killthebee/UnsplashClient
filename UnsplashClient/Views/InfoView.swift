@@ -448,8 +448,7 @@ class InfoView: UIViewController {
             dismiss(animated: true)
             return
         }
-        let page = exploreVC.newImageTableDelegateAndDataSource.pageCount
-        exploreVC.presenter?.getNewImages(page: page)
+        exploreVC.presenter?.getNewImages(page: exploreVC.pageCount)
         
         dismiss(animated: true)
     }

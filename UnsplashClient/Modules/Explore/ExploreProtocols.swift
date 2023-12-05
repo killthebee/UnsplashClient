@@ -3,7 +3,7 @@ import Foundation
 protocol ExploreViewProtocol: AnyObject {
     var presenter: ExplorePresenterProtocol? { get }
     func setNewHeaderImage(imageData: Data, _ photographerName: String)
-    func setCollections(with collectionsData: [[UnsplashColletion]])
+    func setCollections(with collectionsData: [UnsplashColletion])
     func addNewImages(photos newImages: [photoModel])
     func setNewImages(photos newImages: [photoModel])
     func invalidateHeaderTask()

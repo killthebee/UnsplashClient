@@ -20,15 +20,17 @@ extension UIImageView {
 extension UIImageView {
     
     func setImage(
-        with collectionData: UnsplashColletion,
-        completion: @escaping (Data) async -> Void
+        with collectionData: UnsplashColletion
     ) {
         Task {
-            await UnsplashApi.shared.getCollectionCoverPhoto(
-                collectionData
-            ) { [weak self] imageData in
-                await completion(imageData.image)
+            guard
+                let imageData = await UnsplashApi.shared.getCollectionCoverPhoto(
+                    collectionData
+                )
+            else {
+                return
             }
+            image = UIImage(data: imageData)
         }
     }
 }

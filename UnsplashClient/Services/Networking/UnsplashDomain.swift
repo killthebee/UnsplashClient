@@ -253,24 +253,27 @@ class UnsplashApi: ObservableObject {
         }
     }
     
+    let collectionsPhotoDataCache = Cache<String, Data>()
+    
     func getCollectionCoverPhoto(
-        _ collectionData: UnsplashColletion,
-        _ complitionHandler: @escaping (photoModel) async -> Void
-    ) async {
+        _ collectionData: UnsplashColletion
+    ) async -> Data? {
+        if let imageData = collectionsPhotoDataCache[collectionData.id] {
+            return imageData
+        }
         do {
             let photoData = try await Networking.shared.getImage(
                 collectionData.cover_photo.urls.thumb
             )
-            let imageDataModel = makePhotoModel(
-                id: collectionData.id,
-                title: collectionData.title,
-                imageData: photoData)
-            await complitionHandler(imageDataModel)
+            collectionsPhotoDataCache[collectionData.id] = photoData
+            
+            return photoData
         } catch {
             self.handleError(
                 error,
                 source: .collections
             )
+            return nil
         }
     }
     

@@ -10,3 +10,8 @@ struct photoAndExifModel {
     let photoModel: photoModel
     let exifData: exifMetadata
 }
+
+struct TopBannerModel {
+    let imageData: Data
+    let photographerName: String
+}

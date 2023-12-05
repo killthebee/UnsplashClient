@@ -24,7 +24,7 @@ class ExplorePresenter: ExplorePresenterProtocol {
     
     @MainActor
     func setColletions(with collectionsData: [UnsplashColletion]) async {
-        view?.setCollections(with: [collectionsData])
+        view?.setCollections(with: collectionsData)
     }
     
     func getNewImages(page pageNum: Int) {

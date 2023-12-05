@@ -14,6 +14,7 @@ roughlyCaroseulHeightPlusLableHightPlusGaps constant justifyed
 
 "collections" this [[]] is for  carousel porpuses
 
+// OUTDATED!!!!
 --- scroll view
 headerContainerViewBottomAnchor sets image hight
 imageTopAnchor pins image to top of the screen
@@ -31,4 +32,11 @@ it's weird, it's must be bigger than scroll view's but not much, otherwise it'll
 -- scrollViewDidScroll
 it takes too damn much time for scroll to stop, so if it's up swipe i just cut this scroll
 one of kostyl's to make scroll view ui more responsive 
+// Scroll view was an intresting expiries // OUTDATED!!!!
 
+-- compositional layout
+Top banner cell is suplementary thingy, that the only way i've found to make
+this paralax like stretchyness
+
+-- Lag when drawing second+ set of new images
+it's some time requers additional time to draw image at full, thats strange
