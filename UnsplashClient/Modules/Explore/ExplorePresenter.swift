@@ -14,8 +14,13 @@ class ExplorePresenter: ExplorePresenterProtocol {
     }
     
     @MainActor
-    func setNewHeaderImage(imageData: Data, _ photographerName: String) async {
-        view?.setNewHeaderImage(imageData: imageData, photographerName)
+    func setNewHeaderImage(_ imageData: UnsplashPhoto) async {
+        let topBannerData = TopBannerModel(
+            url: imageData.urls.thumb,
+            id: imageData.id,
+            photographerName: imageData.user.name
+        )
+        view?.setNewHeaderImage(topBannerData)
     }
     
     func getCollections() {
@@ -32,11 +37,15 @@ class ExplorePresenter: ExplorePresenterProtocol {
     }
     
     func addNewImages(photos newImages: [photoModel]) {
-        view?.addNewImages(photos: newImages)
+        view?.addNewImages(
+            photos: newImages
+        )
     }
     
     func setNewImages(photos newImages: [photoModel]) {
-        view?.setNewImages(photos: newImages)
+        view?.setNewImages(
+            photos: newImages
+        )
     }
     
     func presentExifScreen(photoId: String) {
@@ -46,5 +55,13 @@ class ExplorePresenter: ExplorePresenterProtocol {
     
     func invalidateHeaderTask() {
         interactor?.invalidateHeaderTask()
+    }
+    
+    private func makePhotoModel(
+        id: String,
+        title: String? = nil,
+        imageData: Data
+    ) -> photoModel {
+        return photoModel(id: id, title: title, image: imageData)
     }
 }

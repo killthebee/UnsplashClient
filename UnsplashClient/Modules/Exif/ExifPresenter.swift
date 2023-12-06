@@ -11,8 +11,13 @@ class ExifPresenter: ExifPresenterProtocol {
         interactor?.getImage(photoId: photoId)
     }
     
-    func setImage(imageData: photoModel, exif: exifMetadata) {
-        view?.setImage(imageData: imageData, exif: exif)
+    @MainActor
+    func setImage(_ photoDataAndExif: photoData, photoId: String) async {
+        view?.setImage(
+            imageUrl: photoDataAndExif.urls.raw,
+            exif: photoDataAndExif.exif,
+            photoId: photoId
+        )
     }
     
     func infoButtonTouched(exif: exifMetadata?) {

@@ -11,16 +11,16 @@ class ExifInteractor: ExifInteractorProtocol {
     func getImage(photoId: String) {
         
         Task {
-            await UnsplashApi.shared.getPhoto(
-                photoId
-            ) { [weak self] imageData, exif in
-                await MainActor.run { [weak self] in
-                    self?.presenter?.setImage(
-                        imageData: imageData,
-                        exif: exif
-                    )
-                }
+            guard
+                let photoDataAndExif = await UnsplashApi.shared.getPhoto(
+                    photoId
+                )
+            else
+            {
+                return
             }
+            
+            await presenter?.setImage(photoDataAndExif, photoId: photoId)
         }
     }
 }

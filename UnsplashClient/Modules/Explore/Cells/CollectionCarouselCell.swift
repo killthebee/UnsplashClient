@@ -8,7 +8,10 @@ class CollectionsCarouselCell: UICollectionViewCell {
         didSet {
             guard let cellData = cellData else {return}
             spinner.view.removeFromSuperview()
-            collectionCoverPhoto.setImage(with: cellData)
+            collectionCoverPhoto.setImage(
+                cellData.cover_photo.urls.thumb,
+                imageId: cellData.id
+            )
             collectionNameLable.text = cellData.title
         }
     }

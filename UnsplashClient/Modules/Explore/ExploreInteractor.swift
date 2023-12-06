@@ -13,19 +13,18 @@ class ExploreInteractor: ExploreInteractorProtocol {
     }
     
     func startHeaderImageTask() {
-        let complition = { [weak self] (image: photoModel) async -> Void in
-            await self?.presenter?.setNewHeaderImage(
-                imageData: image.image,
-                image.title ?? "unknown"
-            )
-        }
-        
         headerImageTaskTimer = Timer.scheduledTimer(
             withTimeInterval: 20,
             repeats: true
         ) { _ in
             Task {
-                await UnsplashApi.shared.getRandomPhoto(complition)
+                guard
+                    let imageData = await UnsplashApi.shared.getRandomPhoto()
+                else
+                {
+                    return
+                }
+                await self.presenter?.setNewHeaderImage(imageData)
             }
         }
         
@@ -37,18 +36,21 @@ class ExploreInteractor: ExploreInteractorProtocol {
     }
     
     func getCollections() {
-        let compition = {
-            [weak self] (collections: [UnsplashColletion]) async -> Void in
-            await self?.presenter?.setColletions(with: collections)
-        }
-        
         Task {
-            await UnsplashApi.shared.getCollections(compition)
+            guard
+                let collections = await UnsplashApi.shared.getCollections()
+            else {
+                return
+            }
+            await self.presenter?.setColletions(with: collections)
         }
     }
     
     @MainActor
-    func handlerNewImages(_ pageNum: Int, _ images: [photoModel]) async {
+    func handlerNewImages(
+        _ pageNum: Int,
+        _ images: [photoModel]
+    ) async {
         if pageNum != 1 {
             self.presenter?.addNewImages(photos: images)
             return
@@ -57,42 +59,16 @@ class ExploreInteractor: ExploreInteractorProtocol {
     }
     
     func getNewImages(page pageNum: Int) {
-        let complition = { [weak self] (photoModels: [photoModel]) async -> Void in
-            await self?.handlerNewImages(pageNum, photoModels)
-        }
-        
         Task {
-            await UnsplashApi.shared.getNewImages(page: pageNum, complition)
+            await UnsplashApi.shared.getNewImages(page: pageNum)
+            let lastImageDataIndex = pageNum * 5 - 1
+            let newPhotosData = Array(UnsplashApi.shared.newImages[
+                lastImageDataIndex - 4 ... lastImageDataIndex
+            ])
+            await self.handlerNewImages(
+                pageNum,
+                newPhotosData
+            )
         }
     }
-    
-//    func collectionSelected(id: String) {
-//        // TODO: Yeah, it must be a whole new screen... lol
-//        // Pretend this method doesnt exist pls
-//        guard let accessToken = self.keychainService.readToken(
-//            service: "access-token",
-//            account: "unsplash"
-//        ) else { return }
-//
-//        let successHandler = { (data: Data) throws in
-//            let responseObject = try JSONDecoder().decode(
-//                [UnsplashPhoto].self,
-//                from: data
-//            )
-//            Task {
-//                let asyncNetworking = AsyncNetworking()
-//                await asyncNetworking.downloadImagesAsync(with: responseObject)
-//                await MainActor.run {
-//                    // NOTE: array might be empty
-//                    self.presenter?.setNewImages(photos: asyncNetworking.newImages)
-//                }
-//            }
-//        }
-//
-//        Networking.shared.getCollectionPhotos(
-//            accessToken,
-//            id: id,
-//            successHandler
-//        )
-//    }
 }

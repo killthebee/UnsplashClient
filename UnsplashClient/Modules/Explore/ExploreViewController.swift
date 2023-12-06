@@ -1,11 +1,8 @@
 import UIKit
 
 class ExploreViewController: UIViewController, ExploreViewProtocol {
-    func setNewHeaderImage(imageData: Data, _ photographerName: String) {
-        headerImageData = TopBannerModel(
-            imageData: imageData,
-            photographerName: photographerName
-        )
+    func setNewHeaderImage(_ imageData: TopBannerModel) {
+        headerImageData = imageData
         collectionView.reloadData()
     }
     
@@ -15,7 +12,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     }
     
     func addNewImages(photos nextNewImages: [photoModel]) {
-        newImages = nextNewImages
+        newImages.append(contentsOf: nextNewImages) 
         pageCount += 1
         collectionView.reloadData()
         refreshControl.endRefreshing()

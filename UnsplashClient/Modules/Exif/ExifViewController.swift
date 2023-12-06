@@ -11,8 +11,6 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     var photoId: String? = nil
     
-    private var image: UIImage?
-    
     private var exif: exifMetadata? = nil
     
     // MARK: - UI elements
@@ -70,13 +68,17 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         presenter?.getImage(photoId: photoId)
     }
     
-    func setImage(imageData: photoModel, exif exifData: exifMetadata) {
-        image = UIImage(data: imageData.image)
-        imageView.image = image
+    func setImage(
+        imageUrl: String,
+        exif exifData: exifMetadata,
+        photoId: String
+    ) {
         exif = exifData
+        imageView.setImage(imageUrl, imageId: photoId) {
+            self.removeImagePlaceholder()
+            self.layoutImage()
+        }
         
-        removeImagePlaceholder()
-        layoutImage()
     }
     
     private func addTargetMethods() {
@@ -102,8 +104,8 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     // MARK: - Layout
     private func getImageViewHeight() -> CGFloat {
         guard
-            let imageWidth = image?.size.width,
-            let imageHeight = image?.size.height
+            let imageWidth = imageView.image?.size.width,
+            let imageHeight = imageView.image?.size.height
         else {
             return 1
         }
@@ -239,7 +241,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     }
     
     func presentExifInfo(exif: exifMetadata) {
-        let dimensions = "\(Int(image?.size.width ?? 0)) x \(Int(image?.size.height ?? 0))"
+        let dimensions = "\(Int(imageView.image?.size.width ?? 0)) x \(Int(imageView.image?.size.height ?? 0))"
         
         let vc = InfoView(exifMetadata: exif, dimensions: dimensions)
         guard

@@ -20,17 +20,21 @@ extension UIImageView {
 extension UIImageView {
     
     func setImage(
-        with collectionData: UnsplashColletion
+        _ url: String,
+        imageId: String,
+        complition: @escaping () -> Void = {}
     ) {
         Task {
             guard
-                let imageData = await UnsplashApi.shared.getCollectionCoverPhoto(
-                    collectionData
+                let imageData = await UnsplashApi.shared.getUnsplashImage(
+                    url,
+                    imageId: imageId
                 )
             else {
                 return
             }
             image = UIImage(data: imageData)
+            complition()
         }
     }
 }

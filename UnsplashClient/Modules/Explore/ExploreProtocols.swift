@@ -2,7 +2,7 @@ import Foundation
 
 protocol ExploreViewProtocol: AnyObject {
     var presenter: ExplorePresenterProtocol? { get }
-    func setNewHeaderImage(imageData: Data, _ photographerName: String)
+    func setNewHeaderImage(_ imageData: TopBannerModel)
     func setCollections(with collectionsData: [UnsplashColletion])
     func addNewImages(photos newImages: [photoModel])
     func setNewImages(photos newImages: [photoModel])
@@ -16,7 +16,7 @@ protocol ExploreConfiguratorProtocol: AnyObject {
 protocol ExplorePresenterProtocol: AnyObject {
     var router: ExploreRouterProtocol? { get }
     func startHeaderImageTask()
-    func setNewHeaderImage(imageData: Data, _ photographerName: String) async
+    func setNewHeaderImage(_ imageData: UnsplashPhoto) async
     func getCollections()
     func setColletions(with collectionsData: [UnsplashColletion]) async
     func getNewImages(page pageNum: Int)

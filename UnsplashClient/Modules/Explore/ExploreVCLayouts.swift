@@ -20,16 +20,8 @@ struct ExploreVCLayouts {
             subitems: [item]
         )
         
-        
-        
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-//        let config = UICollectionViewCompositionalLayoutConfiguration()
-//        config.interSectionSpacing = 10
-//
-//        let layout = UICollectionViewCompositionalLayout(section: section, configuration: config)
-            
         
         return section
     }
@@ -60,13 +52,10 @@ struct ExploreVCLayouts {
             elementKind: "Stretchy",
             alignment: .top
         )
-            
         
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [sectionHeader]
-        
-//        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
-        
+    
         return section
     }
     
@@ -134,7 +123,6 @@ struct ExploreVCLayouts {
         )
         
         let section = NSCollectionLayoutSection(group: group)
-        
         
         return section
     }

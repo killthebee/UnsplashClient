@@ -25,18 +25,19 @@ class LoginSession: NSObject {
               return
             }
             Task {
-                await UnsplashApi.shared.exchangeCode(
-                    code: code
-                ) { [weak self] accessToken async in
-                    interactor.keychainService.save(
-                        Data(accessToken.access_token.utf8),
-                        service: "access-token",
-                        account: "unsplash"
+                guard
+                    let tokenExchangeData = await UnsplashApi.shared.exchangeCode(
+                        code: code
                     )
-                    await MainActor.run { [weak self] in
-                        interactor.showExploreScreen()
-                    }
+                else {
+                    return
                 }
+                interactor.keychainService.save(
+                    Data(tokenExchangeData.access_token.utf8),
+                    service: "access-token",
+                    account: "unsplash"
+                )
+                interactor.showExploreScreen()
             }
         }
         
