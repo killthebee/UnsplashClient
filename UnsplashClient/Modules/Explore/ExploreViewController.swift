@@ -100,7 +100,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         configureView()
         presenter?.startHeaderImageTask()
         presenter?.getCollections()
-//        presenter?.getNewImages(page: 1)
+        presenter?.getNewImages(page: 1)
     }
     
     private func configureView() {

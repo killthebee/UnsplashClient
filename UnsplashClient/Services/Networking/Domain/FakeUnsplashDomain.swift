@@ -1,0 +1,129 @@
+import UIKit
+
+class FakeUnsplashApi: UnsplashApiProtocol {
+    
+    static let shared: UnsplashApiProtocol = FakeUnsplashApi()
+    
+    // check app router
+    public var errorPresentationHandler: (
+        _ source: ErrorSource
+    ) async -> Void = { _ in }
+    
+    var tokenStorage: TokenStorageProtocol?
+    
+    let headerInfo: [UnsplashPhoto] = FakeUnsplashApiMockData.headerInfo
+    
+    let collectionsInfo: [UnsplashColletion] = FakeUnsplashApiMockData.collectionsInfo
+    
+    var regularPhotoData: [String: Data?] = [:]
+    
+//    init() {
+//        Task {
+//            await populateRegularPhotoData()
+//            await populateNewImages()
+//        }
+//    }
+    
+    var newImages: [photoModel] = []
+  
+    // TODO: do i really need this method here? authsesh's api service doesn't hidden under protocol tho
+    func exchangeCode(code: String) async -> TokenExchangeSuccessData? {
+        return TokenExchangeSuccessData(
+            access_token: "whatever",
+            refresh_token: "whatever",
+            token_type: "whatever",
+            scope: "whatever",
+            created_at: 1111
+        )
+    }
+    
+    var counter = 0
+    // TODO: Yeah, one day im gonna make a generator, it's a shame there's no easy way to do it in swift
+    private var isHeaderDataEmpty = true
+    func getRandomPhoto() async -> UnsplashPhoto? {
+        if isHeaderDataEmpty {
+            await populateHeaderData()
+            isHeaderDataEmpty = false
+        }
+        if counter == 3 { counter = 0 }
+        let photo = headerInfo[counter]
+        counter += 1
+        return photo
+    }
+    
+    private var isCollectionDataEmpty = true
+    func getCollections() async -> [UnsplashColletion]? {
+        if isCollectionDataEmpty {
+            await populateRegularPhotoData()
+            isCollectionDataEmpty = false
+        }
+        return collectionsInfo
+    }
+    
+    func getNewImages(page pageNum: Int) async {
+        await populateNewImages()
+        return
+    }
+    
+    func getUnsplashImage(_ url: String, imageId: String ) async -> Data? {
+        if let photo = regularPhotoData[imageId] {
+            return photo
+        } else {
+            return nil
+        }
+    }
+    
+    func getPhoto(_ photoID: String) async -> photoData? {
+        return nil
+    }
+    
+    func makeUrl(_ urlArg: String, target: urlTarget) -> URL? {
+        return nil
+    }
+}
+
+extension FakeUnsplashApi {
+    private func populateRegularPhotoData() async {
+        regularPhotoData["c1"] = UIImage(named: "c1BussinessTests")!.jpegData(compressionQuality: 1)
+        regularPhotoData["c2"] = UIImage(named: "c2EducationTests")!.jpegData(compressionQuality: 1)
+        regularPhotoData["c3"] = UIImage(named: "c3RelationshipsTests")!.jpegData(compressionQuality: 1)
+        regularPhotoData["c4"] = UIImage(named: "c4ParadeTests")!.jpegData(compressionQuality: 1)
+        regularPhotoData["c5"] = UIImage(named: "c5CatsTests")!.jpegData(compressionQuality: 1)
+    }
+    
+    private func populateHeaderData() async {
+        regularPhotoData["h1"] = UIImage(named: "headerTests1")!.jpegData(compressionQuality: 1)
+        regularPhotoData["h2"] = UIImage(named: "headerTests2")!.jpegData(compressionQuality: 1)
+        regularPhotoData["h3"] = UIImage(named: "headerTests3")!.jpegData(compressionQuality: 1)
+    }
+    
+    private func populateNewImages() async {
+        newImages = [
+            photoModel(
+                id: "i1",
+                title: nil,
+                image: UIImage(named: "i1")!.jpegData(compressionQuality: 1)!
+            ),
+            photoModel(
+                id: "i2",
+                title: nil,
+                image: UIImage(named: "i2")!.jpegData(compressionQuality: 1)!
+            ),
+            photoModel(
+                id: "i3",
+                title: nil,
+                image: UIImage(named: "i3")!.jpegData(compressionQuality: 1)!
+            ),
+            photoModel(
+                id: "i4",
+                title: nil,
+                image: UIImage(named: "i4")!.jpegData(compressionQuality: 1)!
+            ),
+            photoModel(
+                id: "i5",
+                title: nil,
+                image: UIImage(named: "i5")!.jpegData(compressionQuality: 1)!
+            )
+        ]
+    }
+}
