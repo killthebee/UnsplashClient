@@ -6,7 +6,9 @@ class ExploreConfigurator: ExploreConfiguratorProtocol {
         self.assembly = assembly
     }
     
-    func configure(with viewController: ExploreViewController) {
+    func configure(
+        with viewController: ExploreViewController
+    ) {
         let presenter = ExplorePresenter(view: viewController)
         let router = ExploreRouter(assembly: assembly, view: viewController)
         let interactor = ExploreInteractor(

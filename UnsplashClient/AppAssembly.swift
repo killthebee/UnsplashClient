@@ -7,6 +7,16 @@ class AppAssembly {
     init (keychainService: TokenStorageProtocol) {
         self.keychainService = keychainService
     }
+    
+    static var currentApiService: UnsplashApiProtocol {
+        get {
+            if CommandLine.arguments.contains("UI_tests") {
+                return FakeUnsplashApi.shared
+            } else {
+                return UnsplashApi.shared
+            }
+        }
+    }
 }
 
 // MARK: - IntroScreen

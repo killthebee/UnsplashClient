@@ -10,6 +10,7 @@ final class UnsplashClientUITests: XCTestCase {
 
     override func setUpWithError() throws {
         app = XCUIApplication()
+        app.launchArguments = ["UI_tests"]
         app.launch()
 //        let tokenManager = KeyChainManager()
         continueAfterFailure = false
@@ -26,17 +27,20 @@ final class UnsplashClientUITests: XCTestCase {
     }
 
     func testLables() throws {
-        let newTableLable = app.staticTexts["New"]
+        let newTableLable = app.staticTexts["New Images"]
         let exploreLable = app.staticTexts["Explore"]
         let headerLable = app.staticTexts["Photos for everyone"]
         let lables = [
-            newTableLable, exploreLable, headerLable
+            headerLable, exploreLable, newTableLable
         ].forEach{XCTAssertTrue($0.exists)}
     }
     
     func testTables() throws {
-        app.tables.matching(identifier: "newTable")
-        app.tables.matching(identifier: "CollectionsTable")
+        let hmm = app.collectionViews.children(
+            matching: .cell
+        ).element(boundBy: 0)
+        
+        XCTAssertTrue(hmm.exists)
     }
 //
 //    func testNewTableCells() throws {

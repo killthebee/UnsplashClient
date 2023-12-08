@@ -1,19 +1,19 @@
 import UIKit
 
-class UnsplashApi: ObservableObject {
-    
-    enum urlTarget {
-        case codeExchange
-        case randomPhoto
-        case collectionList
-        case newImages
-        case collectionPhotos
-        case login
-        case getPhoto
-        case sharePhoto
-    }
-    
-    static let shared = UnsplashApi()
+enum urlTarget {
+    case codeExchange
+    case randomPhoto
+    case collectionList
+    case newImages
+    case collectionPhotos
+    case login
+    case getPhoto
+    case sharePhoto
+}
+
+class UnsplashApi: ObservableObject, UnsplashApiProtocol {
+
+    static let shared: UnsplashApiProtocol = UnsplashApi()
     
     // check app router
     public var errorPresentationHandler: (
@@ -90,7 +90,7 @@ class UnsplashApi: ObservableObject {
         return urlComponents.url
     }
     
-    func setupRequest(
+    private func setupRequest(
         _ url: URL,
         _ method: HTTPMethod,
         _ accessToken: String? = nil
@@ -106,9 +106,7 @@ class UnsplashApi: ObservableObject {
         return request
     }
     
-    func exchangeCode(
-        code: String
-    ) async -> TokenExchangeSuccessData? {
+    func exchangeCode(code: String) async -> TokenExchangeSuccessData? {
         var tokenExchangeData: TokenExchangeSuccessData? = nil
         guard let url = makeUrl(code, target: .codeExchange) else {
             return tokenExchangeData
@@ -232,12 +230,9 @@ class UnsplashApi: ObservableObject {
         }
     }
     
-    let unsplashPhotoDataCache = Cache<String, Data>()
+    private let unsplashPhotoDataCache = Cache<String, Data>()
     
-    func getUnsplashImage(
-        _ url: String,
-        imageId: String
-    ) async -> Data? {
+    func getUnsplashImage(_ url: String, imageId: String ) async -> Data? {
         if let imageData = unsplashPhotoDataCache[imageId] {
             return imageData
         }
@@ -258,9 +253,7 @@ class UnsplashApi: ObservableObject {
         }
     }
     
-    func getPhoto(
-        _ photoID: String
-    ) async -> photoData? {
+    func getPhoto(_ photoID: String) async -> photoData? {
         var photoDataAndExif: photoData? = nil
         guard
             let url = makeUrl(photoID, target: .getPhoto),

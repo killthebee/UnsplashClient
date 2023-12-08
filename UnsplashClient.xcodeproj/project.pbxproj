@@ -49,6 +49,8 @@
 		84D235272B1A19C800C369BF /* CollectionCarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D235262B1A19C800C369BF /* CollectionCarouselCell.swift */; };
 		84D235292B1A252900C369BF /* CellsHeaderLable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D235282B1A252900C369BF /* CellsHeaderLable.swift */; };
 		84D2352B2B1DF35800C369BF /* NewImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2352A2B1DF35800C369BF /* NewImageCell.swift */; };
+		84D2352D2B21EE6200C369BF /* UnsplashDomainProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2352C2B21EE6200C369BF /* UnsplashDomainProtocols.swift */; };
+		84D2352F2B220EC900C369BF /* FakeUnsplashDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2352E2B220EC900C369BF /* FakeUnsplashDomain.swift */; };
 		84D2FFC32AE7C1EF00516873 /* BSTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */; };
 		84D2FFC52AE7C2F900516873 /* BSPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */; };
 		84D2FFCB2AE92DAB00516873 /* BSTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2FFCA2AE92DAB00516873 /* BSTransition.swift */; };
@@ -133,6 +135,8 @@
 		84D235262B1A19C800C369BF /* CollectionCarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionCarouselCell.swift; sourceTree = "<group>"; };
 		84D235282B1A252900C369BF /* CellsHeaderLable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellsHeaderLable.swift; sourceTree = "<group>"; };
 		84D2352A2B1DF35800C369BF /* NewImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewImageCell.swift; sourceTree = "<group>"; };
+		84D2352C2B21EE6200C369BF /* UnsplashDomainProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashDomainProtocols.swift; sourceTree = "<group>"; };
+		84D2352E2B220EC900C369BF /* FakeUnsplashDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeUnsplashDomain.swift; sourceTree = "<group>"; };
 		84D2FFC22AE7C1EF00516873 /* BSTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransitioningDelegate.swift; sourceTree = "<group>"; };
 		84D2FFC42AE7C2F900516873 /* BSPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSPresentationController.swift; sourceTree = "<group>"; };
 		84D2FFCA2AE92DAB00516873 /* BSTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTransition.swift; sourceTree = "<group>"; };
@@ -269,6 +273,8 @@
 				84D200142AFA4C1400516873 /* UnsplashDomain.swift */,
 				845A86782AAF846D00E97933 /* Networking.swift */,
 				84D200162AFA578E00516873 /* Errors.swift */,
+				84D2352C2B21EE6200C369BF /* UnsplashDomainProtocols.swift */,
+				84D2352E2B220EC900C369BF /* FakeUnsplashDomain.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -599,6 +605,7 @@
 				84D2FFDC2AEC13A000516873 /* UIColor + ext.swift in Sources */,
 				84D90CEA2AA1FA20001E9AE3 /* IntroViewController.swift in Sources */,
 				84D235202B19F4E300C369BF /* ExploreVC + ext.swift in Sources */,
+				84D2352D2B21EE6200C369BF /* UnsplashDomainProtocols.swift in Sources */,
 				84D200172AFA578E00516873 /* Errors.swift in Sources */,
 				84D235232B19FE0800C369BF /* TopBannerCell.swift in Sources */,
 				84D2FFD82AEC053500516873 /* ExifViewController.swift in Sources */,
@@ -622,6 +629,7 @@
 				845A865D2AA2415500E97933 /* UILable + ext.swift in Sources */,
 				84A1D3652ACD9B4F00A66327 /* APPModels.swift in Sources */,
 				845A86712AAA110800E97933 /* ExploreConfigurator.swift in Sources */,
+				84D2352F2B220EC900C369BF /* FakeUnsplashDomain.swift in Sources */,
 				84D235292B1A252900C369BF /* CellsHeaderLable.swift in Sources */,
 				84D90CF02AA1FA86001E9AE3 /* IntroPresenter.swift in Sources */,
 				84D90CEE2AA1FA70001E9AE3 /* IntroRouter.swift in Sources */,

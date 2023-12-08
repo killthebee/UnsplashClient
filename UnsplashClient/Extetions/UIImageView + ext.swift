@@ -22,11 +22,12 @@ extension UIImageView {
     func setImage(
         _ url: String,
         imageId: String,
+        apiService: UnsplashApiProtocol = AppAssembly.currentApiService,
         complition: @escaping () -> Void = {}
     ) {
         Task {
             guard
-                let imageData = await UnsplashApi.shared.getUnsplashImage(
+                let imageData = await apiService.getUnsplashImage(
                     url,
                     imageId: imageId
                 )

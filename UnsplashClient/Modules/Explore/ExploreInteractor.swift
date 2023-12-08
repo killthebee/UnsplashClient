@@ -4,12 +4,16 @@ class ExploreInteractor: ExploreInteractorProtocol {
     
     weak var presenter: ExplorePresenterProtocol?
     
+    let apiService: UnsplashApiProtocol?
+    
     var headerImageTaskTimer: Timer?
     
     required init(
-        presenter: ExplorePresenterProtocol
+        presenter: ExplorePresenterProtocol,
+        apiService: UnsplashApiProtocol = AppAssembly.currentApiService
     ) {
         self.presenter = presenter
+        self.apiService = apiService
     }
     
     func startHeaderImageTask() {
@@ -19,7 +23,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
         ) { _ in
             Task {
                 guard
-                    let imageData = await UnsplashApi.shared.getRandomPhoto()
+                    let imageData = await self.apiService?.getRandomPhoto()
                 else
                 {
                     return
@@ -38,7 +42,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
     func getCollections() {
         Task {
             guard
-                let collections = await UnsplashApi.shared.getCollections()
+                let collections = await self.apiService?.getCollections()
             else {
                 return
             }
@@ -60,9 +64,10 @@ class ExploreInteractor: ExploreInteractorProtocol {
     
     func getNewImages(page pageNum: Int) {
         Task {
-            await UnsplashApi.shared.getNewImages(page: pageNum)
+            await self.apiService?.getNewImages(page: pageNum)
+            let allImages: [photoModel] = self.apiService?.newImages ?? []
             let lastImageDataIndex = pageNum * 5 - 1
-            let newPhotosData = Array(UnsplashApi.shared.newImages[
+            let newPhotosData = Array(allImages[
                 lastImageDataIndex - 4 ... lastImageDataIndex
             ])
             await self.handlerNewImages(

@@ -39,7 +39,6 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     private let refreshControl = UIRefreshControl()
     
     // MARK: - Data
-//    private var 
     var collections: [UnsplashColletion] = []
     var newImages: [photoModel] = []
     var headerImageData: TopBannerModel? = nil
@@ -99,9 +98,9 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-//        presenter?.startHeaderImageTask()
-//        presenter?.getCollections()
-        presenter?.getNewImages(page: 1)
+        presenter?.startHeaderImageTask()
+        presenter?.getCollections()
+//        presenter?.getNewImages(page: 1)
     }
     
     private func configureView() {
