@@ -52,6 +52,7 @@ extension ExploreViewController:
             }
             if collections.count == 0 { return cell }
             cell.cellData = collections[indexPath.row]
+            cell.accessibilityIdentifier = "Collections_Cell_\(indexPath.row)"
             
             return cell
         case 2:
@@ -77,6 +78,7 @@ extension ExploreViewController:
             }
             if newImages.count == 0 { return cell }
             cell.cellData = newImages[indexPath.row]
+            cell.accessibilityIdentifier = "Images_Cell_\(indexPath.row)"
             
             return cell
         default:

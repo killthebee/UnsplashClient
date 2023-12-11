@@ -18,17 +18,27 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         imageName: "square.and.arrow.up"
     )
     
-    private let dismissButton = UISystemImageButton(
-        imageName: "xmark"
-    )
+    private let dismissButton: UIButton = {
+        let button = UISystemImageButton(
+            imageName: "xmark"
+        )
+        button.accessibilityIdentifier = "dismiss_button"
+        
+        return button
+    }()
     
-    private let infoButton: UIButton = UISystemImageButton(
-        imageName: "info.circle"
-    )
+    private let infoButton: UIButton = {
+        let button = UISystemImageButton(
+            imageName: "info.circle"
+        )
+        button.accessibilityIdentifier = "info_button"
+        
+        return button
+    }()
 
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        
+        imageView.accessibilityLabel = "full_res_image"
         return imageView
     }()
     
