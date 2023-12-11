@@ -4,7 +4,6 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     
     static let shared: UnsplashApiProtocol = FakeUnsplashApi()
     
-    // check app router
     public var errorPresentationHandler: (
         _ source: ErrorSource
     ) async -> Void = { _ in }
@@ -21,7 +20,6 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     
     var exifAndImageData: [photoData] = [FakeUnsplashApiMockData.firstExifAndImageData]
   
-    // TODO: do i really need this method here? authsesh's api service doesn't hidden under protocol tho
     func exchangeCode(code: String) async -> TokenExchangeSuccessData? {
         return TokenExchangeSuccessData(
             access_token: "whatever",
@@ -33,9 +31,6 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     }
     
     var counter = 0
-    // TODO: Yeah, one day im gonna make a generator, it's a shame there's no easy way to do it in swift
-    
-    //NOTE: good thing populateHeaderData and others are executed on background threads
     private var isHeaderDataEmpty = true
     func getRandomPhoto() async -> UnsplashPhoto? {
         if isHeaderDataEmpty {

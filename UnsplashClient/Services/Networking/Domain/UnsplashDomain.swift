@@ -15,7 +15,6 @@ class UnsplashApi: ObservableObject, UnsplashApiProtocol {
 
     static let shared: UnsplashApiProtocol = UnsplashApi()
     
-    // check app router
     public var errorPresentationHandler: (
         _ source: ErrorSource
     ) async -> Void = { _ in }
@@ -245,10 +244,6 @@ class UnsplashApi: ObservableObject, UnsplashApiProtocol {
             return photoData
         } catch {
             // TODO: Think about error handling!
-//            self.handleError(
-//                error,
-//                source: .collections
-//            )
             return nil
         }
     }
