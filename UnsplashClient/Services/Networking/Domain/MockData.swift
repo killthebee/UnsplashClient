@@ -75,11 +75,14 @@ struct FakeUnsplashApiMockData {
         )
     ]
     
-//    let newImages: [photoModel] = [
-//        photoModel(
-//            id: <#T##String#>,
-//            title: <#T##String?#>,
-//            image:
-//        )
-//    ]
+    static let firstExifAndImageData = photoData(
+        exif: exifMetadata(
+            make: "SONY",
+            model: "ILCE-7M4",
+            name: "SONY, ILCE-7M4",
+            focal_length: "35.0",
+            aperture: "1.8",
+            exposure_time: "0.0166"),
+        urls: PhotoUrls(raw: "i1", thumb: "i1")
+    )
 }

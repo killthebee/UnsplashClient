@@ -17,14 +17,9 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     
     var regularPhotoData: [String: Data?] = [:]
     
-//    init() {
-//        Task {
-//            await populateRegularPhotoData()
-//            await populateNewImages()
-//        }
-//    }
-    
     var newImages: [photoModel] = []
+    
+    var exifAndImageData: [photoData] = [FakeUnsplashApiMockData.firstExifAndImageData]
   
     // TODO: do i really need this method here? authsesh's api service doesn't hidden under protocol tho
     func exchangeCode(code: String) async -> TokenExchangeSuccessData? {
@@ -39,10 +34,12 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     
     var counter = 0
     // TODO: Yeah, one day im gonna make a generator, it's a shame there's no easy way to do it in swift
+    
+    //NOTE: good thing populateHeaderData and others are executed on background threads
     private var isHeaderDataEmpty = true
     func getRandomPhoto() async -> UnsplashPhoto? {
         if isHeaderDataEmpty {
-            await populateHeaderData()
+            populateHeaderData()
             isHeaderDataEmpty = false
         }
         if counter == 3 { counter = 0 }
@@ -54,14 +51,14 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     private var isCollectionDataEmpty = true
     func getCollections() async -> [UnsplashColletion]? {
         if isCollectionDataEmpty {
-            await populateRegularPhotoData()
+            populateRegularPhotoData()
             isCollectionDataEmpty = false
         }
         return collectionsInfo
     }
     
     func getNewImages(page pageNum: Int) async {
-        await populateNewImages()
+        populateNewImages()
         return
     }
     
@@ -74,7 +71,7 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     }
     
     func getPhoto(_ photoID: String) async -> photoData? {
-        return nil
+        return exifAndImageData[0]
     }
     
     func makeUrl(_ urlArg: String, target: urlTarget) -> URL? {
@@ -83,7 +80,7 @@ class FakeUnsplashApi: UnsplashApiProtocol {
 }
 
 extension FakeUnsplashApi {
-    private func populateRegularPhotoData() async {
+    private func populateRegularPhotoData() {
         regularPhotoData["c1"] = UIImage(named: "c1BussinessTests")!.jpegData(compressionQuality: 1)
         regularPhotoData["c2"] = UIImage(named: "c2EducationTests")!.jpegData(compressionQuality: 1)
         regularPhotoData["c3"] = UIImage(named: "c3RelationshipsTests")!.jpegData(compressionQuality: 1)
@@ -91,13 +88,13 @@ extension FakeUnsplashApi {
         regularPhotoData["c5"] = UIImage(named: "c5CatsTests")!.jpegData(compressionQuality: 1)
     }
     
-    private func populateHeaderData() async {
+    private func populateHeaderData() {
         regularPhotoData["h1"] = UIImage(named: "headerTests1")!.jpegData(compressionQuality: 1)
         regularPhotoData["h2"] = UIImage(named: "headerTests2")!.jpegData(compressionQuality: 1)
         regularPhotoData["h3"] = UIImage(named: "headerTests3")!.jpegData(compressionQuality: 1)
     }
     
-    private func populateNewImages() async {
+    private func populateNewImages() {
         newImages = [
             photoModel(
                 id: "i1",
