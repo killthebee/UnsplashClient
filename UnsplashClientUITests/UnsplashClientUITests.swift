@@ -3,12 +3,11 @@ import XCTest
 
 final class UnsplashClientUITests: XCTestCase {
     
-    var app: XCUIApplication!
-    
-    let testToken = "u79URgKP7fzNj3dhCvvbjDa7u_Zr2UjpFpa6651z9l8"
+    let exploreScreen = ExploreScreen()
+    let exifScreen = ExifScreen()
     
     override func setUpWithError() throws {
-        app = XCUIApplication()
+        let app = XCUIApplication()
         app.launchArguments = ["UI_tests"]
         app.launch()
         continueAfterFailure = false
@@ -19,64 +18,39 @@ final class UnsplashClientUITests: XCTestCase {
     }
     
     func testLables() throws {
-        let newTableLable = app.staticTexts["New Images"]
-        let exploreLable = app.staticTexts["Explore"]
-        let headerLable = app.staticTexts["Photos for everyone"]
-        let lables = [
-            headerLable, exploreLable, newTableLable
+        [   exploreScreen.headerLable,
+            exploreScreen.exploreLable,
+            exploreScreen.newTableLable
         ].forEach{XCTAssertTrue($0.exists)}
     }
     
     func testCrutialSections() throws {
-        let newImages = app.collectionViews.children(
-            matching: .cell
-        ).element(boundBy: 3)
-        XCTAssertTrue(newImages.exists)
-        let collections = app.collectionViews.children(
-            matching: .cell
-        ).element(boundBy: 2)
-        XCTAssertTrue(collections.exists)
+        XCTAssertTrue(exploreScreen.newImages.exists)
+        XCTAssertTrue(exploreScreen.collections.exists)
     }
     
     func testCollectionCells() throws {
-        let firstCollections = app.descendants(
-            matching: .cell
-        ).matching(
-            NSPredicate(format: "identifier == 'Collections_Cell_0'")
-        ).firstMatch
-        XCTAssertTrue(firstCollections.exists)
-        firstCollections.swipeLeft()
+        let firstCollection = exploreScreen.firstCollection
+        XCTAssertTrue(firstCollection.exists)
+        firstCollection.swipeLeft()
     }
     
     func testNewImagesCells() throws {
-        let firstImage = app.descendants(
-            matching: .cell
-        ).matching(
-            NSPredicate(format: "identifier == 'Images_Cell_0'")
-        ).firstMatch
+        let firstImage = exploreScreen.firstImage
         XCTAssertTrue(firstImage.exists)
         firstImage.tap()
-        let infoButton = app.buttons.element(
-            matching: NSPredicate(format: "identifier == 'info_button'")
-        ).firstMatch
+        let infoButton = exifScreen.infoButton
         infoButton.tap()
-        let cameraLable = app.staticTexts["Camera"]
+        let cameraLable = exifScreen.cameraLable
         XCTAssertTrue(cameraLable.exists)
     }
     
     func testFromExifToExplore() throws {
-        let firstImage = app.descendants(
-            matching: .cell
-        ).matching(
-            NSPredicate(format: "identifier == 'Images_Cell_0'")
-        ).firstMatch
+        let firstImage = exploreScreen.firstImage
         XCTAssertTrue(firstImage.exists)
         firstImage.tap()
-        let infoButton = app.buttons.element(
-            matching: NSPredicate(format: "identifier == 'dismiss_button'")
-        ).firstMatch
-        infoButton.tap()
-        let newTableLable = app.staticTexts["New Images"]
-        XCTAssertTrue(newTableLable.exists)
+        let dismissButton = exifScreen.dismissButton
+        dismissButton.tap()
+        XCTAssertTrue(exploreScreen.newTableLable.exists)
     }
 }

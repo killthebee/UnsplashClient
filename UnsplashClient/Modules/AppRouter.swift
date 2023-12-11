@@ -4,6 +4,9 @@ class AppRouter {
     
     func makeFirstScreen() -> Presentable {
 //        return assembly.makeExifScreen()
+        if CommandLine.arguments.contains("UI_tests") {
+            return assembly.makeExploreScreen()
+        }
         if let _ = assembly.keychainService.getToken() {
             return assembly.makeExploreScreen()
         }
