@@ -11,7 +11,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     var photoId: String? = nil
     
-    private var exif: exifMetadata? = nil
+    private var exif: ExifMetadata? = nil
     
     // MARK: - UI elements
     private let shareButton = UISystemImageButton(
@@ -80,7 +80,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     
     func setImage(
         imageUrl: String,
-        exif exifData: exifMetadata,
+        exif exifData: ExifMetadata,
         photoId: String
     ) {
         exif = exifData
@@ -250,7 +250,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         
     }
     
-    func presentExifInfo(exif: exifMetadata) {
+    func presentExifInfo(exif: ExifMetadata) {
         let dimensions = "\(Int(imageView.image?.size.width ?? 0)) x \(Int(imageView.image?.size.height ?? 0))"
         
         let vc = InfoView(exifMetadata: exif, dimensions: dimensions)

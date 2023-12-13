@@ -2,10 +2,10 @@ protocol ExifViewProtocol: AnyObject {
     var presenter: ExifPresenterProtocol? { get }
     func setImage(
         imageUrl: String,
-        exif exifData: exifMetadata,
+        exif exifData: ExifMetadata,
         photoId: String
     )
-    func presentExifInfo(exif: exifMetadata)
+    func presentExifInfo(exif: ExifMetadata)
     func presentShareVC()
     func reStartHeaderTask()
 }
@@ -17,8 +17,8 @@ protocol ExifConfiguratorProtocol: AnyObject {
 protocol ExifPresenterProtocol: AnyObject {
     var router: ExifRouterProtocol? { get }
     func getImage(photoId: String)
-    func setImage(_ photoDataAndExif: photoData, photoId: String) async
-    func infoButtonTouched(exif: exifMetadata?)
+    func setImage(_ photoDataAndExif: PhotoData, photoId: String) async
+    func infoButtonTouched(exif: ExifMetadata?)
     func dismissRequested()
     func presentShareVC()
 }

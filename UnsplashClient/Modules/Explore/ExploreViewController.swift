@@ -11,14 +11,14 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         collectionView.reloadData()
     }
     
-    func addNewImages(photos nextNewImages: [photoModel]) {
+    func addNewImages(photos nextNewImages: [PhotoModel]) {
         newImages.append(contentsOf: nextNewImages) 
         pageCount += 1
         collectionView.reloadData()
         refreshControl.endRefreshing()
     }
     
-    func setNewImages(photos downloadedNewImages: [photoModel]) {
+    func setNewImages(photos downloadedNewImages: [PhotoModel]) {
         newImages = downloadedNewImages
         pageCount += 1
         collectionView.reloadData()
@@ -40,7 +40,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     // MARK: - Data
     var collections: [UnsplashColletion] = []
-    var newImages: [photoModel] = []
+    var newImages: [PhotoModel] = []
     var headerImageData: TopBannerModel? = nil
     var pageCount = 1
     

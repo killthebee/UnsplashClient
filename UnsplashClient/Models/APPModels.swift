@@ -1,14 +1,14 @@
 import Foundation
 
-struct photoModel {
+struct PhotoModel {
     let id: String
     let title: String?
     let image: Data
 }
 
-struct photoAndExifModel {
-    let photoModel: photoModel
-    let exifData: exifMetadata
+struct PhotoAndExifModel {
+    let photoModel: PhotoModel
+    let exifData: ExifMetadata
 }
 
 struct TopBannerModel {

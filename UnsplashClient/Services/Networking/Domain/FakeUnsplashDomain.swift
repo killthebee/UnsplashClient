@@ -16,9 +16,9 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     
     var regularPhotoData: [String: Data?] = [:]
     
-    var newImages: [photoModel] = []
+    var newImages: [PhotoModel] = []
     
-    var exifAndImageData: [photoData] = [FakeUnsplashApiMockData.firstExifAndImageData]
+    var exifAndImageData: [PhotoData] = [FakeUnsplashApiMockData.firstExifAndImageData]
   
     func exchangeCode(code: String) async -> TokenExchangeSuccessData? {
         return TokenExchangeSuccessData(
@@ -65,7 +65,7 @@ class FakeUnsplashApi: UnsplashApiProtocol {
         }
     }
     
-    func getPhoto(_ photoID: String) async -> photoData? {
+    func getPhoto(_ photoID: String) async -> PhotoData? {
         return exifAndImageData[0]
     }
     
@@ -91,27 +91,27 @@ extension FakeUnsplashApi {
     
     private func populateNewImages() {
         newImages = [
-            photoModel(
+            PhotoModel(
                 id: "i1",
                 title: nil,
                 image: UIImage(named: "i1")!.jpegData(compressionQuality: 1)!
             ),
-            photoModel(
+            PhotoModel(
                 id: "i2",
                 title: nil,
                 image: UIImage(named: "i2")!.jpegData(compressionQuality: 1)!
             ),
-            photoModel(
+            PhotoModel(
                 id: "i3",
                 title: nil,
                 image: UIImage(named: "i3")!.jpegData(compressionQuality: 1)!
             ),
-            photoModel(
+            PhotoModel(
                 id: "i4",
                 title: nil,
                 image: UIImage(named: "i4")!.jpegData(compressionQuality: 1)!
             ),
-            photoModel(
+            PhotoModel(
                 id: "i5",
                 title: nil,
                 image: UIImage(named: "i5")!.jpegData(compressionQuality: 1)!

@@ -12,7 +12,7 @@ class ExifPresenter: ExifPresenterProtocol {
     }
     
     @MainActor
-    func setImage(_ photoDataAndExif: photoData, photoId: String) async {
+    func setImage(_ photoDataAndExif: PhotoData, photoId: String) async {
         view?.setImage(
             imageUrl: photoDataAndExif.urls.raw,
             exif: photoDataAndExif.exif,
@@ -20,7 +20,7 @@ class ExifPresenter: ExifPresenterProtocol {
         )
     }
     
-    func infoButtonTouched(exif: exifMetadata?) {
+    func infoButtonTouched(exif: ExifMetadata?) {
         guard let exif = exif else { return }
         view?.presentExifInfo(exif: exif)
     }

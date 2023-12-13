@@ -21,7 +21,7 @@ class UnsplashApi: ObservableObject, UnsplashApiProtocol {
     
     var tokenStorage: TokenStorageProtocol?
     
-    @Published var newImages: [photoModel] = []
+    @Published var newImages: [PhotoModel] = []
     
     func makeUrl(_ urlArg: String = "", target: urlTarget) -> URL? {
         var urlComponents = URLComponents()
@@ -184,10 +184,10 @@ class UnsplashApi: ObservableObject, UnsplashApiProtocol {
     
     private func downloadImagesAsync(with response: [UnsplashPhoto]) async {
         do {
-            try await withThrowingTaskGroup(of: photoModel.self) { taskGroup in
+            try await withThrowingTaskGroup(of: PhotoModel.self) { taskGroup in
                 for unslpashPhotoData in response {
                     taskGroup.addTask{
-                        photoModel(
+                        PhotoModel(
                             id: unslpashPhotoData.id,
                             title: nil,
                             image: try await Networking.shared.getImage(
@@ -248,8 +248,8 @@ class UnsplashApi: ObservableObject, UnsplashApiProtocol {
         }
     }
     
-    func getPhoto(_ photoID: String) async -> photoData? {
-        var photoDataAndExif: photoData? = nil
+    func getPhoto(_ photoID: String) async -> PhotoData? {
+        var photoDataAndExif: PhotoData? = nil
         guard
             let url = makeUrl(photoID, target: .getPhoto),
             let accessToken = tokenStorage?.getToken()
@@ -259,7 +259,7 @@ class UnsplashApi: ObservableObject, UnsplashApiProtocol {
         let request = setupRequest(url, .get, accessToken)
         await Networking.shared.performRequest(
             request
-        ) { (result: Result<photoData, Error>) async in
+        ) { (result: Result<PhotoData, Error>) async in
             switch result {
             case let .success(DownloadedPhotoDataAndExif):
                 photoDataAndExif = DownloadedPhotoDataAndExif

@@ -4,7 +4,7 @@ class NewImageCell: UICollectionViewCell {
     
     static let cellIdentifier = "NewImageCell"
     
-    var cellData : photoModel? {
+    var cellData : PhotoModel? {
         didSet {
             guard let cellData = cellData else {return}
             coverPhoto.image = UIImage(data: cellData.image)

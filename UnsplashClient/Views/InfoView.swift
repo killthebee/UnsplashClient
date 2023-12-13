@@ -13,11 +13,11 @@ class InfoView: UIViewController {
     weak var currentVC: Presentable? = nil
     
     private var type: InfoViewTypes = .errorInfo
-    private var exifData: exifMetadata? = nil
+    private var exifData: ExifMetadata? = nil
     private var dimensions: String? = nil
     
     // MARK: - inits
-    convenience init(exifMetadata: exifMetadata, dimensions imageDimensions: String) {
+    convenience init(exifMetadata: ExifMetadata, dimensions imageDimensions: String) {
         self.init()
         type = .exifData
         exifData = exifMetadata
@@ -166,7 +166,7 @@ class InfoView: UIViewController {
         }
     }
     
-    private func populateMakeLable(_ exifData: exifMetadata) {
+    private func populateMakeLable(_ exifData: ExifMetadata) {
         let makeAttributedString = NSMutableAttributedString(
             string: "make:\n\(exifData.make ?? "Unknown")"
         )
@@ -178,7 +178,7 @@ class InfoView: UIViewController {
         makeLable.attributedText = makeAttributedString
     }
     
-    private func populateFocalLenghtLable(_ exifData: exifMetadata) {
+    private func populateFocalLenghtLable(_ exifData: ExifMetadata) {
         let focalLenghtAttributedString = NSMutableAttributedString(
             string: "Focal Length:\n\(exifData.focal_length ?? "Unknown")"
         )
@@ -190,7 +190,7 @@ class InfoView: UIViewController {
         focalLenghtLable.attributedText = focalLenghtAttributedString
     }
     
-    private func populateModelLable(_ exifData: exifMetadata) {
+    private func populateModelLable(_ exifData: ExifMetadata) {
         let modelAttributedString = NSMutableAttributedString(
             string: "Model:\n\(exifData.model ?? "Unknown")"
         )
@@ -202,7 +202,7 @@ class InfoView: UIViewController {
         modelLable.attributedText = modelAttributedString
     }
     
-    private func populateShutterSpeedLable(_ exifData: exifMetadata) {
+    private func populateShutterSpeedLable(_ exifData: ExifMetadata) {
         let shutterSpeedString = NSMutableAttributedString(
             string: "Shutter Speed:\n\(exifData.exposure_time ?? "unknown")"
         )
@@ -214,7 +214,7 @@ class InfoView: UIViewController {
         shutterSpeedLable.attributedText = shutterSpeedString
     }
     
-    private func populateISOLable(_ exifData: exifMetadata) {
+    private func populateISOLable(_ exifData: ExifMetadata) {
         let ISOString: NSMutableAttributedString!
         if let iso = exifData.iso {
             ISOString = NSMutableAttributedString(
@@ -233,7 +233,7 @@ class InfoView: UIViewController {
         ISOLable.attributedText = ISOString
     }
     
-    private func populateDimensionsLable(_ exifData: exifMetadata) {
+    private func populateDimensionsLable(_ exifData: ExifMetadata) {
         let dimensionsString = NSMutableAttributedString(
             string: "Dimensions:\n\(dimensions ?? "Unknown")"
         )
@@ -245,7 +245,7 @@ class InfoView: UIViewController {
         DimensionsLable.attributedText = dimensionsString
     }
     
-    private func populateApertureLable(_ exifData: exifMetadata) {
+    private func populateApertureLable(_ exifData: ExifMetadata) {
         let apertureString = NSMutableAttributedString(
             string: "Aperture:\n\(exifData.aperture ?? "Unknown")"
         )

@@ -53,7 +53,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
     @MainActor
     func handlerNewImages(
         _ pageNum: Int,
-        _ images: [photoModel]
+        _ images: [PhotoModel]
     ) async {
         if pageNum != 1 {
             self.presenter?.addNewImages(photos: images)
@@ -65,7 +65,7 @@ class ExploreInteractor: ExploreInteractorProtocol {
     func getNewImages(page pageNum: Int) {
         Task {
             await self.apiService?.getNewImages(page: pageNum)
-            let allImages: [photoModel] = self.apiService?.newImages ?? []
+            let allImages: [PhotoModel] = self.apiService?.newImages ?? []
             let lastImageDataIndex = pageNum * 5 - 1
             let newPhotosData = Array(allImages[
                 lastImageDataIndex - 4 ... lastImageDataIndex

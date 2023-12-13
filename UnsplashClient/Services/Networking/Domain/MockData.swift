@@ -75,8 +75,8 @@ struct FakeUnsplashApiMockData {
         )
     ]
     
-    static let firstExifAndImageData = photoData(
-        exif: exifMetadata(
+    static let firstExifAndImageData = PhotoData(
+        exif: ExifMetadata(
             make: "SONY",
             model: "ILCE-7M4",
             name: "SONY, ILCE-7M4",

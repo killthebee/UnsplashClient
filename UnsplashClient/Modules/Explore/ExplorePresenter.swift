@@ -36,13 +36,13 @@ class ExplorePresenter: ExplorePresenterProtocol {
         interactor?.getNewImages(page: pageNum)
     }
     
-    func addNewImages(photos newImages: [photoModel]) {
+    func addNewImages(photos newImages: [PhotoModel]) {
         view?.addNewImages(
             photos: newImages
         )
     }
     
-    func setNewImages(photos newImages: [photoModel]) {
+    func setNewImages(photos newImages: [PhotoModel]) {
         view?.setNewImages(
             photos: newImages
         )
@@ -61,7 +61,7 @@ class ExplorePresenter: ExplorePresenterProtocol {
         id: String,
         title: String? = nil,
         imageData: Data
-    ) -> photoModel {
-        return photoModel(id: id, title: title, image: imageData)
+    ) -> PhotoModel {
+        return PhotoModel(id: id, title: title, image: imageData)
     }
 }

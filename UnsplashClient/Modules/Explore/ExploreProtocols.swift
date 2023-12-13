@@ -4,8 +4,8 @@ protocol ExploreViewProtocol: AnyObject {
     var presenter: ExplorePresenterProtocol? { get }
     func setNewHeaderImage(_ imageData: TopBannerModel)
     func setCollections(with collectionsData: [UnsplashColletion])
-    func addNewImages(photos newImages: [photoModel])
-    func setNewImages(photos newImages: [photoModel])
+    func addNewImages(photos newImages: [PhotoModel])
+    func setNewImages(photos newImages: [PhotoModel])
     func invalidateHeaderTask()
 }
 
@@ -22,8 +22,8 @@ protocol ExplorePresenterProtocol: AnyObject {
     func getCollections()
     func setColletions(with collectionsData: [UnsplashColletion]) async
     func getNewImages(page pageNum: Int)
-    func addNewImages(photos newImages: [photoModel])
-    func setNewImages(photos newImages: [photoModel])
+    func addNewImages(photos newImages: [PhotoModel])
+    func setNewImages(photos newImages: [PhotoModel])
     func presentExifScreen(photoId: String)
     func invalidateHeaderTask()
 }

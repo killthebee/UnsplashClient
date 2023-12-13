@@ -2,7 +2,7 @@ import Foundation
 
 protocol UnsplashApiProtocol: AnyObject {
     static var shared: UnsplashApiProtocol { get }
-    var newImages: [photoModel] { get set }
+    var newImages: [PhotoModel] { get set }
     
     var errorPresentationHandler: (
         _ source: ErrorSource
@@ -15,7 +15,7 @@ protocol UnsplashApiProtocol: AnyObject {
     func getCollections() async -> [UnsplashColletion]?
     func getNewImages(page pageNum: Int) async
     func getUnsplashImage(_ url: String, imageId: String ) async -> Data?
-    func getPhoto(_ photoID: String) async -> photoData?
+    func getPhoto(_ photoID: String) async -> PhotoData?
 }
 
 extension UnsplashApiProtocol {
