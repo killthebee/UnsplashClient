@@ -54,6 +54,7 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     
     func getNewImages(page pageNum: Int) async {
         populateNewImages()
+        addNewImagesToRegularPhotos()
         return
     }
     
@@ -89,6 +90,12 @@ extension FakeUnsplashApi {
         regularPhotoData["h3"] = UIImage(named: "headerTests3")!.jpegData(compressionQuality: 1)
     }
     
+    private func addNewImagesToRegularPhotos() {
+        newImages.forEach{
+            regularPhotoData[$0.id] = $0.image
+        }
+    }
+    
     private func populateNewImages() {
         newImages = [
             PhotoModel(
@@ -117,5 +124,7 @@ extension FakeUnsplashApi {
                 image: UIImage(named: "i5")!.jpegData(compressionQuality: 1)!
             )
         ]
+        
+        
     }
 }
