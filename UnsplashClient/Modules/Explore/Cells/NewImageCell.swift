@@ -8,8 +8,7 @@ class NewImageCell: UICollectionViewCell {
         didSet {
             guard let cellData = cellData else {return}
             coverPhoto.image = UIImage(data: cellData.image)
-            ration = coverPhoto.image?.getCropRation2() ?? 1
-            imageConstarins(ration)
+            imageConstarins(coverPhoto.image?.getCropRation2() ?? 1)
         }
     }
     
@@ -31,27 +30,35 @@ class NewImageCell: UICollectionViewCell {
         fatalError()
     }
     
-    private var imageViewHeight = NSLayoutConstraint()
-    private var ration: CGFloat = 1
+    private var imageViewHeight: NSLayoutConstraint? = nil
     
-    private func imageConstarins(_ ration: CGFloat = 1) {
-        coverPhoto.widthAnchor.constraint(
-            equalToConstant: contentView.frame.size.width
-        ).isActive = true
-        let imageHeight = coverPhoto.heightAnchor.constraint(
-            equalTo: coverPhoto.widthAnchor,
-            multiplier: ration
-        )
-        imageHeight.priority = UILayoutPriority(900)
-        imageHeight.isActive = true
+    private func imageConstarins(_ ration: CGFloat) {
+        let imageHeight = contentView.frame.width * ration
+        
+        if let imageViewHeight = imageViewHeight {
+            imageViewHeight.constant = imageHeight
+        } else {
+            imageViewHeight = coverPhoto.heightAnchor.constraint(
+                equalToConstant: imageHeight
+            )
+            imageViewHeight?.isActive = true
+        }
     }
     
     private func setupView() {
         contentView.addSubview(coverPhoto)
+        
         NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalTo: coverPhoto.widthAnchor),
-            centerXAnchor.constraint(equalTo: coverPhoto.centerXAnchor),
-            heightAnchor.constraint(equalTo: coverPhoto.heightAnchor)
+            contentView.topAnchor.constraint(equalTo: coverPhoto.topAnchor),
+            contentView.bottomAnchor.constraint(
+                equalTo: coverPhoto.bottomAnchor
+            ),
+            contentView.leadingAnchor.constraint(
+                equalTo: coverPhoto.leadingAnchor
+            ),
+            contentView.trailingAnchor.constraint(
+                equalTo: coverPhoto.trailingAnchor
+            )
         ])
     }
 }
