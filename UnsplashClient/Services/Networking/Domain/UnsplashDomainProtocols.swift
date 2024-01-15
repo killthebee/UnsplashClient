@@ -14,13 +14,23 @@ protocol UnsplashApiProtocol: AnyObject {
     func getRandomPhoto() async -> UnsplashPhoto?
     func getCollections() async -> [UnsplashColletion]?
     func getNewImages(page pageNum: Int) async
-    func getUnsplashImage(_ url: String, imageId: String ) async -> Data?
+    func getUnsplashImage(
+        _ url: String,
+        imageId: String,
+        isThumb: Bool
+    ) async -> (Data?, Bool)
     func getPhoto(_ photoID: String) async -> PhotoData?
 }
 
 extension UnsplashApiProtocol {
-    func makeUrl(target: urlTarget) -> URL?
-       {
+    func makeUrl(target: urlTarget) -> URL? {
            return makeUrl("", target: target)
        }
+    
+    func getUnsplashImage(
+        _ url: String,
+        imageId: String
+    ) async -> (Data?, Bool) {
+        return await getUnsplashImage(url, imageId: imageId, isThumb: false)
+    }
 }

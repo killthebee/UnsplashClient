@@ -17,6 +17,7 @@ struct PhotoLinks: Decodable {
 struct PhotoUrls: Decodable {
     let raw: String
     let thumb: String
+    let regular: String
 }
 
 struct UnsplashPhoto: Decodable {

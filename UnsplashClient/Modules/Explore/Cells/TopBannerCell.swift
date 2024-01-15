@@ -13,7 +13,7 @@ class TopBannderCell: UICollectionReusableView {
                 options: .transitionCrossDissolve,
                 animations: {
                     self.bannerImageView.setImage(
-                        cellData.url,
+                        cellData.urls,
                         imageId: cellData.id
                     )
                 },

@@ -8,8 +8,10 @@ class CollectionsCarouselCell: UICollectionViewCell {
         didSet {
             guard let cellData = cellData else {return}
             spinner.view.removeFromSuperview()
+            contentView.backgroundColor = .clear
+            contentView.alpha = 1
             collectionCoverPhoto.setImage(
-                cellData.cover_photo.urls.thumb,
+                cellData.cover_photo.urls,
                 imageId: cellData.id
             )
             collectionNameLable.text = cellData.title
@@ -57,13 +59,7 @@ class CollectionsCarouselCell: UICollectionViewCell {
     
     private func setupViewLayout() {
         collectionCoverPhoto.frame = contentView.bounds
-        collectionNameLable.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: contentView.bounds.size.width,
-            height: contentView.bounds.size.height
-        )
-        
+        collectionNameLable.frame = contentView.bounds
         
         contentView.layer.cornerRadius = 16
         contentView.layer.masksToBounds = true

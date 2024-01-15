@@ -58,11 +58,15 @@ class FakeUnsplashApi: UnsplashApiProtocol {
         return
     }
     
-    func getUnsplashImage(_ url: String, imageId: String ) async -> Data? {
+    func getUnsplashImage(
+        _ url: String,
+        imageId: String,
+        isThumb: Bool
+    ) async -> (Data?, Bool) {
         if let photo = regularPhotoData[imageId] {
-            return photo
+            return (photo, true)
         } else {
-            return nil
+            return (nil, false)
         }
     }
     

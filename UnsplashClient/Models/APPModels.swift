@@ -12,7 +12,7 @@ struct PhotoAndExifModel {
 }
 
 struct TopBannerModel {
-    let url: String
+    let urls: PhotoUrls
     let id: String
     let photographerName: String
 }

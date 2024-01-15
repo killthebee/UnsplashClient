@@ -1,7 +1,7 @@
 protocol ExifViewProtocol: AnyObject {
     var presenter: ExifPresenterProtocol? { get }
     func setImage(
-        imageUrl: String,
+        imageUrls: PhotoUrls,
         exif exifData: ExifMetadata,
         photoId: String
     )

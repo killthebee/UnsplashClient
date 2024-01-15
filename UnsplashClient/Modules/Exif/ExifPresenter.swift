@@ -14,7 +14,7 @@ class ExifPresenter: ExifPresenterProtocol {
     @MainActor
     func setImage(_ photoDataAndExif: PhotoData, photoId: String) async {
         view?.setImage(
-            imageUrl: photoDataAndExif.urls.raw,
+            imageUrls: photoDataAndExif.urls,
             exif: photoDataAndExif.exif,
             photoId: photoId
         )

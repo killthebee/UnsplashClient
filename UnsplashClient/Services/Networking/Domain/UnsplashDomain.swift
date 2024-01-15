@@ -231,20 +231,26 @@ class UnsplashApi: ObservableObject, UnsplashApiProtocol {
     
     private let unsplashPhotoDataCache = Cache<String, Data>()
     
-    func getUnsplashImage(_ url: String, imageId: String ) async -> Data? {
+    func getUnsplashImage(
+        _ url: String,
+        imageId: String,
+        isThumb: Bool = false
+    ) async -> (Data?, Bool) {
         if let imageData = unsplashPhotoDataCache[imageId] {
-            return imageData
+            return (imageData, true)
         }
         do {
             let photoData = try await Networking.shared.getImage(
                 url
             )
-            unsplashPhotoDataCache[imageId] = photoData
+            if !isThumb {
+                unsplashPhotoDataCache[imageId] = photoData
+            }
             
-            return photoData
+            return (photoData, false)
         } catch {
             // TODO: Think about error handling!
-            return nil
+            return (nil, false)
         }
     }
     

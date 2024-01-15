@@ -79,16 +79,15 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     }
     
     func setImage(
-        imageUrl: String,
+        imageUrls: PhotoUrls,
         exif exifData: ExifMetadata,
         photoId: String
     ) {
         exif = exifData
-        imageView.setImage(imageUrl, imageId: photoId) {
+        imageView.setImage(imageUrls, imageId: photoId) {
             self.removeImagePlaceholder()
             self.layoutImage()
         }
-        
     }
     
     private func addTargetMethods() {

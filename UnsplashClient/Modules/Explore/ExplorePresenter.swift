@@ -16,7 +16,7 @@ class ExplorePresenter: ExplorePresenterProtocol {
     @MainActor
     func setNewHeaderImage(_ imageData: UnsplashPhoto) async {
         let topBannerData = TopBannerModel(
-            url: imageData.urls.thumb,
+            urls: imageData.urls,
             id: imageData.id,
             photographerName: imageData.user.name
         )
