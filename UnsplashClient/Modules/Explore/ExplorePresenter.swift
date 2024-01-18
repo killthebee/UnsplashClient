@@ -1,6 +1,7 @@
 import Foundation
 
 class ExplorePresenter: ExplorePresenterProtocol {
+    
     weak var view: ExploreViewProtocol?
     var interactor: ExploreInteractorProtocol?
     var router: ExploreRouterProtocol?
@@ -36,15 +37,10 @@ class ExplorePresenter: ExplorePresenterProtocol {
         interactor?.getNewImages(page: pageNum)
     }
     
-    func addNewImages(photos newImages: [PhotoModel]) {
-        view?.addNewImages(
-            photos: newImages
-        )
-    }
-    
-    func setNewImages(photos newImages: [PhotoModel]) {
-        view?.setNewImages(
-            photos: newImages
+    @MainActor
+    func addNewImages(newImagesData: [UnsplashPhoto]) async {
+        view?.addNewImagesData(
+            imagesData: newImagesData
         )
     }
     

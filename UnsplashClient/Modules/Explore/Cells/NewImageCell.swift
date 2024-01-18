@@ -4,10 +4,10 @@ class NewImageCell: UICollectionViewCell {
     
     static let cellIdentifier = "NewImageCell"
     
-    var cellData : PhotoModel? {
+    var cellData : UnsplashPhoto? {
         didSet {
             guard let cellData = cellData else {return}
-            coverPhoto.image = UIImage(data: cellData.image)
+            coverPhoto.setImage(cellData.urls, imageId: cellData.id)
             imageConstarins(coverPhoto.image?.getCropRation2() ?? 1)
         }
     }

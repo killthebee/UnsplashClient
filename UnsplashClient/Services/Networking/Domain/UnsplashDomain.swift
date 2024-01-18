@@ -51,7 +51,7 @@ class UnsplashApi: ObservableObject, UnsplashApiProtocol {
             urlComponents.path = Urls.collectionList.rawValue
         case .newImages:
             queryItems = [
-              URLQueryItem(name: "per_page", value: "5"),
+              URLQueryItem(name: "per_page", value: "7"),
               URLQueryItem(name: "page", value: urlArg),
             ]
             urlComponents.host = Urls.unslpashApiHost.rawValue
@@ -187,13 +187,15 @@ class UnsplashApi: ObservableObject, UnsplashApiProtocol {
             try await withThrowingTaskGroup(of: PhotoModel.self) { taskGroup in
                 for unslpashPhotoData in response {
                     taskGroup.addTask{
-                        PhotoModel(
+                        let imageData = PhotoModel(
                             id: unslpashPhotoData.id,
                             title: nil,
                             image: try await Networking.shared.getImage(
                                 unslpashPhotoData.urls.thumb
                             )
                         )
+                        
+                        return imageData
                     }
                 }
                 
@@ -227,6 +229,32 @@ class UnsplashApi: ObservableObject, UnsplashApiProtocol {
                 )
             }
         }
+    }
+    
+    func getNewImagesData(page pageNum: Int) async -> [UnsplashPhoto]? {
+        var newImagesData: [UnsplashPhoto]? = nil
+        guard
+            let url = makeUrl(String(pageNum), target: .newImages),
+            let accessToken = tokenStorage?.getToken()
+        else {
+            return newImagesData
+        }
+        let request = setupRequest(url, .get, accessToken)
+        await Networking.shared.performRequest(
+            request
+        ) { (result: Result<[UnsplashPhoto], Error>) async in
+            switch result {
+            case let .success(photosData):
+                newImagesData = photosData
+            case let .failure(error):
+                self.handleError(
+                    error,
+                    source: .newImages
+                )
+            }
+        }
+        
+        return newImagesData
     }
     
     private let unsplashPhotoDataCache = Cache<String, Data>()

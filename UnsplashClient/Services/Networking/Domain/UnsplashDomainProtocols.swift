@@ -13,7 +13,7 @@ protocol UnsplashApiProtocol: AnyObject {
     func exchangeCode(code: String) async -> TokenExchangeSuccessData?
     func getRandomPhoto() async -> UnsplashPhoto?
     func getCollections() async -> [UnsplashColletion]?
-    func getNewImages(page pageNum: Int) async
+    func getNewImagesData(page pageNum: Int) async -> [UnsplashPhoto]?
     func getUnsplashImage(
         _ url: String,
         imageId: String,

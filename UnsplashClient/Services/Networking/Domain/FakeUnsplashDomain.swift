@@ -70,6 +70,10 @@ class FakeUnsplashApi: UnsplashApiProtocol {
         }
     }
     
+    func getNewImagesData(page pageNum: Int) async -> [UnsplashPhoto]? {
+        return nil
+    }
+    
     func getPhoto(_ photoID: String) async -> PhotoData? {
         return exifAndImageData[0]
     }

@@ -1,6 +1,7 @@
 import UIKit
 
 class ExploreViewController: UIViewController, ExploreViewProtocol {
+    
     func setNewHeaderImage(_ imageData: TopBannerModel) {
         headerImageData = imageData
         collectionView.reloadData()
@@ -11,15 +12,8 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         collectionView.reloadData()
     }
     
-    func addNewImages(photos nextNewImages: [PhotoModel]) {
-        newImages.append(contentsOf: nextNewImages) 
-        pageCount += 1
-        collectionView.reloadData()
-        refreshControl.endRefreshing()
-    }
-    
-    func setNewImages(photos downloadedNewImages: [PhotoModel]) {
-        newImages = downloadedNewImages
+    func addNewImagesData(imagesData: [UnsplashPhoto]) {
+        newImages.append(contentsOf: imagesData)
         pageCount += 1
         collectionView.reloadData()
         refreshControl.endRefreshing()
@@ -40,7 +34,7 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     
     // MARK: - Data
     var collections: [UnsplashColletion] = []
-    var newImages: [PhotoModel] = []
+    var newImages: [UnsplashPhoto] = []
     var headerImageData: TopBannerModel? = nil
     var pageCount = 1
     
@@ -99,8 +93,8 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
         super.viewDidLoad()
         configureView()
 //        presenter?.startHeaderImageTask()
-        presenter?.getCollections()
-//        presenter?.getNewImages(page: 1)
+//        presenter?.getCollections()
+        presenter?.getNewImages(page: 1)
     }
     
     private func configureView() {

@@ -50,30 +50,16 @@ class ExploreInteractor: ExploreInteractorProtocol {
         }
     }
     
-    @MainActor
-    func handlerNewImages(
-        _ pageNum: Int,
-        _ images: [PhotoModel]
-    ) async {
-        if pageNum != 1 {
-            self.presenter?.addNewImages(photos: images)
-            return
-        }
-        self.presenter?.setNewImages(photos: images)
-    }
-    
     func getNewImages(page pageNum: Int) {
         Task {
-            await self.apiService?.getNewImages(page: pageNum)
-            let allImages: [PhotoModel] = self.apiService?.newImages ?? []
-            let lastImageDataIndex = pageNum * 5 - 1
-            let newPhotosData = Array(allImages[
-                lastImageDataIndex - 4 ... lastImageDataIndex
-            ])
-            await self.handlerNewImages(
-                pageNum,
-                newPhotosData
-            )
+            guard
+                let newImagesData = await self.apiService?.getNewImagesData(
+                    page: pageNum
+                )
+            else {
+                return
+            }
+            await self.presenter?.addNewImages(newImagesData: newImagesData)
         }
     }
 }
