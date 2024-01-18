@@ -16,6 +16,7 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     
     var regularPhotoData: [String: Data?] = [:]
     
+    var newImagesData: [UnsplashPhoto] = FakeUnsplashApiMockData.newImages
     var newImages: [PhotoModel] = []
     
     var exifAndImageData: [PhotoData] = [FakeUnsplashApiMockData.firstExifAndImageData]
@@ -52,12 +53,6 @@ class FakeUnsplashApi: UnsplashApiProtocol {
         return collectionsInfo
     }
     
-    func getNewImages(page pageNum: Int) async {
-        populateNewImages()
-        addNewImagesToRegularPhotos()
-        return
-    }
-    
     func getUnsplashImage(
         _ url: String,
         imageId: String,
@@ -71,7 +66,7 @@ class FakeUnsplashApi: UnsplashApiProtocol {
     }
     
     func getNewImagesData(page pageNum: Int) async -> [UnsplashPhoto]? {
-        return nil
+        return newImagesData
     }
     
     func getPhoto(_ photoID: String) async -> PhotoData? {
@@ -90,49 +85,21 @@ extension FakeUnsplashApi {
         regularPhotoData["c3"] = UIImage(named: "c3RelationshipsTests")!.jpegData(compressionQuality: 1)
         regularPhotoData["c4"] = UIImage(named: "c4ParadeTests")!.jpegData(compressionQuality: 1)
         regularPhotoData["c5"] = UIImage(named: "c5CatsTests")!.jpegData(compressionQuality: 1)
+        regularPhotoData["i1"] = UIImage(
+            named: "i1")!.jpegData(compressionQuality: 1)
+        regularPhotoData["i2"] = UIImage(
+            named: "i2")!.jpegData(compressionQuality: 1)
+        regularPhotoData["i3"] = UIImage(
+            named: "i3")!.jpegData(compressionQuality: 1)
+        regularPhotoData["i4"] = UIImage(
+            named: "i4")!.jpegData(compressionQuality: 1)
+        regularPhotoData["i5"] = UIImage(
+            named: "i5")!.jpegData(compressionQuality: 1)
     }
     
     private func populateHeaderData() {
         regularPhotoData["h1"] = UIImage(named: "headerTests1")!.jpegData(compressionQuality: 1)
         regularPhotoData["h2"] = UIImage(named: "headerTests2")!.jpegData(compressionQuality: 1)
         regularPhotoData["h3"] = UIImage(named: "headerTests3")!.jpegData(compressionQuality: 1)
-    }
-    
-    private func addNewImagesToRegularPhotos() {
-        newImages.forEach{
-            regularPhotoData[$0.id] = $0.image
-        }
-    }
-    
-    private func populateNewImages() {
-        newImages = [
-            PhotoModel(
-                id: "i1",
-                title: nil,
-                image: UIImage(named: "i1")!.jpegData(compressionQuality: 1)!
-            ),
-            PhotoModel(
-                id: "i2",
-                title: nil,
-                image: UIImage(named: "i2")!.jpegData(compressionQuality: 1)!
-            ),
-            PhotoModel(
-                id: "i3",
-                title: nil,
-                image: UIImage(named: "i3")!.jpegData(compressionQuality: 1)!
-            ),
-            PhotoModel(
-                id: "i4",
-                title: nil,
-                image: UIImage(named: "i4")!.jpegData(compressionQuality: 1)!
-            ),
-            PhotoModel(
-                id: "i5",
-                title: nil,
-                image: UIImage(named: "i5")!.jpegData(compressionQuality: 1)!
-            )
-        ]
-        
-        
     }
 }

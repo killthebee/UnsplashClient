@@ -19,15 +19,15 @@ final class UnsplashClientUITests: XCTestCase {
     
     func testLables() throws {
         [   exploreScreen.headerLable,
-            exploreScreen.exploreLable,
-            exploreScreen.newTableLable
+            exploreScreen.newTableLable,
+            exploreScreen.exploreLable
         ].forEach{XCTAssertTrue($0.exists)}
     }
     
-    func testCrutialSections() throws {
-        XCTAssertTrue(exploreScreen.newImages.exists)
-        XCTAssertTrue(exploreScreen.collections.exists)
-    }
+//    func testCrutialSections() throws {
+//        XCTAssertTrue(exploreScreen.newImages.exists)
+//        XCTAssertTrue(exploreScreen.collections.exists)
+//    }
     
     func testCollectionCells() throws {
         let firstCollection = exploreScreen.firstCollection

@@ -3,6 +3,7 @@ import UIKit
 class CellsHeaderLable: UICollectionViewCell {
     
     static let headerIdentifier = "FilterHeaderView"
+    static let newImagesIdentifier = "NewImagesHeaderView"
     
     let exploreLable: UILabel = {
         let lable = UILabel()

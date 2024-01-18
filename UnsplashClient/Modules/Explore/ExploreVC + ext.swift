@@ -58,7 +58,7 @@ extension ExploreViewController:
         case 2:
             guard
                 let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: CellsHeaderLable.headerIdentifier,
+                    withReuseIdentifier: CellsHeaderLable.newImagesIdentifier,
                     for: indexPath
                 ) as? CellsHeaderLable
             else {

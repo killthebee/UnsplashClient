@@ -75,6 +75,39 @@ struct FakeUnsplashApiMockData {
         )
     ]
     
+    static let newImages: [UnsplashPhoto] = [
+        UnsplashPhoto(
+            id: "i1",
+            links: PhotoLinks(download: "whatever"),
+            urls: PhotoUrls(raw: "whatever", thumb: "whatever", regular: "1"),
+            user: UnsplashUser(name: "whatever")
+        ),
+        UnsplashPhoto(
+            id: "i2",
+            links: PhotoLinks(download: "whatever"),
+            urls: PhotoUrls(raw: "whatever", thumb: "whatever", regular: "1"),
+            user: UnsplashUser(name: "whatever")
+        ),
+        UnsplashPhoto(
+            id: "i3",
+            links: PhotoLinks(download: "whatever"),
+            urls: PhotoUrls(raw: "whatever", thumb: "whatever", regular: "1"),
+            user: UnsplashUser(name: "whatever")
+        ),
+        UnsplashPhoto(
+            id: "i4",
+            links: PhotoLinks(download: "whatever"),
+            urls: PhotoUrls(raw: "whatever", thumb: "whatever", regular: "1"),
+            user: UnsplashUser(name: "whatever")
+        ),
+        UnsplashPhoto(
+            id: "i5",
+            links: PhotoLinks(download: "whatever"),
+            urls: PhotoUrls(raw: "whatever", thumb: "whatever", regular: "1"),
+            user: UnsplashUser(name: "whatever")
+        ),
+    ]
+    
     static let firstExifAndImageData = PhotoData(
         exif: ExifMetadata(
             make: "SONY",

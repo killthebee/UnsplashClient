@@ -44,7 +44,6 @@ extension UIImageView {
             },
             completion: nil
         )
-        
     }
     
     func setImage(
