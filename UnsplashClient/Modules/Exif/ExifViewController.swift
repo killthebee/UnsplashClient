@@ -39,6 +39,8 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.accessibilityLabel = "full_res_image"
+        imageView.clipsToBounds = true
+        
         return imageView
     }()
     
@@ -84,9 +86,10 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         photoId: String
     ) {
         exif = exifData
-        imageView.setImage(imageUrls, imageId: photoId) {
+        imageView.setImage(imageUrls, imageId: photoId) { [self] in
             self.removeImagePlaceholder()
             self.layoutImage()
+//            self.imageView.enableZoom()
         }
     }
     
@@ -118,8 +121,10 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         else {
             return 1
         }
-        let height = (view.frame.size.width /
-                      imageWidth * imageHeight)
+        let height = (
+            view.frame.size.width / imageWidth * imageHeight
+        )
+        
         return height
     }
     
@@ -185,13 +190,33 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     }
     
     private func layoutImage() {
+        var scrollImg: UIScrollView = UIScrollView()
+        scrollImg.delegate = self
+        scrollImg.translatesAutoresizingMaskIntoConstraints = false
+        scrollImg.alwaysBounceVertical = false
+        scrollImg.alwaysBounceHorizontal = false
+        scrollImg.showsVerticalScrollIndicator = true
+        scrollImg.flashScrollIndicators()
+        
+        scrollImg.minimumZoomScale = 1.0
+        scrollImg.maximumZoomScale = 5.0
+        
+        view.addSubview(scrollImg)
+        scrollImg.addSubview(imageView)
+        
         let constraints: [NSLayoutConstraint] = [
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            scrollImg.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollImg.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollImg.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            scrollImg.heightAnchor.constraint(equalToConstant: getImageViewHeight()),
+            imageView.topAnchor.constraint(equalTo: scrollImg.topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: scrollImg.bottomAnchor),
+            imageView.leadingAnchor.constraint(equalTo: scrollImg.leadingAnchor),
+            imageView.trailingAnchor.constraint(
+                equalTo: scrollImg.trailingAnchor
+            ),
             imageView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            imageView.heightAnchor.constraint(
-                equalToConstant: getImageViewHeight()
-            )
+            imageView.heightAnchor.constraint(equalToConstant: getImageViewHeight())
         ]
         
         NSLayoutConstraint.activate(constraints)
@@ -305,5 +330,13 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         
         activityViewController.isModalInPresentation = true
         self.present(activityViewController, animated: true, completion: nil)
+    }
+}
+
+
+extension ExifViewController: UIScrollViewDelegate{
+
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.imageView
     }
 }
