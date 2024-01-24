@@ -3,16 +3,21 @@ import UIKit
 final class BSTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
     
     let transition = BSTransition()
+    
+    var bottomSheetHeight: CGFloat = 250
 
     func presentationController(
         forPresented presented: UIViewController,
         presenting: UIViewController?,
         source: UIViewController
     ) -> UIPresentationController? {
-        BSPresentationController(
+        let BSPresentationController = BSPresentationController(
             presentedViewController: presented,
             presenting: presenting ?? source
         )
+        BSPresentationController.bottomSheetHeight = bottomSheetHeight
+        
+        return BSPresentationController
     }
 
     func animationController(

@@ -4,6 +4,7 @@ final class BSPresentationController: UIPresentationController {
     
     private let cornerRadius: CGFloat = 16
     private let dismissThreshold: CGFloat = 0.3
+    var bottomSheetHeight: CGFloat = 250
     
     private var transitioningDelegate: BSTransitioningDelegate? {
         presentedViewController.transitioningDelegate as? BSTransitioningDelegate
@@ -116,7 +117,6 @@ final class BSPresentationController: UIPresentationController {
 
         containerView.addSubview(dimmView)
         containerView.addSubview(presentedView)
-
         NSLayoutConstraint.activate(
             [
                 dimmView.topAnchor.constraint(equalTo: containerView.topAnchor),
@@ -139,7 +139,8 @@ final class BSPresentationController: UIPresentationController {
                     equalTo: containerView.trailingAnchor
                 ),
                 presentedView.heightAnchor.constraint(
-                    equalToConstant: 250),
+                    equalToConstant: bottomSheetHeight
+                ),
             ]
         )
     }

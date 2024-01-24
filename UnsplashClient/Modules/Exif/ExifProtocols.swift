@@ -21,10 +21,12 @@ protocol ExifPresenterProtocol: AnyObject {
     func infoButtonTouched(exif: ExifMetadata?)
     func dismissRequested()
     func presentShareVC()
+    func calculateInfoViewHeight(exif: ExifMetadata) -> Int
 }
 
 protocol ExifInteractorProtocol: AnyObject {
     func getImage(photoId: String)
+    func calculateInfoViewHeight(exif: ExifMetadata) -> Int
 }
 
 protocol ExifRouterProtocol: AnyObject {

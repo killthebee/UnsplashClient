@@ -13,19 +13,21 @@ class InfoView: UIViewController {
     weak var currentVC: Presentable? = nil
     
     private var type: InfoViewTypes = .errorInfo
-    private var exifData: ExifMetadata? = nil
     private var dimensions: String? = nil
+    var exifStrings: [NSMutableAttributedString] = []
     
     // MARK: - inits
-    convenience init(exifMetadata: ExifMetadata, dimensions imageDimensions: String) {
+    convenience init(
+        exifMetadata: ExifMetadata,
+        dimensions imageDimensions: String
+    ) {
         self.init()
         type = .exifData
-        exifData = exifMetadata
+        makeExifStrings(exifMetadata)
         dimensions = imageDimensions
     }
     
     convenience init(
-//        _ error: Error,
         source: ErrorSource,
         vc: UIViewController
     ) {
@@ -116,19 +118,27 @@ class InfoView: UIViewController {
         return lable
     }()
     
-    private let makeLable = ExifDataLable()
-    
-    private let focalLenghtLable = ExifDataLable()
-    
-    private let modelLable = ExifDataLable()
-    
-    private let shutterSpeedLable = ExifDataLable()
-    
-    private let ISOLable = ExifDataLable()
-    
-    private let DimensionsLable = ExifDataLable()
-    
-    private let ApertureLable = ExifDataLable()
+    private lazy var collectionView: UICollectionView = {
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: layout
+        )
+        collectionView.register(
+            ExifDataCell.self,
+            forCellWithReuseIdentifier: ExifDataCell.cellIdentifier
+        )
+        
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundColor = .clear
+        
+        return collectionView
+    }()
     
     //MARK: - view setup
     override func viewDidLoad() {
@@ -141,15 +151,11 @@ class InfoView: UIViewController {
         disableAutoresizing()
         addSubviews()
         configureLayout()
-        if type == .exifData {
-            populateExifDataLables()
-        }
     }
     
     private func disableAutoresizing() {
         [headerLable, repeatButtonContainer, repeatButton, helpTextLable,
-         cameraHeader, makeLable, focalLenghtLable, modelLable, ISOLable,
-         shutterSpeedLable, DimensionsLable, ApertureLable
+         cameraHeader, collectionView
         ].forEach{$0.translatesAutoresizingMaskIntoConstraints = false}
     }
     
@@ -160,113 +166,101 @@ class InfoView: UIViewController {
             ].forEach{view.addSubview($0)}
             repeatButtonContainer.addSubview(repeatButton)
         case .exifData:
-            [cameraHeader, makeLable, focalLenghtLable, modelLable, ISOLable,
-             shutterSpeedLable, DimensionsLable, ApertureLable
-            ].forEach{view.addSubview($0)}
+            [cameraHeader, collectionView].forEach{view.addSubview($0)}
         }
     }
     
-    private func populateMakeLable(_ exifData: ExifMetadata) {
-        let makeAttributedString = NSMutableAttributedString(
-            string: "make:\n\(exifData.make ?? "Unknown")"
-        )
-        makeAttributedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 5)
-        )
-        makeLable.attributedText = makeAttributedString
-    }
-    
-    private func populateFocalLenghtLable(_ exifData: ExifMetadata) {
-        let focalLenghtAttributedString = NSMutableAttributedString(
-            string: "Focal Length:\n\(exifData.focal_length ?? "Unknown")"
-        )
-        focalLenghtAttributedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 14)
-        )
-        focalLenghtLable.attributedText = focalLenghtAttributedString
-    }
-    
-    private func populateModelLable(_ exifData: ExifMetadata) {
-        let modelAttributedString = NSMutableAttributedString(
-            string: "Model:\n\(exifData.model ?? "Unknown")"
-        )
-        modelAttributedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 6)
-        )
-        modelLable.attributedText = modelAttributedString
-    }
-    
-    private func populateShutterSpeedLable(_ exifData: ExifMetadata) {
-        let shutterSpeedString = NSMutableAttributedString(
-            string: "Shutter Speed:\n\(exifData.exposure_time ?? "unknown")"
-        )
-        shutterSpeedString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 14)
-        )
-        shutterSpeedLable.attributedText = shutterSpeedString
-    }
-    
-    private func populateISOLable(_ exifData: ExifMetadata) {
-        let ISOString: NSMutableAttributedString!
+    private func makeExifStrings(_ exifData: ExifMetadata) {
+        if let make = exifData.make {
+            let makeAttributedString = NSMutableAttributedString(
+                string: "make:\n\(make)"
+            )
+            makeAttributedString.setAttributes([
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+                NSAttributedString.Key.foregroundColor: UIColor.gray],
+                range: NSMakeRange(0, 5)
+            )
+            
+            exifStrings.append(makeAttributedString)
+        }
+        
+        if let focalLenght = exifData.focal_length {
+            let focalLenghtAttributedString = NSMutableAttributedString(
+                string: "Focal Length:\n\(focalLenght)"
+            )
+            focalLenghtAttributedString.setAttributes([
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+                NSAttributedString.Key.foregroundColor: UIColor.gray],
+                range: NSMakeRange(0, 14)
+            )
+            
+            exifStrings.append(focalLenghtAttributedString)
+        }
+        
+        if let model = exifData.model {
+            let modelAttributedString = NSMutableAttributedString(
+                string: "Model:\n\(model)"
+            )
+            modelAttributedString.setAttributes([
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+                NSAttributedString.Key.foregroundColor: UIColor.gray],
+                range: NSMakeRange(0, 6)
+            )
+            
+            exifStrings.append(modelAttributedString)
+        }
+        
+        if let shutterSpeed = exifData.exposure_time {
+            let shutterSpeedString = NSMutableAttributedString(
+                string: "Shutter Speed:\n\(shutterSpeed)"
+            )
+            shutterSpeedString.setAttributes([
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+                NSAttributedString.Key.foregroundColor: UIColor.gray],
+                range: NSMakeRange(0, 14)
+            )
+            
+            exifStrings.append(shutterSpeedString)
+        }
+        
         if let iso = exifData.iso {
-            ISOString = NSMutableAttributedString(
+            let ISOString = NSMutableAttributedString(
                 string: "ISO:\n\(iso)"
             )
-        } else {
-            ISOString = NSMutableAttributedString(
-                string: "ISO:\nUnknown"
+            ISOString.setAttributes([
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+                NSAttributedString.Key.foregroundColor: UIColor.gray],
+                range: NSMakeRange(0, 4)
             )
+            
+            exifStrings.append(ISOString)
         }
-        ISOString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 4)
-        )
-        ISOLable.attributedText = ISOString
-    }
-    
-    private func populateDimensionsLable(_ exifData: ExifMetadata) {
-        let dimensionsString = NSMutableAttributedString(
-            string: "Dimensions:\n\(dimensions ?? "Unknown")"
-        )
-        dimensionsString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 11)
-        )
-        DimensionsLable.attributedText = dimensionsString
-    }
-    
-    private func populateApertureLable(_ exifData: ExifMetadata) {
-        let apertureString = NSMutableAttributedString(
-            string: "Aperture:\n\(exifData.aperture ?? "Unknown")"
-        )
-        apertureString.setAttributes([
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
-            NSAttributedString.Key.foregroundColor: UIColor.gray],
-            range: NSMakeRange(0, 9)
-        )
-        ApertureLable.attributedText = apertureString
-    }
-    
-    private func populateExifDataLables() {
-        guard let exifData = exifData else { return }
         
-        populateMakeLable(exifData)
-        populateFocalLenghtLable(exifData)
-        populateModelLable(exifData)
-        populateShutterSpeedLable(exifData)
-        populateISOLable(exifData)
-        populateDimensionsLable(exifData)
-        populateApertureLable(exifData)
+        if let dimensions = dimensions {
+            let dimensionsString = NSMutableAttributedString(
+                string: "Dimensions:\n\(dimensions)"
+            )
+            dimensionsString.setAttributes([
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+                NSAttributedString.Key.foregroundColor: UIColor.gray],
+                range: NSMakeRange(0, 11)
+            )
+            
+            exifStrings.append(dimensionsString)
+        }
+        
+        if let apperture = exifData.aperture {
+            let apertureString = NSMutableAttributedString(
+                string: "Aperture:\n\(apperture)"
+            )
+            apertureString.setAttributes([
+                NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12),
+                NSAttributedString.Key.foregroundColor: UIColor.gray],
+                range: NSMakeRange(0, 9)
+            )
+            
+            exifStrings.append(apertureString)
+        }
     }
     
     //MARK: - Layout
@@ -327,82 +321,19 @@ class InfoView: UIViewController {
             ),
             cameraHeader.heightAnchor.constraint(equalToConstant: 22),
             
-            makeLable.topAnchor.constraint(equalTo: cameraHeader.bottomAnchor),
-            makeLable.leadingAnchor.constraint(
-                equalTo: cameraHeader.leadingAnchor
-            ),
-            makeLable.widthAnchor.constraint(
-                equalTo: view.widthAnchor,
-                multiplier: 0.3
-            ),
-            makeLable.heightAnchor.constraint(equalToConstant: 40),
-            
-            focalLenghtLable.topAnchor.constraint(
+            collectionView.topAnchor.constraint(
                 equalTo: cameraHeader.bottomAnchor
             ),
-            focalLenghtLable.leadingAnchor.constraint(equalTo: makeLable.trailingAnchor, constant: 10),
-            focalLenghtLable.trailingAnchor.constraint(
+            collectionView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: 16
+            ),
+            collectionView.trailingAnchor.constraint(
                 equalTo: view.trailingAnchor
             ),
-            focalLenghtLable.heightAnchor.constraint(equalToConstant: 40),
-            
-            modelLable.topAnchor.constraint(equalTo: makeLable.bottomAnchor),
-            modelLable.leadingAnchor.constraint(
-                equalTo: cameraHeader.leadingAnchor
+            collectionView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor
             ),
-            modelLable.widthAnchor.constraint(
-                equalTo: view.widthAnchor,
-                multiplier: 0.3
-            ),
-            modelLable.heightAnchor.constraint(equalToConstant: 40),
-            
-            ISOLable.topAnchor.constraint(
-                equalTo: focalLenghtLable.bottomAnchor
-            ),
-            ISOLable.leadingAnchor.constraint(
-                equalTo: modelLable.trailingAnchor,
-                constant: 10
-            ),
-            ISOLable.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor
-            ),
-            ISOLable.heightAnchor.constraint(equalToConstant: 40),
-            
-            shutterSpeedLable.topAnchor.constraint(
-                equalTo: modelLable.bottomAnchor
-            ),
-            shutterSpeedLable.leadingAnchor.constraint(
-                equalTo: cameraHeader.leadingAnchor
-            ),
-            shutterSpeedLable.widthAnchor.constraint(
-                equalTo: view.widthAnchor,
-                multiplier: 0.3
-            ),
-            shutterSpeedLable.heightAnchor.constraint(equalToConstant: 40),
-            
-            DimensionsLable.topAnchor.constraint(
-                equalTo: ISOLable.bottomAnchor
-            ),
-            DimensionsLable.leadingAnchor.constraint(
-                equalTo: shutterSpeedLable.trailingAnchor,
-                constant: 10
-            ),
-            DimensionsLable.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor
-            ),
-            DimensionsLable.heightAnchor.constraint(equalToConstant: 40),
-            
-            ApertureLable.topAnchor.constraint(
-                equalTo: shutterSpeedLable.bottomAnchor
-            ),
-            ApertureLable.leadingAnchor.constraint(
-                equalTo: cameraHeader.leadingAnchor
-            ),
-            ApertureLable.widthAnchor.constraint(
-                equalTo: view.widthAnchor,
-                multiplier: 0.3
-            ),
-            ApertureLable.heightAnchor.constraint(equalToConstant: 40),
         ]
         switch type {
         case .errorInfo:

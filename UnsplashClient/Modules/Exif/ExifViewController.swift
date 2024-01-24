@@ -2,7 +2,6 @@ import UIKit
 
 class ExifViewController: UIViewController, ExifViewProtocol {
     
-    
     // MARK: - Dependencies
     var presenter: ExifPresenterProtocol?
     weak var exploreVCDelegate: ExploreViewProtocol?
@@ -190,7 +189,7 @@ class ExifViewController: UIViewController, ExifViewProtocol {
     }
     
     private func layoutImage() {
-        var scrollImg: UIScrollView = UIScrollView()
+        let scrollImg: UIScrollView = UIScrollView()
         scrollImg.delegate = self
         scrollImg.translatesAutoresizingMaskIntoConstraints = false
         scrollImg.alwaysBounceVertical = false
@@ -278,12 +277,16 @@ class ExifViewController: UIViewController, ExifViewProtocol {
         let dimensions = "\(Int(imageView.image?.size.width ?? 0)) x \(Int(imageView.image?.size.height ?? 0))"
         
         let vc = InfoView(exifMetadata: exif, dimensions: dimensions)
+//        vc.view.heightAnchor.constraint(equalToConstant: 500).isActive = true
         guard
             let transitioningDelegate = presenter?.router?.customTransitioningDelegate
         else {
             return
         }
         
+        transitioningDelegate.bottomSheetHeight = CGFloat(
+            (presenter?.calculateInfoViewHeight(exif: exif))!
+        )
         vc.transitioningDelegate = transitioningDelegate
         vc.modalPresentationStyle = .custom
             

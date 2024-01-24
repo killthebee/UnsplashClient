@@ -33,4 +33,8 @@ class ExifPresenter: ExifPresenterProtocol {
     func presentShareVC() {
         view?.presentShareVC()
     }
+    
+    func calculateInfoViewHeight(exif: ExifMetadata) -> Int {
+        (interactor?.calculateInfoViewHeight(exif: exif))!
+    }
 }

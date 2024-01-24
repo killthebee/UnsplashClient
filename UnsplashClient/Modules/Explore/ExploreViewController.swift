@@ -97,8 +97,8 @@ class ExploreViewController: UIViewController, ExploreViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        presenter?.startHeaderImageTask()
-        presenter?.getCollections()
+//        presenter?.startHeaderImageTask()
+//        presenter?.getCollections()
         presenter?.getNewImages(page: 1)
     }
     
