@@ -15,6 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = appRouter.makeFirstScreen().toVC()
         self.window = window
         window.makeKeyAndVisible()
+        //
     }
     
     func bindErrorHandler() {
